@@ -66,7 +66,6 @@ const mockComment = {
   totalCount: 4,
 };
 
-
 interface Writer {
   id: number;
   nickname: string;
@@ -106,9 +105,9 @@ export const Comment: React.FC<CommentProps> = ({ item }) => {
       </div>
 
       {/* 오른쪽 열: 댓글 내용 및 버튼 */}
-      <div className="flex-1">
+      <div className="flex flex-1 flex-col gap-2 md:gap-3 xl:gap-4">
         {/* 첫 번째 행: 작성자, 작성시간, 수정, 삭제 버튼 */}
-        <div className="mb-2 flex items-center justify-between">
+        <div className="flex items-center justify-between">
           <div className="leading-1.125 flex items-center justify-between gap-2 text-xs md:text-sm md:leading-6 lg:text-[16px] lg:leading-[26px]">
             <p>{item.writer.nickname}</p>
             <p>{relativeTime(item.createdAt)}</p>

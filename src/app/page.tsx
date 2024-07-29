@@ -1,4 +1,4 @@
-import CommentList from '@/components/common/Comment';
+import CommentList from '@/components/common/CommentList';
 
 export default function Home() {
   return (
