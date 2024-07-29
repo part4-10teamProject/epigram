@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "Pretendard";
-  src: url("../../public/assets/font/Pretendard-Regular.ttf");
+  font-family: 'Pretendard';
+  src: url('../../public/assets/font/Pretendard-Regular.ttf');
 }
 
 * {
@@ -18,5 +18,5 @@ body,
 input,
 textarea,
 button {
-  font-family: "Pretendard";
+  font-family: 'Pretendard';
 }
