@@ -15,7 +15,7 @@ const config: Config = {
       },
       colors: {
         black: {
-          100: '#F9F9F9',   //피그마에 나와있는 컬러입니다. 기본적인것만 넣었습나다.
+          100: '#F9F9F9', //피그마에 나와있는 컬러입니다. 기본적인것만 넣었습나다.
           200: '#6B6B6B',
           300: '#5E5E5E',
           400: '#525252',
@@ -48,11 +48,11 @@ const config: Config = {
         redState: '#FF6577',
       },
       fontSize: {
-        'xs': ['0.75rem', { lineHeight: '1.125rem' }], // 12px / 18px
-        'sm': ['0.75rem', { lineHeight: '1.25rem' }], // 12px / 20px
-        'md': ['0.8125rem', { lineHeight: '1.375rem' }], // 13px / 22px
-        'lg': ['0.875rem', { lineHeight: '1.5rem' }], // 14px / 24px
-        'xl': ['1rem', { lineHeight: '1.625rem' }], // 16px / 26px
+        xs: ['0.75rem', { lineHeight: '1.125rem' }], // 12px / 18px
+        sm: ['0.75rem', { lineHeight: '1.25rem' }], // 12px / 20px
+        md: ['0.8125rem', { lineHeight: '1.375rem' }], // 13px / 22px
+        lg: ['0.875rem', { lineHeight: '1.5rem' }], // 14px / 24px
+        xl: ['1rem', { lineHeight: '1.625rem' }], // 16px / 26px
         '2xl': ['1.25rem', { lineHeight: '2rem' }], // 20px / 32px
         '3xl': ['2rem', { lineHeight: '2.625rem' }], // 32px / 42px
       },
