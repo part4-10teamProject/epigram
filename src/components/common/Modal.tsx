@@ -7,23 +7,25 @@
  * 
  * 사용예제
  * <Modal
-    isOpen={isModal}
-    onClose={() => setIsModal(false)}
-    message="댓글을 삭제하시겠어요?"
-    buttons={[
-      {
-        text: '취소',
-        onClick: () => setIsModal(false),
-        type: 'secondary',
-      },
-      {
-        text: '삭제하기',
-        onClick: () => setIsModal(false),
+      isOpen={isModal}
+      onClose={() => setIsModal(false)}
+      icon={<Image src={exclamation} alt="모달이미지" />}
+      message="댓글을 삭제하시겠어요?"
+      content="댓글은 삭제 후 복구할 수 없어요"
+      buttons={[
+        {
+          text: '취소',
+          onClick: () => setIsModal(false),
+          type: 'secondary',
+        },
+        {
+          text: '삭제하기',
+          onClick: () => setIsModal(false),
 
-        type: 'primary',
-      },
-    ]}
-  />
+          type: 'primary',
+        },
+      ]}
+    />
  * 
  * 
  */
@@ -33,7 +35,9 @@ import { ModalProps } from '@/types/modal';
 export const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
+  icon,
   message,
+  content,
   buttons,
 }) => {
   if (!isOpen) return null;
@@ -47,10 +51,22 @@ export const Modal: React.FC<ModalProps> = ({
         className="w-[320px] rounded-[24px] bg-white px-[38px] py-[40px] text-center md:w-[372px] lg:w-[452px]"
         onClick={(e) => e.stopPropagation()}
       >
+        {icon && (
+          <div className="m-auto mb-4 h-11 w-11 md:mb-6 lg:h-14 lg:w-14">
+            {icon}
+          </div>
+        )}
         <div>
-          <h1 className="text-black mb-[48px] text-xl font-semibold md:text-2xl lg:text-[24px]">
-            {message}
-          </h1>
+          <div className="mb-[24px] md:mb-[36px] lg:mb-[40px]">
+            <h1 className="text-black mb-3 text-xl font-semibold md:text-2xl lg:text-[24px]">
+              {message}
+            </h1>
+            {content && (
+              <p className="text-lg text-gray-400 md:text-xl lg:text-[18px]">
+                {content}
+              </p>
+            )}
+          </div>
           <div className="flex items-center justify-center gap-4">
             {buttons.map((button, index) => (
               <button

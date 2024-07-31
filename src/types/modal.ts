@@ -7,6 +7,8 @@ interface ButtonProps {
 export interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  icon?: React.ReactNode;
+  content?: string;
   message: string;
   buttons: ButtonProps[];
 }
