@@ -24,7 +24,7 @@ const Card = (responseData: ResponseData) => {
 
   return (
     <div className="w-full rounded-[16px] border-none bg-none p-[24px]">
-      <div className="flex flex-col justify-between gap-[20px] font-custom text-[14px]">
+      <div className="flex flex-col justify-between gap-[20px] font-custom text-[14px] md:text-[16px] xl:text-[24px]">
         <p className="bottom-[60px] left-[24px] top-[24px] m-0 break-words text-left">
           {contentData}
         </p>
