@@ -1,8 +1,8 @@
-//import { useState } from 'react';
+import { ResponseData } from '@/types/sample';
 
-const Card = () => {
+const Card = (responseData: ResponseData) => {
   //fetch get한 response 중 페이지에 알맞은 endpoint의 것 특정 후의 코드
-  const responseData = {
+  responseData = {
     likeCount: 0,
     tags: [
       {
