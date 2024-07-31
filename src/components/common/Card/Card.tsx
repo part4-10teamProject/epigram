@@ -23,7 +23,7 @@ const Card = () => {
   const authorData = responseData.author;
 
   return (
-    <div className="w-[312px] rounded-[16px] border-none bg-none p-[24px]">
+    <div className="w-full rounded-[16px] border-none bg-none p-[24px]">
       <div className="flex flex-col justify-between gap-[20px] font-custom text-[14px]">
         <p className="bottom-[60px] left-[24px] top-[24px] m-0 break-words text-left">
           {contentData}
