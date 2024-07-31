@@ -24,11 +24,11 @@ const Card = () => {
 
   return (
     <div className="w-[312px] rounded-[16px] border-none bg-none p-[24px]">
-      <div className="relative font-custom text-[14px]">
-        <p className="absolute bottom-[60px] left-[24px] top-[24px] m-0 break-words text-left">
+      <div className="flex flex-col justify-between gap-[20px] font-custom text-[14px]">
+        <p className="bottom-[60px] left-[24px] top-[24px] m-0 break-words text-left">
           {contentData}
         </p>
-        <p className="absolute bottom-[24px] right-[24px] text-right text-blue-400">
+        <p className="bottom-[24px] right-[24px] text-right text-blue-400">
           -{authorData}-
         </p>
       </div>
