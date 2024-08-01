@@ -3,8 +3,17 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "Pretendard";
-  src: url("../../public/assets/font/Pretendard-Regular.ttf");
+  font-family: 'Pretendard';
+  src: url('../../public/assets/font/Pretendard-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'IropkeBatang';
+  src: url('../../public/assets/font/IropkeBatangM.ttf');
+}
+
+body {
+  @apply font-custom;
 }
 
 * {
@@ -18,5 +27,5 @@ body,
 input,
 textarea,
 button {
-  font-family: "Pretendard";
+  font-family: 'Pretendard';
 }
