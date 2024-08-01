@@ -5,6 +5,18 @@
 @font-face {
   font-family: 'Pretendard';
   src: url('../../public/assets/font/Pretendard-Regular.ttf');
+<<<<<<< HEAD
+=======
+}
+
+@font-face {
+  font-family: 'IropkeBatang';
+  src: url('../../public/assets/font/IropkeBatangM.ttf');
+}
+
+body {
+  @apply font-custom;
+>>>>>>> develop
 }
 
 * {

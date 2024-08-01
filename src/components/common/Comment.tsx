@@ -21,7 +21,6 @@ const item = {
   epigramId: 154,
 };
 
-
 interface Writer {
   id: number;
   nickname: string;
