@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import close from '../../../public/assets/images/close.png';
 import profile from '../../../public/assets/images/profile_sample.png';
-import { profileModalProps } from '@/types/profileModal';
+import { ProfileModalProps } from '@/types/profileModal';
 
 /**
  *
@@ -18,7 +18,7 @@ import { profileModalProps } from '@/types/profileModal';
     />
  */
 
-export const ProfileModal: React.FC<profileModalProps> = ({
+export const ProfileModal: React.FC<ProfileModalProps> = ({
   isOpen,
   onClose,
   writer,
@@ -31,7 +31,7 @@ export const ProfileModal: React.FC<profileModalProps> = ({
 
   return (
     <div className="fixed bottom-0 left-0 right-0 top-0 z-50 flex items-center justify-center bg-black-950/60">
-      <div className="flex w-[360px] flex-col gap-[10px] rounded-[24px] bg-background px-6 pb-6 pt-4 lg:px-10 lg:pb-8 lg:pt-6">
+      <div className="flex w-[360px] flex-col gap-[10px] rounded-[24px] bg-background px-6 pb-6 pt-4 xl:px-10 xl:pb-8 xl:pt-6">
         <div className="flex cursor-pointer justify-end">
           <Image
             src={close}

@@ -1,10 +1,10 @@
-export interface profileModalProps {
+export interface ProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
-  writer: writer;
+  writer: Writer;
 }
 
-interface writer {
+interface Writer {
   id: number;
   nickname: string;
   image: string;

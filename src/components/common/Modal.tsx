@@ -48,21 +48,21 @@ export const Modal: React.FC<ModalProps> = ({
       onClick={onClose}
     >
       <div
-        className="w-[320px] rounded-[24px] bg-white px-[38px] py-[40px] text-center md:w-[372px] lg:w-[452px]"
+        className="w-[320px] rounded-[24px] bg-white px-[38px] py-[40px] text-center md:w-[372px] xl:w-[452px]"
         onClick={(e) => e.stopPropagation()}
       >
         {icon && (
-          <div className="m-auto mb-4 h-11 w-11 md:mb-6 lg:h-14 lg:w-14">
+          <div className="m-auto mb-4 h-11 w-11 md:mb-6 xl:h-14 xl:w-14">
             {icon}
           </div>
         )}
         <div>
-          <div className="mb-[24px] md:mb-[36px] lg:mb-[40px]">
-            <h1 className="text-black mb-3 text-xl font-semibold md:text-2xl lg:text-[24px]">
+          <div className="mb-[24px] md:mb-[36px] xl:mb-[40px]">
+            <h1 className="text-black mb-3 text-xl font-semibold md:text-2xl xl:text-[24px]">
               {message}
             </h1>
             {content && (
-              <p className="text-lg text-gray-400 md:text-xl lg:text-[18px]">
+              <p className="text-xl text-gray-400 md:text-xl xl:text-[18px]">
                 {content}
               </p>
             )}
@@ -70,7 +70,7 @@ export const Modal: React.FC<ModalProps> = ({
           <div className="flex items-center justify-center gap-4">
             {buttons.map((button, index) => (
               <button
-                className={`w-full rounded-[12px] p-4 text-xl lg:text-2xl ${button.type === 'primary' ? `bg-blue-900 text-white` : button.type === 'secondary' ? `text-black bg-blue-200` : `bg-blue-900 text-white`}`}
+                className={`w-full rounded-[12px] p-4 text-xl xl:text-2xl ${button.type === 'primary' ? `bg-blue-900 text-white` : button.type === 'secondary' ? `text-black bg-blue-200` : `bg-blue-900 text-white`}`}
                 key={index}
                 onClick={button.onClick}
               >
