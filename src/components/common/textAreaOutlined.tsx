@@ -1,11 +1,10 @@
 function TextAreaOutlined() {
-    return (
-    <div className="pt-3 pr-4 pb-12 pl-4 h-[80px] w-[248px] border rounded-l gap-2 ">
-        <textarea
-            placeholder="100자 이내로 입력해주세요."
-            className="h-[56px] w-[216px] gap-1.5 font-normal text-xl leading-[26px]">
-        </textarea>
-    </div>)
+  return (
+    <textarea
+      placeholder="100자 이내로 입력해주세요."
+      className="h-[80px] w-[248px] gap-1.5 rounded-lg border pl-2 pt-2 text-xl font-normal leading-[26px] md:h-[80px] md:w-[320px] xl:h-[104px] xl:w-[568px]"
+    ></textarea>
+  );
 }
 
 export default TextAreaOutlined;
