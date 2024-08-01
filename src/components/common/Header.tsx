@@ -5,10 +5,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
-const HeaderOnlyLogo = () => {
+const HeaderOnlyLogo: React.FC = () => {
   const router = useRouter();
 
-  const handleLogoClick = () => {
+  const handleLogoClick = (): void => {
     router.push('/');
   };
 
@@ -31,22 +31,19 @@ const HeaderOnlyLogo = () => {
   );
 };
 
-const Header = () => {
+const Header: React.FC = () => {
   const pathname = usePathname();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
-    // 여기에 실제 로그인 상태를 확인하는 로직을 추가합니다.
-    const checkLoginStatus = () => {
-      // 예시로 localStorage를 사용한 로그인 상태 확인
-      const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-      //   setIsLoggedIn(loggedIn);
+    const checkLoginStatus = (): void => {
+      const loggedIn = localStorage.getItem('isLoggedIn') === 'true'; // 로컬 스토리지에서 로그인상태를 가져옵니다. 아무값도 저장 안되있으니까 undefined로 false가 될겁니다.
+      setIsLoggedIn(loggedIn); // 만약 로그인상태로 테스트하고 싶으면 개발자도구 열고 콘솔창에서 localStorage.setItem('isLoggedIn', 'true'); 입력하세요
 
-      // 로그인되지 않은 상태에서 로그인 페이지나 회원가입 페이지를 제외한 모든 페이지로 이동하려고 하면 로그인 페이지로 리다이렉트
       if (
-        !isLoggedIn &&
+        !loggedIn &&
         pathname !== '/login' &&
         pathname !== '/signup' &&
         pathname !== '/'
@@ -58,16 +55,16 @@ const Header = () => {
     checkLoginStatus();
   }, [pathname, router]);
 
-  const toggleMenu = () => {
+  const toggleMenu = (): void => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const handleLogoClick = () => {
+  const handleLogoClick = (): void => {
     router.push('/');
   };
 
-  const handleProfileClick = () => {
-    router.push('/mypage'); // 프로필 클릭 시 이동할 페이지
+  const handleProfileClick = (): void => {
+    router.push('/mypage');
   };
 
   return (
@@ -168,7 +165,7 @@ const Header = () => {
   );
 };
 
-const ClientHeader = () => {
+const ClientHeader: React.FC = () => {
   const pathname = usePathname();
 
   const showHeaderOnlyLogo = pathname === '/login' || pathname === '/signup';
