@@ -1,21 +1,21 @@
+'use client';
+
 function TextAreaSolid() {
   return (
-    <form>
-        <span className="block text-sm font-medium text-slate-700">에피그램생성</span>
-        <label className="block h-[132px] w-[312px] border rounded-xl pt-[10px] pr-4 pb-[10px] pl-4 gap-2 top-5 left-5">
-    
-        <textarea
-          typeof="text" 
-          id="내용"
-          maxLength={500}
-          rows={15}
-          placeholder="500자 이내로 입력해주세요"
-          className="peer w-[280px] h-[26px] font-normal text-xl leading-[26px]">
-        </textarea>
-        </ label>
-        <p className="mt-2 invisible peer-invalid:visible text-pink-600 text-sm">
-          500자 이내로 입력해주세요.
-        </p>
+    <form className="group relative">
+      <textarea
+        typeof="text"
+        id="내용"
+        maxLength={500}
+        rows={15}
+        placeholder="500자 이내로 입력해주세요"
+        onFocus={() => console.log('본문을 작성해주세요')}
+        className="h-[132px] w-[312px] border pl-2 pt-2 text-xl font-normal leading-[26px] group-hover:border-red-500 group-active:border-red-500 md:h-[132px] md:w-[384px] xl:h-[148px] xl:w-[640px]"
+      ></textarea>
+
+      <p className="invisible mt-2 w-[312px] text-right text-sm text-pink-600 group-hover:visible group-active:visible md:h-[132px] md:w-[384px] xl:h-[148px] xl:w-[640px]">
+        500자 이내로 입력해주세요.
+      </p>
     </form>
   );
 }
