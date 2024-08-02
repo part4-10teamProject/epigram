@@ -2,10 +2,18 @@
 /**
  * @isOpen - 모달의 표시여부를 나타냄
  * @onClose - 모달을 닫는 함수로 배경 클릭하면 호출됨
- * @message - 모달창에 들어갈 메시지
+ * @icon - 모달창에 들어갈 이미지를 작성 (작성해도되고 안해도됨)
+ * @message - 모달창에 들어갈 타이틀
+ * @content - 모달창에 들어갈 내용 (작성해도되고 안해도됨)
  * @buttons - 모달창에 들어갈 버튼
  * 
  * 사용예제
+ * 
+ * 일단 모달창을 사용하는 페이지에서 모달창의 상태를 관리해야하는 변수를 선언해야한다.
+ * 처음에는 두 개의 모달 모두 false로 둔 상태에서 특정 이벤트를 사용해서 true로 바꾸게 되면 모달창을 띄울 수 있게됨
+ * const [isModal, setIsModal] = useState(false);
+ * const [successModal, setSuccessModal] = useState(false);
+ * 
  * <Modal
       isOpen={isModal}
       onClose={() => setIsModal(false)}
@@ -20,9 +28,23 @@
         },
         {
           text: '삭제하기',
-          onClick: () => setIsModal(false),
+          onClick: () => {
+            setIsModal(false);
+            setSuccessModal(true);
+          },
 
           type: 'primary',
+        },
+      ]}
+    />
+    <Modal
+      isOpen={successModal}
+      onClose={() => setSuccessModal(false)}
+      message="댓글을 삭제하였습니다"
+      buttons={[
+        {
+          text: '확인',
+          onClick: () => setSuccessModal(false),
         },
       ]}
     />
