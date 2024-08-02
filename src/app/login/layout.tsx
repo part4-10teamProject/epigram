@@ -5,7 +5,7 @@ const FormField: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <div className="flex h-[720px] items-center justify-center xl:h-[1080px]">
       <div className="flex h-[456px] w-[312px] flex-col items-center justify-between gap-[50px] md:w-[384px] md:gap-[60px] xl:h-[568px] xl:w-[640px]">
         <img
-          src="@/public/assets/images/logo_epigram"
+          src="/assets/images/logo_epigram.svg"
           alt="logo"
           className="h-[48px] w-[172px]"
         />
@@ -21,12 +21,12 @@ const FormField: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <div className="flex w-[96px] justify-between xl:w-[136px]">
             <img
               alt="google"
-              src="@/public/assets/logo/logo_google.svg"
+              src="/assets/icons/logo_google.svg"
               className="h-[40px] w-[40px] xl:h-[60px] xl:w-[60px]"
             />
             <img
               alt="kakao"
-              src="@/public/assets/logo/logo_kakao.svg"
+              src="/assets/icons/logo_kakao.svg"
               className="h-[40px] w-[40px] xl:h-[60px] xl:w-[60px]"
             />
           </div>
