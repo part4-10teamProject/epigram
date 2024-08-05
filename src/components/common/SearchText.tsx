@@ -17,7 +17,7 @@ const SearchText: React.FC<SearchInputProps> = ({ value, onChange }) => {
       />
       <div className="absolute right-0 top-1/2 -translate-y-1/2 transform">
         <Image
-          src="/assets/icons/search_icon.svg" 
+          src="/assets/icons/search_icon.svg"
           alt="Search Icon"
           width={20}
           height={20}
@@ -29,4 +29,3 @@ const SearchText: React.FC<SearchInputProps> = ({ value, onChange }) => {
 };
 
 export default SearchText;
-    
