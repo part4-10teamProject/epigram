@@ -1,14 +1,10 @@
-const Tags = () => {
-  const responseData = {
-    tags: [
-      {
-        name: '태그',
-        id: 1,
-      },
-    ],
-  };
+import { ResponseData } from '@/types/card';
+type Props = {
+  responseData: ResponseData;
+};
 
-  const tagDataArray: { name: string; id: number }[] = responseData.tags;
+const Tags: React.FC<Props> = ({ responseData }) => {
+  const tagDataArray = responseData.tags;
 
   return (
     <div className="flex font-custom text-[12px] text-blue-400 md:text-[16px] xl:text-[24px]">

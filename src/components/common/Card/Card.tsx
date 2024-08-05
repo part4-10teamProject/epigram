@@ -1,24 +1,11 @@
-import { ResponseData } from '@/types/sample';
+import React from 'react';
+import { ResponseData } from '@/types/card';
 
-const Card = (responseData: ResponseData) => {
-  //fetch get한 response 중 페이지에 알맞은 endpoint의 것 특정 후의 코드
-  responseData = {
-    likeCount: 0,
-    tags: [
-      {
-        name: '태그',
-        id: 1,
-      },
-    ],
-    writerId: 1,
-    referenceUrl: 'string',
-    referenceTitle: 'string',
-    author: '저자',
-    content: '에피그램 내용입니다.',
-    id: 1,
-    isLiked: true,
-  };
+type Props = {
+  responseData: ResponseData;
+};
 
+const Card: React.FC<Props> = ({ responseData }) => {
   const contentData = responseData.content;
   const authorData = responseData.author;
 
