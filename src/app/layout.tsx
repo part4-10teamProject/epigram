@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { QueryProvider } from '@/contexts/QueryProvider';
+import ClientHeader from '@/components/common/Header';
 
 export const metadata: Metadata = {
   title: 'epigram',
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
+        <ClientHeader />
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
