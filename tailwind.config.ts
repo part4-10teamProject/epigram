@@ -66,6 +66,7 @@ const config: Config = {
         xl: ['1rem', { lineHeight: '1.625rem' }], // 16px / 26px
         '2xl': ['1.25rem', { lineHeight: '2rem' }], // 20px / 32px
         '3xl': ['2rem', { lineHeight: '2.625rem' }], // 32px / 42px
+        '4xl': ['2.5rem', { lineHeight: '4rem' }], // 40px / 64px
       },
     },
   },
