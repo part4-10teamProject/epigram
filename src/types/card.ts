@@ -1,11 +1,9 @@
 export interface ResponseData {
   likeCount: number;
-  tags: [
-    {
-      name: string;
-      id: number;
-    },
-  ];
+  tags: {
+    name: string;
+    id: number;
+  }[];
   writerId: number;
   referenceUrl: string;
   referenceTitle: string;
@@ -13,11 +11,4 @@ export interface ResponseData {
   content: string;
   id: number;
   isLiked: boolean;
-}
-
-export interface TagResponse {
-  tags: {
-    name: string;
-    id: number;
-  }[];
 }
