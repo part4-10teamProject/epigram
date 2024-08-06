@@ -1,5 +1,6 @@
 import React from 'react';
 import { ResponseData } from '@/types/card';
+import Tags from '@/components/common/Tags';
 
 type Props = {
   responseData: ResponseData;
@@ -8,10 +9,9 @@ type Props = {
 const Card: React.FC<Props> = ({ responseData }) => {
   const contentData = responseData.content;
   const authorData = responseData.author;
-  const tagDataArray = responseData.tags;
 
   return (
-    <div>
+    <div className="w-full">
       <div
         className="border-#F2F2F2 w-full rounded-[16px] border-[1px] border-solid p-[24px] drop-shadow"
         style={{ backgroundImage: `url('/assets/images/image_bg.png')` }}
@@ -25,14 +25,7 @@ const Card: React.FC<Props> = ({ responseData }) => {
           </p>
         </div>
       </div>
-      <div className="flex font-custom text-[12px] text-blue-400 md:text-[16px] xl:text-[24px]">
-        {tagDataArray.map((tag: { name: string; id: number }) => {
-          const tagName = tag.name;
-          const index = tag.id;
-
-          return <p key={index}>#{tagName}</p>;
-        })}
-      </div>
+      <Tags responseData={responseData} textAlign="text-right" />
     </div>
   );
 };
