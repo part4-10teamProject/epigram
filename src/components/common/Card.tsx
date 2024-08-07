@@ -13,7 +13,7 @@ const Card: React.FC<Props> = ({ responseData }) => {
   return (
     <div className="w-full">
       <div
-        className="border-#F2F2F2 w-full rounded-[16px] border-[1px] border-solid p-[24px] drop-shadow"
+        className="w-full rounded-[16px] border-[1px] border-solid border-[#F2F2F2] p-[24px] drop-shadow"
         style={{ backgroundImage: `url('/assets/images/image_bg.png')` }}
       >
         <div className="flex flex-col justify-between gap-[20px] font-custom text-[14px] md:text-[16px] xl:text-[24px]">
