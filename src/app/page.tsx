@@ -1,3 +1,11 @@
+import EmotionBoard from '../components/common/EmotionBoard';
+import EmotionCalender from '../components/common/EmotionCalender';
+
 export default function Home() {
-  return <div>랜딩페이지</div>;
+  return (
+    <>
+      <EmotionBoard />
+      <EmotionCalender />
+    </>
+  );
 }

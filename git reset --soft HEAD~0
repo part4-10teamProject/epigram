@@ -1,0 +1,25 @@
+[33mb561718[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mT1-22-emotion-emoji-calender[m[33m, [m[1;31morigin/T1-22-emotion-emoji-calender[m[33m)[m HEAD@{0}: reset: moving to HEAD
+[33mb561718[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mT1-22-emotion-emoji-calender[m[33m, [m[1;31morigin/T1-22-emotion-emoji-calender[m[33m)[m HEAD@{1}: reset: moving to HEAD
+[33mb561718[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mT1-22-emotion-emoji-calender[m[33m, [m[1;31morigin/T1-22-emotion-emoji-calender[m[33m)[m HEAD@{2}: reset: moving to HEAD
+[33mb561718[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mT1-22-emotion-emoji-calender[m[33m, [m[1;31morigin/T1-22-emotion-emoji-calender[m[33m)[m HEAD@{3}: checkout: moving from develop to T1-22-emotion-emoji-calender
+[33m5c55770[m[33m ([m[1;31morigin/develop[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mdevelop[m[33m)[m HEAD@{4}: pull: Fast-forward
+[33m948eb19[m HEAD@{5}: checkout: moving from T1-22-emotion-emoji-calender to develop
+[33mb561718[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mT1-22-emotion-emoji-calender[m[33m, [m[1;31morigin/T1-22-emotion-emoji-calender[m[33m)[m HEAD@{6}: commit: ✨ Component feat
+[33m948eb19[m HEAD@{7}: reset: moving to HEAD
+[33m948eb19[m HEAD@{8}: merge develop: Fast-forward
+[33m5d005fe[m HEAD@{9}: checkout: moving from develop to T1-22-emotion-emoji-calender
+[33m948eb19[m HEAD@{10}: pull: Fast-forward
+[33m5d005fe[m HEAD@{11}: checkout: moving from T1-22-emotion-emoji-calender to develop
+[33m5d005fe[m HEAD@{12}: merge develop: Fast-forward
+[33m6c17897[m[33m ([m[1;31morigin/T1-24--feat/sign-in-up-page[m[33m)[m HEAD@{13}: checkout: moving from develop to T1-22-emotion-emoji-calender
+[33m5d005fe[m HEAD@{14}: pull: Fast-forward
+[33m6c17897[m[33m ([m[1;31morigin/T1-24--feat/sign-in-up-page[m[33m)[m HEAD@{15}: checkout: moving from T1-22-emotion-emoji-calender to develop
+[33m6c17897[m[33m ([m[1;31morigin/T1-24--feat/sign-in-up-page[m[33m)[m HEAD@{16}: reset: moving to HEAD
+[33m6c17897[m[33m ([m[1;31morigin/T1-24--feat/sign-in-up-page[m[33m)[m HEAD@{17}: checkout: moving from develop to T1-22-emotion-emoji-calender
+[33m6c17897[m[33m ([m[1;31morigin/T1-24--feat/sign-in-up-page[m[33m)[m HEAD@{18}: checkout: moving from T1-22-emotion-emoji-calender to develop
+[33m6c17897[m[33m ([m[1;31morigin/T1-24--feat/sign-in-up-page[m[33m)[m HEAD@{19}: checkout: moving from develop to T1-22-emotion-emoji-calender
+[33m6c17897[m[33m ([m[1;31morigin/T1-24--feat/sign-in-up-page[m[33m)[m HEAD@{20}: checkout: moving from T1-22-emotion-emoji-calender to develop
+[33m6c17897[m[33m ([m[1;31morigin/T1-24--feat/sign-in-up-page[m[33m)[m HEAD@{21}: checkout: moving from develop to T1-22-emotion-emoji-calender
+[33m6c17897[m[33m ([m[1;31morigin/T1-24--feat/sign-in-up-page[m[33m)[m HEAD@{22}: pull: Fast-forward
+[33m470e692[m HEAD@{23}: checkout: moving from develop to develop
+[33m470e692[m HEAD@{24}: clone: from https://github.com/part4-10teamProject/epigram.git

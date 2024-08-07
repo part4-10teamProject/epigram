@@ -52,6 +52,11 @@ const config: Config = {
         },
         background: '#F5F7FA',
         redState: '#FF6577',
+        line: {
+          100: '#F2F2F2',
+          200: '#CFDBEA',
+        }, // 라인 색상 추가했습니다
+        'black-60': '#00000099', // 사이드창 열리고 오버레이할때 색상 (블랙에 투명60%)
       },
       fontSize: {
         xs: ['0.75rem', { lineHeight: '1.125rem' }], // 12px / 18px
