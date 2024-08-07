@@ -11,7 +11,7 @@ const Card: React.FC<Props> = ({ responseData }) => {
   const authorData = responseData.author;
 
   return (
-    <div className="w-full">
+    <div className="flex flex-col gap-2">
       <div
         className="w-full rounded-[16px] border-[1px] border-solid border-[#F2F2F2] p-[24px] drop-shadow"
         style={{ backgroundImage: `url('/assets/images/image_bg.png')` }}
@@ -25,7 +25,7 @@ const Card: React.FC<Props> = ({ responseData }) => {
           </p>
         </div>
       </div>
-      <Tags responseData={responseData} textAlign="text-right" />
+      <Tags responseData={responseData} />
     </div>
   );
 };
