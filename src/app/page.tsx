@@ -99,7 +99,7 @@ export default function Home() {
             </span>
           </div>
         </div>
-        <div className="mb-[35px] flex h-[680px] w-[312px] flex-col justify-between md:mb-[45px] md:h-[792px] md:w-[384px] xl:mb-[75px] xl:h-[1056px] xl:w-[640px]">
+        <div className="mb-[35px] flex h-[100%] w-[312px] flex-col justify-between md:mb-[45px] md:w-[384px] xl:mb-[75px] xl:w-[640px]">
           <h3 className="mb-[40px] text-center text-2xl text-[24px] font-bold text-black-950 xl:mb-[100px] xl:text-3xl xl:leading-[46px]">
             사용자들이 직접 <br />
             인용한 에피그램들
