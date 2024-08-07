@@ -9,7 +9,6 @@ const imagesForCard = (key: string) => {
         alt={image.alt}
         width={image.width}
         height={image.height}
-        priority
       />
     </div>
   ));
@@ -21,11 +20,11 @@ export default function Home() {
       <div className="flex h-[672px] w-full flex-col items-center gap-[168px] border border-black-200 md:h-[676px] md:gap-[106px] xl:h-[960px] xl:gap-[214px]">
         <div className="mt-[200px] flex h-[184px] w-[250px] flex-col items-center justify-between bg-red-200 md:mt-[204px] md:h-[228px] md:w-[332px] xl:mt-[320px] xl:h-[308px] xl:w-[415px]">
           <div>
-            <h2 className="mb-[8px] text-center text-2xl font-normal leading-[40px] text-black-500 md:mb-[24px] md:text-3xl md:leading-[48px] xl:mb-[40px] xl:text-4xl">
+            <h2 className="mb-[8px] text-center font-custom text-2xl font-normal leading-[40px] text-black-500 md:mb-[24px] md:text-3xl md:leading-[48px] xl:mb-[40px] xl:text-4xl">
               나만 갖고 있기엔 <br />
               아까운 글이 있지 않나요?
             </h2>
-            <p className="text-center text-lg text-black-300 md:text-xl">
+            <p className="text-center font-custom text-lg text-black-300 md:text-xl">
               다른 사람들과 감정을 공유해 보세요.
             </p>
           </div>
@@ -51,46 +50,56 @@ export default function Home() {
 
       <div className="relative flex w-full flex-col items-center gap-[196px] border border-black-200 md:gap-[220px] xl:gap-[380px]">
         <div className="absolute top-0 h-[15px] w-full border border-red-700 bg-red-600"></div>
-        <div className="mt-[139px] flex h-[382px] w-[312px] flex-col justify-between bg-yellow-400 md:h-[390px] md:w-[384px] xl:mt-[155px] xl:h-[388px] xl:w-[1188px]">
+        <div className="mt-[139px] flex h-[382px] w-[312px] flex-col justify-between bg-yellow-400 md:h-[390px] md:w-[384px] xl:mt-[155px] xl:h-[388px] xl:w-[1188px] xl:flex-row xl:items-end">
           {imagesForCard('one')}
           <div>
-            <h3 className="text-left text-2xl text-[24px] font-bold text-black-950">
+            <h3 className="mb-4 text-left text-2xl text-[24px] font-bold text-black-950 md:mb-5 xl:mb-[40px] xl:text-3xl xl:leading-[46px]">
               명언이나 글귀,
               <br /> 토막 상식들을 공유해 보세요.
             </h3>
-            <p className="text-xl font-normal text-blue-600">
-              나만 알던 소중한 글들을 <br />
+            <span className="block text-xl font-normal text-blue-600 md:inline xl:block xl:text-2xl xl:text-[24px]">
+              나만 알던 소중한 글들을
+            </span>
+            <span className="block text-xl font-normal text-blue-600 md:inline xl:block xl:text-2xl xl:text-[24px]">
+              {' '}
               다른 사람들에게 전파하세요.
-            </p>
+            </span>
           </div>
         </div>
-        <div className="flex h-[355px] w-[312px] flex-col justify-between bg-yellow-400 md:h-[390px] md:w-[384px] xl:h-[388px] xl:w-[1195px]">
+        <div className="flex h-[355px] w-[312px] flex-col justify-between bg-yellow-400 md:h-[390px] md:w-[384px] xl:h-[388px] xl:w-[1195px] xl:flex-row-reverse xl:items-end">
           {imagesForCard('two')}
-          <div>
-            <h3 className="text-left text-2xl text-[24px] font-bold text-black-950">
+          <div className="text-right">
+            <h3 className="mb-4 text-2xl text-[24px] font-bold text-black-950 md:mb-5 xl:mb-[40px] xl:text-3xl xl:leading-[46px]">
               감정 상태에 따라, <br />
               알맞은 위로를 받을 수 있어요.
             </h3>
-            <p className="text-xl font-normal text-blue-600">
+            <span className="block text-xl font-normal text-blue-600 xl:text-2xl xl:text-[24px]">
               태그를 통해 글을 모아 볼 수 있어요.
-            </p>
+            </span>
           </div>
         </div>
-        <div className="flex h-[381px] w-[312px] flex-col justify-between bg-yellow-400 md:h-[390px] md:w-[384px] xl:h-[388px] xl:w-[1186px]">
+        <div className="flex h-[381px] w-[312px] flex-col justify-between bg-yellow-400 md:h-[390px] md:w-[384px] xl:h-[388px] xl:w-[1186px] xl:flex-row xl:items-end">
           {imagesForCard('three')}
           <div>
-            <h3 className="text-left text-2xl text-[24px] font-bold text-black-950">
+            <h3 className="mb-4 text-left text-2xl text-[24px] font-bold text-black-950 md:mb-5 xl:mb-[40px] xl:text-3xl xl:leading-[46px]">
               내가 요즘 어떤 감정 상태인지
               <br /> 통계로 한눈에 볼 수 있어요.
             </h3>
-            <p className="text-xl font-normal text-blue-600">
-              감정 달력으로 내 마음에 담긴
-              <br /> 감정을 확인해보세요.
-            </p>
+            <span className="text-xl font-normal text-blue-600 md:inline xl:block xl:text-2xl xl:text-[24px]">
+              감정 달력으로
+            </span>
+            <span className="text-xl font-normal text-blue-600 xl:text-2xl xl:text-[24px]">
+              {' '}
+              내 마음에 담긴
+            </span>
+            <span className="block text-xl font-normal text-blue-600 md:inline xl:text-2xl xl:text-[24px]">
+              {' '}
+              감정을 확인해보세요.
+            </span>
           </div>
         </div>
         <div className="mb-[35px] flex h-[680px] w-[312px] flex-col justify-between bg-yellow-400 md:mb-[45px] md:h-[792px] md:w-[384px] xl:mb-[75px] xl:h-[1056px] xl:w-[640px]">
-          <h3>
+          <h3 className="mb-[40px] text-center text-2xl text-[24px] font-bold text-black-950 xl:mb-[100px] xl:text-3xl xl:leading-[46px]">
             사용자들이 직접 <br />
             인용한 에피그램들
           </h3>
@@ -100,9 +109,20 @@ export default function Home() {
       </div>
 
       <div className="flex h-[600px] w-full flex-col items-center border border-black-200 md:h-[528px] xl:h-[1040px]">
-        <div className="mb-[270px] mt-[180px] h-[150px] w-[122px] bg-red-200 md:mb-[198px] md:mt-[180px] xl:mb-[403px] xl:mt-[420px] xl:h-[217px] xl:w-[286px]">
-          <h2>날마다 에피그램</h2>
-          <button>시작하기</button>
+        <div className="mb-[270px] mt-[180px] flex h-[150px] w-[122px] flex-col items-center justify-between bg-red-200 md:mb-[198px] md:mt-[180px] xl:mb-[403px] xl:mt-[420px] xl:h-[217px] xl:w-[286px]">
+          <div>
+            <Image
+              src="/assets/icons/logo_epigram.svg"
+              alt="에피그램로고"
+              width={122}
+              height={70}
+              priority
+              className="xl:h-[105px] xl:w-[184px]"
+            />
+          </div>
+          <button className="h-[48px] w-[112px] rounded-xl bg-black-500 text-xl font-semibold text-blue-100 xl:h-[64px] xl:w-full xl:text-2xl">
+            시작하기
+          </button>
         </div>
       </div>
     </div>
