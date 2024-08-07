@@ -29,3 +29,9 @@ textarea,
 button {
   font-family: 'Pretendard';
 }
+
+.bg-zigzag-pattern {
+  background-image: url('/assets/images/landing/img_zigzag.png');
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+}

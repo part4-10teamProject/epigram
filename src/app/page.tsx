@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { landingImages } from '../utils/landingImages';
+import ButtonStart from '@/components/common/ButtonStart';
 
 const imagesForCard = (key: string) => {
   return landingImages[key].map((image, index) => (
@@ -17,8 +18,8 @@ const imagesForCard = (key: string) => {
 export default function Home() {
   return (
     <div className="mx-auto flex w-full flex-col items-center">
-      <div className="flex h-[672px] w-full flex-col items-center gap-[168px] border border-black-200 md:h-[676px] md:gap-[106px] xl:h-[960px] xl:gap-[214px]">
-        <div className="mt-[200px] flex h-[184px] w-[250px] flex-col items-center justify-between bg-red-200 md:mt-[204px] md:h-[228px] md:w-[332px] xl:mt-[320px] xl:h-[308px] xl:w-[415px]">
+      <div className="bg-striped flex h-[672px] w-full flex-col items-center gap-[168px] md:h-[676px] md:gap-[106px] xl:h-[960px] xl:gap-[214px]">
+        <div className="mt-[200px] flex h-[184px] w-[250px] flex-col items-center justify-between md:mt-[204px] md:h-[228px] md:w-[332px] xl:mt-[320px] xl:h-[308px] xl:w-[415px]">
           <div>
             <h2 className="mb-[8px] text-center font-custom text-2xl font-normal leading-[40px] text-black-500 md:mb-[24px] md:text-3xl md:leading-[48px] xl:mb-[40px] xl:text-4xl">
               나만 갖고 있기엔 <br />
@@ -28,11 +29,11 @@ export default function Home() {
               다른 사람들과 감정을 공유해 보세요.
             </p>
           </div>
-          <button className="h-[48px] w-[112px] rounded-xl bg-black-500 text-xl font-semibold text-blue-100 xl:h-[64px] xl:w-[286px] xl:text-2xl">
-            시작하기
-          </button>
+          <div className="xl:w-[286px]">
+            <ButtonStart text="시작하기" />
+          </div>
         </div>
-        <div className="mb-[20px] flex h-[48px] w-[56] flex-col items-center justify-between bg-black-300 md:h-[54px] md:w-[74px] xl:mb-[58px]">
+        <div className="mb-[20px] flex h-[48px] w-[56] flex-col items-center justify-between md:h-[54px] md:w-[74px] xl:mb-[58px]">
           <p className="text-center text-sm font-semibold text-blue-400 md:text-xl">
             더 알아보기
           </p>
@@ -48,9 +49,9 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="relative flex w-full flex-col items-center gap-[196px] border border-black-200 md:gap-[220px] xl:gap-[380px]">
-        <div className="absolute top-0 h-[15px] w-full border border-red-700 bg-red-600"></div>
-        <div className="mt-[139px] flex h-[382px] w-[312px] flex-col justify-between bg-yellow-400 md:h-[390px] md:w-[384px] xl:mt-[155px] xl:h-[388px] xl:w-[1188px] xl:flex-row xl:items-end">
+      <div className="relative flex w-full flex-col items-center gap-[196px] border-b border-[#f2f2f2] bg-background md:gap-[220px] xl:gap-[380px]">
+        <div className="bg-zigzag-pattern absolute left-0 top-[-15px] h-[40px] w-full" />
+        <div className="mt-[139px] flex h-[382px] w-[312px] flex-col justify-between md:h-[390px] md:w-[384px] xl:mt-[155px] xl:h-[388px] xl:w-[1188px] xl:flex-row xl:items-end">
           {imagesForCard('one')}
           <div>
             <h3 className="mb-4 text-left text-2xl text-[24px] font-bold text-black-950 md:mb-5 xl:mb-[40px] xl:text-3xl xl:leading-[46px]">
@@ -66,7 +67,7 @@ export default function Home() {
             </span>
           </div>
         </div>
-        <div className="flex h-[355px] w-[312px] flex-col justify-between bg-yellow-400 md:h-[390px] md:w-[384px] xl:h-[388px] xl:w-[1195px] xl:flex-row-reverse xl:items-end">
+        <div className="flex h-[355px] w-[312px] flex-col justify-between md:h-[390px] md:w-[384px] xl:h-[388px] xl:w-[1195px] xl:flex-row-reverse xl:items-end">
           {imagesForCard('two')}
           <div className="text-right">
             <h3 className="mb-4 text-2xl text-[24px] font-bold text-black-950 md:mb-5 xl:mb-[40px] xl:text-3xl xl:leading-[46px]">
@@ -78,7 +79,7 @@ export default function Home() {
             </span>
           </div>
         </div>
-        <div className="flex h-[381px] w-[312px] flex-col justify-between bg-yellow-400 md:h-[390px] md:w-[384px] xl:h-[388px] xl:w-[1186px] xl:flex-row xl:items-end">
+        <div className="flex h-[381px] w-[312px] flex-col justify-between md:h-[390px] md:w-[384px] xl:h-[388px] xl:w-[1186px] xl:flex-row xl:items-end">
           {imagesForCard('three')}
           <div>
             <h3 className="mb-4 text-left text-2xl text-[24px] font-bold text-black-950 md:mb-5 xl:mb-[40px] xl:text-3xl xl:leading-[46px]">
@@ -98,18 +99,18 @@ export default function Home() {
             </span>
           </div>
         </div>
-        <div className="mb-[35px] flex h-[680px] w-[312px] flex-col justify-between bg-yellow-400 md:mb-[45px] md:h-[792px] md:w-[384px] xl:mb-[75px] xl:h-[1056px] xl:w-[640px]">
+        <div className="mb-[35px] flex h-[680px] w-[312px] flex-col justify-between md:mb-[45px] md:h-[792px] md:w-[384px] xl:mb-[75px] xl:h-[1056px] xl:w-[640px]">
           <h3 className="mb-[40px] text-center text-2xl text-[24px] font-bold text-black-950 xl:mb-[100px] xl:text-3xl xl:leading-[46px]">
             사용자들이 직접 <br />
             인용한 에피그램들
           </h3>
           {imagesForCard('four')}
         </div>
-        <div className="absolute bottom-0 h-[15px] w-full border border-red-700 bg-red-600"></div>
+        <div className="bg-zigzag-pattern absolute bottom-[-13px] left-0 h-[40px] w-full scale-y-[-1]" />
       </div>
 
-      <div className="flex h-[600px] w-full flex-col items-center border border-black-200 md:h-[528px] xl:h-[1040px]">
-        <div className="mb-[270px] mt-[180px] flex h-[150px] w-[122px] flex-col items-center justify-between bg-red-200 md:mb-[198px] md:mt-[180px] xl:mb-[403px] xl:mt-[420px] xl:h-[217px] xl:w-[286px]">
+      <div className="bg-striped flex h-[600px] w-full flex-col items-center md:h-[528px] xl:h-[1040px]">
+        <div className="mb-[270px] mt-[180px] flex h-[150px] w-[122px] flex-col items-center justify-between md:mb-[198px] md:mt-[180px] xl:mb-[403px] xl:mt-[420px] xl:h-[217px] xl:w-[286px]">
           <div>
             <Image
               src="/assets/icons/logo_epigram.svg"
@@ -120,9 +121,7 @@ export default function Home() {
               className="xl:h-[105px] xl:w-[184px]"
             />
           </div>
-          <button className="h-[48px] w-[112px] rounded-xl bg-black-500 text-xl font-semibold text-blue-100 xl:h-[64px] xl:w-full xl:text-2xl">
-            시작하기
-          </button>
+          <ButtonStart text="시작하기" />
         </div>
       </div>
     </div>
