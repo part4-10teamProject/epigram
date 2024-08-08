@@ -13,18 +13,15 @@ const ButtonStart: React.FC<ButtonStartProps> = ({ text, className = '' }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
 
   useEffect(() => {
-    // Check login status from localStorage
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    setIsLoggedIn(!!isLoggedIn);
+    const storedValue = localStorage.getItem('isLoggedIn');
+    setIsLoggedIn(storedValue === 'true'); // isLoggedIn 값이 "true"일 때 로그인 상태로 간주
   }, []);
 
   const handleClick = () => {
-    if (isLoggedIn === null) return; // Handle loading state if needed
-
     if (isLoggedIn) {
-      router.push('/main'); // Redirect to main page if logged in
+      router.push('/epigrams');
     } else {
-      router.push('/login'); // Redirect to login page if not logged in
+      router.push('/login');
     }
   };
 
