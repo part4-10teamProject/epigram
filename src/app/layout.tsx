@@ -1,10 +1,7 @@
+import ClientHeader from '@/components/common/Header';
+import { QueryProvider } from '@/contexts/QueryProvider';
 import type { Metadata } from 'next';
 import './globals.css';
-import { QueryProvider } from '@/contexts/QueryProvider';
-<<<<<<< HEAD
-import ClientHeader from '@/components/common/Header';
-=======
->>>>>>> b5617188384d296ff72b218f55fcdce0bfa33465
 
 export const metadata: Metadata = {
   title: 'epigram',
