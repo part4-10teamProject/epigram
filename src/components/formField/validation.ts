@@ -7,7 +7,7 @@ export const checkEmail = (email: string) => {
 
 //비밀번호 형식 유효성
 
-export const checkPasswordLength = (password: string) => {
+export const checkPassword = (password: string) => {
   if (password.length > 12) {
     return false;
   } else {
@@ -34,3 +34,5 @@ export const checkNicknameLength = (nickname: string) => {
     return true;
   }
 };
+
+//api

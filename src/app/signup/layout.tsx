@@ -1,6 +1,8 @@
 import React from 'react';
 
-const FormField: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const SignupLayout: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   return (
     <div className="flex w-[312px] flex-col justify-between gap-[50px] md:w-[384px] md:gap-[60px] xl:w-[640px]">
       <img
@@ -34,4 +36,4 @@ const FormField: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 };
 
-export default FormField;
+export default SignupLayout;
