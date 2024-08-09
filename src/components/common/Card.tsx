@@ -25,7 +25,10 @@ const Card: React.FC<Props> = ({ responseData }) => {
           </p>
         </div>
       </div>
-      <Tags responseData={responseData} />
+      <Tags
+        responseData={responseData}
+        containerClassName="flex justify-end gap-4"
+      />
     </div>
   );
 };
