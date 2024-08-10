@@ -33,8 +33,8 @@ const NewCommentList: React.FC<CommentProps> = ({ commentList }) => {
             <div key={comment.id} className="border-t border-[#CFDBEA]">
               <Comment
                 item={comment}
-                // isMyComment={true}
-                onDelete={() => console.log('삭제')} // 일단 임시로 콘솔입력되는 함수 넣음
+                isMyComment={true}
+                onDelete={(id) => console.log('id', id)} // 일단 임시로 콘솔입력되는 함수 넣음
                 onEdit={() => console.log('편집중')} // 일단 임시로 콘솔입력되는 함수 넣음
               />
             </div>
