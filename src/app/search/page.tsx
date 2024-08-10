@@ -1,8 +1,10 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
+import { fetchData } from '@/api/getEpigrams';
 import SearchText from '@/components/common/SearchText';
 import Tags from '@/components/common/Tags';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, ChangeEvent } from 'react';
 
 interface Tag {
   name: string;
@@ -38,40 +40,6 @@ interface HighlightedDataItem {
   isLiked: boolean;
 }
 
-const data: DataItem[] = [
-  {
-    likeCount: 10,
-    tags: [
-      { name: '샘플1', id: 1 },
-      { name: '샘플2', id: 2 },
-      { name: '샘플3', id: 3 },
-      { name: '샘플4', id: 4 },
-    ],
-    writerId: 10,
-    referenceUrl: '',
-    referenceTitle: '',
-    author: '작가1',
-    content: '이것은 샘플 콘텐츠입니다. 샘플 텍스트가 포함되어 있습니다.',
-    id: 1,
-    isLiked: true,
-  },
-  {
-    likeCount: 5,
-    tags: [
-      { name: '예시1', id: 1 },
-      { name: '예시2', id: 2 },
-    ],
-    writerId: 20,
-    referenceUrl: '',
-    referenceTitle: '',
-    author: '작가2',
-    content: '다른 예시 텍스트입니다.',
-    id: 2,
-    isLiked: false,
-  },
-  // 추가 객체들...
-];
-
 const highlightText = (text: string, searchTerm: string): JSX.Element[] => {
   if (!searchTerm) return [<span key="0">{text}</span>];
   const regex = new RegExp(`(${searchTerm})`, 'gi');
@@ -88,99 +56,89 @@ const highlightText = (text: string, searchTerm: string): JSX.Element[] => {
 
 const Search = () => {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
-  const [searchValue, setSearchValue] = useState<string>(''); // 입력값 상태
-  const [filteredData, setFilteredData] = useState<HighlightedDataItem[]>([]);
+  const [searchValue, setSearchValue] = useState<string>('');
+  const [query, setQuery] = useState<string>(''); // 검색어를 저장할 상태
+  const [hasSearched, setHasSearched] = useState<boolean>(false); // 검색이 수행되었는지 추적
 
-  useEffect(() => {
-    // 로컬 스토리지에서 최근 검색어를 가져옵니다.
-    const storedSearches = JSON.parse(
-      localStorage.getItem('recentSearches') || '[]',
-    ) as string[];
-    setRecentSearches(storedSearches);
-  }, []);
+  const { data, refetch, isLoading, error } = useQuery<{
+    totalCount: number;
+    nextCursor: number;
+    list: DataItem[];
+  }>({
+    queryKey: ['epigrams', { keyword: query }], // query 상태를 사용
+    queryFn: () => fetchData({ keyword: query, writerId: undefined }),
+    enabled: false, // 검색어가 있을 때만 refetch를 호출하도록 설정
+  });
 
   const performSearch = useCallback(() => {
     const searchTerm = searchValue.trim();
     if (searchTerm) {
-      // 최근 검색어에 추가 (중복 제외)
+      setQuery(searchTerm); // query 상태 업데이트
+      setHasSearched(true); // 검색이 수행되었음을 표시
       setRecentSearches((prevSearches) => {
         const updatedSearches = prevSearches.filter(
           (term) => term !== searchTerm,
         );
-        updatedSearches.unshift(searchTerm); // 새로운 검색어를 맨 앞에 추가
-        const limitedSearches = updatedSearches.slice(0, 5); // 최대 5개의 검색어만 유지
-        localStorage.setItem('recentSearches', JSON.stringify(limitedSearches)); // 로컬 스토리지에 저장
+        updatedSearches.unshift(searchTerm);
+        const limitedSearches = updatedSearches.slice(0, 5);
+        localStorage.setItem('recentSearches', JSON.stringify(limitedSearches));
         return limitedSearches;
       });
-
-      // 검색어에 기반하여 필터링된 데이터 업데이트
-      const filtered = data.filter(
-        (item) =>
-          item.content.includes(searchTerm) ||
-          item.author.includes(searchTerm) ||
-          item.tags.some((tag) => tag.name.includes(searchTerm)),
-      );
-
-      // 하이라이트 적용
-      setFilteredData(
-        filtered.map((item) => ({
-          ...item,
-          author: highlightText(item.author, searchTerm),
-          content: highlightText(item.content, searchTerm),
-          tags: item.tags.map((tag) => ({
-            ...tag,
-            name: highlightText(tag.name, searchTerm),
-          })),
-        })),
-      );
+      refetch();
     } else {
-      // 빈 검색어일 때는 필터링된 데이터 비움
-      setFilteredData([]);
+      setQuery(''); // 빈 검색어 처리
+      setHasSearched(true); // 검색이 수행되었음을 표시
+      // 빈 검색어에 대한 처리를 추가할 수도 있음
     }
-  }, [searchValue]);
+  }, [searchValue, refetch]);
 
-  const onChange = (changeValue: string) => {
-    setSearchValue(changeValue); // 입력값 상태 업데이트
+  const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
   };
 
-  const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      performSearch(); // 엔터 키를 눌렀을 때 검색 실행
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      performSearch();
     }
   };
 
-  const onIconClick = () => {
-    performSearch(); // 돋보기 아이콘을 클릭할 때 검색 실행
+  const handleSearchIconClick = () => {
+    performSearch();
   };
 
-  const onRecentSearchClick = (term: string) => {
-    setSearchValue(term); // 검색어를 입력값 상태로 설정
-    setTimeout(() => performSearch(), 0); // 상태가 업데이트된 후에 검색 실행
+  const handleRecentSearchClick = (term: string) => {
+    setSearchValue(term);
+    performSearch();
   };
 
-  const deleteSearch = (searchTerm: string) => {
-    setRecentSearches((prevSearches) => {
-      const updatedSearches = prevSearches.filter(
-        (term) => term !== searchTerm,
-      );
-      localStorage.setItem('recentSearches', JSON.stringify(updatedSearches)); // 로컬 스토리지에 저장
-      return updatedSearches;
-    });
-  };
+  // 에러 발생 시 메시지 표시
+  if (error) return <div>Error occurred: {error.message}</div>;
 
-  const clearAllSearches = () => {
-    setRecentSearches([]);
-    localStorage.removeItem('recentSearches'); // 로컬 스토리지에서 최근 검색어 삭제
-  };
+  // 로딩 중일 때 로딩 표시
+  if (isLoading) return <div>Loading...</div>;
+
+  // 데이터가 없는 경우
+  const listData = data?.list || [];
+
+  // 데이터에 하이라이트 적용
+  const filteredData: HighlightedDataItem[] = listData.map((item) => ({
+    ...item,
+    author: highlightText(item.author, query), // query 상태 사용
+    content: highlightText(item.content, query), // query 상태 사용
+    tags: item.tags.map((tag) => ({
+      ...tag,
+      name: highlightText(tag.name, query), // query 상태 사용
+    })),
+  }));
 
   return (
     <div className="mx-auto flex flex-col items-center gap-6 md:gap-8 xl:gap-10">
       <div className="w-[312px] md:w-[384px] xl:w-[640px]">
         <SearchText
-          value={searchValue} // 입력값 상태 전달
-          onChange={onChange}
-          onKeyDown={onKeyDown} // 엔터 키를 눌렀을 때 검색 실행
-          onIconClick={onIconClick} // 돋보기 아이콘을 클릭할 때 검색 실행
+          value={searchValue}
+          onChange={handleSearchInputChange}
+          onKeyDown={handleSearchKeyDown}
+          onIconClick={handleSearchIconClick}
         />
         <div>
           <div className="mt-4 flex flex-row justify-between">
@@ -188,7 +146,10 @@ const Search = () => {
               최근 검색어
             </p>
             <button
-              onClick={clearAllSearches}
+              onClick={() => {
+                setRecentSearches([]);
+                localStorage.removeItem('recentSearches');
+              }}
               className="text-sm font-semibold text-red-500 md:text-lg xl:text-xl"
             >
               모두 지우기
@@ -199,13 +160,22 @@ const Search = () => {
               <div
                 key={index}
                 className="mr-2 cursor-pointer items-center rounded-[22px] bg-background px-2 py-3 text-xl font-normal text-black-300 md:mr-4 md:text-2xl xl:px-3 xl:py-[14px] xl:text-[24px]"
-                onClick={() => onRecentSearchClick(term)} // 최근 검색어 클릭 시 검색어 설정 및 검색 실행
+                onClick={() => handleRecentSearchClick(term)}
               >
                 <span className="mr-2">{term}</span>
                 <button
                   onClick={(e) => {
-                    e.stopPropagation(); // 클릭 이벤트가 부모로 전파되지 않도록 함
-                    deleteSearch(term);
+                    e.stopPropagation();
+                    setRecentSearches((prevSearches) => {
+                      const updatedSearches = prevSearches.filter(
+                        (item) => item !== term,
+                      );
+                      localStorage.setItem(
+                        'recentSearches',
+                        JSON.stringify(updatedSearches),
+                      );
+                      return updatedSearches;
+                    });
                   }}
                   className="text-red-500"
                 >
@@ -215,43 +185,52 @@ const Search = () => {
             ))}
           </div>
         </div>
+
         <div>
-          {filteredData.map((item) => (
-            <div
-              key={item.id}
-              className="border-b border-gray-100 py-4 md:px-6 xl:py-6"
-            >
-              <div className="flex flex-col items-start justify-between gap-1 font-custom text-xl md:gap-2 xl:gap-6 xl:text-2xl xl:leading-[28px]">
-                <p className="text-left text-black-600">
-                  {typeof item.content === 'string'
-                    ? item.content
-                    : item.content.map((part, i) => (
-                        <span key={i}>{part}</span>
-                      ))}
-                </p>
-                <p className="bottom-[24px] right-[24px] text-right text-blue-400">
-                  -&nbsp;
-                  {typeof item.author === 'string'
-                    ? item.author
-                    : item.author.map((part, i) => <span key={i}>{part}</span>)}
-                  &nbsp;-
-                </p>
+          {hasSearched && filteredData.length === 0 ? (
+            <div className="flex h-[200px] w-full items-center justify-center text-xl xl:text-2xl">
+              ‘{query || '검색어'}’(이)가 없습니다
+            </div> // 검색어가 있을 때만 표시
+          ) : (
+            filteredData.map((item) => (
+              <div
+                key={item.id}
+                className="border-b border-gray-100 py-4 md:px-6 xl:py-6"
+              >
+                <div className="flex flex-col items-start justify-between gap-1 font-custom text-xl md:gap-2 xl:gap-6 xl:text-2xl xl:leading-[28px]">
+                  <p className="text-left text-black-600">
+                    {typeof item.content === 'string'
+                      ? item.content
+                      : item.content.map((part, i) => (
+                          <span key={i}>{part}</span>
+                        ))}
+                  </p>
+                  <p className="bottom-[24px] right-[24px] text-right text-blue-400">
+                    -&nbsp;
+                    {typeof item.author === 'string'
+                      ? item.author
+                      : item.author.map((part, i) => (
+                          <span key={i}>{part}</span>
+                        ))}
+                    &nbsp;-
+                  </p>
+                </div>
+                <Tags
+                  responseData={{
+                    ...item,
+                    tags: item.tags.map((tag) => ({
+                      ...tag,
+                      name: tag.name,
+                    })),
+                  }}
+                  containerClassName={
+                    'flex flex-row justify-end text-xl xl:text-2xl gap-3 xl:text-[20px] font-pretendard'
+                  }
+                  tagClassName={'inline'}
+                />
               </div>
-              <Tags
-                responseData={{
-                  ...item,
-                  tags: item.tags.map((tag) => ({
-                    ...tag,
-                    name: tag.name,
-                  })),
-                }}
-                containerClassName={
-                  'flex flex-row justify-end text-xl xl:text-2xl gap-3 xl:text-[20px] font-pretendard'
-                }
-                tagClassName={'inline'}
-              />
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>
