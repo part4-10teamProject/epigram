@@ -77,7 +77,7 @@ const highlightText = (text: string, searchTerm: string): JSX.Element[] => {
   const regex = new RegExp(`(${searchTerm})`, 'gi');
   return text.split(regex).map((part, i) =>
     regex.test(part) ? (
-      <span key={i} className="bg-yellow-300">
+      <span key={i} className="text-[#5195ee]">
         {part}
       </span>
     ) : (
@@ -174,7 +174,7 @@ const Search = () => {
   };
 
   return (
-    <div className="mx-auto flex flex-col items-center">
+    <div className="mx-auto flex flex-col items-center gap-6 md:gap-8 xl:gap-10">
       <div className="w-[312px] md:w-[384px] xl:w-[640px]">
         <SearchText
           value={searchValue} // 입력값 상태 전달
@@ -184,8 +184,13 @@ const Search = () => {
         />
         <div>
           <div className="mt-4 flex flex-row justify-between">
-            <p>최근 검색어</p>
-            <button onClick={clearAllSearches} className="text-red-500">
+            <p className="text-xl font-medium text-black-700 md:text-2xl xl:text-[24px]">
+              최근 검색어
+            </p>
+            <button
+              onClick={clearAllSearches}
+              className="text-sm font-semibold text-red-500 md:text-lg xl:text-xl"
+            >
               모두 지우기
             </button>
           </div>
@@ -193,7 +198,7 @@ const Search = () => {
             {recentSearches.map((term, index) => (
               <div
                 key={index}
-                className="mb-2 mr-2 flex cursor-pointer items-center rounded border border-gray-300 px-2 py-1"
+                className="mr-2 cursor-pointer items-center rounded-[22px] bg-background px-2 py-3 text-xl font-normal text-black-300 md:mr-4 md:text-2xl xl:px-3 xl:py-[14px] xl:text-[24px]"
                 onClick={() => onRecentSearchClick(term)} // 최근 검색어 클릭 시 검색어 설정 및 검색 실행
               >
                 <span className="mr-2">{term}</span>
@@ -212,9 +217,26 @@ const Search = () => {
         </div>
         <div>
           {filteredData.map((item) => (
-            <div key={item.id} className="mt-4">
-              <h2>{item.author}</h2>
-              <p>{item.content}</p>
+            <div
+              key={item.id}
+              className="border-b border-gray-100 py-4 md:px-6 xl:py-6"
+            >
+              <div className="flex flex-col items-start justify-between gap-1 font-custom text-xl md:gap-2 xl:gap-6 xl:text-2xl xl:leading-[28px]">
+                <p className="text-left text-black-600">
+                  {typeof item.content === 'string'
+                    ? item.content
+                    : item.content.map((part, i) => (
+                        <span key={i}>{part}</span>
+                      ))}
+                </p>
+                <p className="bottom-[24px] right-[24px] text-right text-blue-400">
+                  -&nbsp;
+                  {typeof item.author === 'string'
+                    ? item.author
+                    : item.author.map((part, i) => <span key={i}>{part}</span>)}
+                  &nbsp;-
+                </p>
+              </div>
               <Tags
                 responseData={{
                   ...item,
@@ -223,7 +245,9 @@ const Search = () => {
                     name: tag.name,
                   })),
                 }}
-                containerClassName={'text-left'}
+                containerClassName={
+                  'flex flex-row justify-end text-xl xl:text-2xl gap-3 xl:text-[20px] font-pretendard'
+                }
                 tagClassName={'inline'}
               />
             </div>
