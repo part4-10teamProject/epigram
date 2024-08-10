@@ -3,39 +3,23 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { relativeTime } from '../../utils/relativeTime';
-
-const DEFAULT_PROFILE_IMAGE = '/assets/images/default_profile.png';
+import { CommentItem } from '@/types/commentList';
+import defaultImg from '../../../public/assets/images/default_profile.png';
 
 // Mock data : test 할때 Comment 프롭으로 전달하기
-const item = {
-  id: 66,
-  content: 'string4',
-  isPrivate: true,
-  createdAt: '2024-07-29T05:05:39.994Z',
-  updatedAt: '2024-07-29T05:05:39.994Z',
-  writer: {
-    id: 107,
-    nickname: '고한샘',
-    image: 'https://example.com/...',
-  },
-  epigramId: 154,
-};
-
-interface Writer {
-  id: number;
-  nickname: string;
-  image: string;
-}
-
-interface CommentItem {
-  id: number;
-  content: string;
-  isPrivate: boolean;
-  createdAt: string;
-  updatedAt: string;
-  writer: Writer;
-  epigramId: number;
-}
+// const item = {
+//   id: 66,
+//   content: 'string4',
+//   isPrivate: true,
+//   createdAt: '2024-07-29T05:05:39.994Z',
+//   updatedAt: '2024-07-29T05:05:39.994Z',
+//   writer: {
+//     id: 107,
+//     nickname: '고한샘',
+//     image: 'https://example.com/...',
+//   },
+//   epigramId: 154,
+// };
 
 interface CommentProps {
   item: CommentItem;
@@ -54,9 +38,8 @@ const Comment: React.FC<CommentProps> = ({
   const [isEditing, setIsEditing] = useState(false); // 수정 모드 상태
   const [editContent, setEditContent] = useState(item.content); // 수정 중인 내용 상태
 
-  const getImageSrc = (src: string) => {
-    return src === 'https://example.com/...' ? DEFAULT_PROFILE_IMAGE : src; //스웨거상 입력안하면 'https://example.com/...' 실제로 확인필요.
-  };
+  const profileImg =
+    item.writer.image === null ? defaultImg : item.writer.image;
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -83,7 +66,7 @@ const Comment: React.FC<CommentProps> = ({
       {/* 왼쪽 열: 프로필 이미지 */}
       <div className="relative h-12 w-12 flex-shrink-0">
         <Image
-          src={getImageSrc(item.writer.image)}
+          src={profileImg}
           alt={`${item.writer.nickname}'s profile`}
           layout="fill"
           objectFit="cover"

@@ -41,7 +41,7 @@ const NewEpigramList: React.FC<EpigramsProps> = ({ epigramList }) => {
           <button
             onClick={() => fetchNextPage()}
             disabled={!hasNextPage}
-            className={`rounded-full border px-[20px] py-3 text-lg font-medium text-[#8B9DBC] xl:px-[50px] xl:text-2xl ${hasNextPage ? 'hover:bg-[#919191] hover:text-black-950' : 'border-[#CFDBEA]'}`}
+            className={`rounded-full border border-[#CFDBEA] px-[20px] py-3 text-lg font-medium text-[#8B9DBC] xl:px-[50px] xl:text-2xl ${hasNextPage ? 'hover:bg-[#919191] hover:text-black-950' : 'border-[#CFDBEA]'}`}
           >
             {hasNextPage ? '+ 에피그램 더보기' : '데이터가 없어요'}
           </button>
