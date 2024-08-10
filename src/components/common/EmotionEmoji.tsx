@@ -15,11 +15,11 @@ interface EmotionIconProps {
 }
 
 const emotionColors = {
-  감동: 'border-yellow-400',
-  기쁨: 'border-green-400',
-  고민: 'border-purple-400',
-  슬픔: 'border-blue-400',
-  분노: 'border-red-400',
+  감동: 'border-[#FBC85B]',
+  기쁨: 'border-[#48BB98]',
+  고민: 'border-[#8E80E3]',
+  슬픔: 'border-[#5195EE]',
+  분노: 'border-[#E46E80]',
 };
 
 const EmotionIcon: React.FC<EmotionIconProps> = ({
@@ -52,7 +52,9 @@ const EmotionIcon: React.FC<EmotionIconProps> = ({
         onClick={onClick}
         className={`flex h-[56px] w-[56px] items-center justify-center rounded-2xl border-[3px] md:h-[64px] md:w-[64px] md:border-[3px] xl:h-[96px] xl:w-[96px] xl:border-[4px] ${
           isSelected ? `${emotionColors[emotion]}` : 'border-transparent'
-        } ${isSelected ? 'text-current' : 'text-gray-400'} overflow-hidden`}
+        } ${isSelected ? 'text-current' : 'text-gray-400'} ${
+          isSelected ? '' : 'bg-gray-500 opacity-75 hover:bg-gray-200'
+        } overflow-hidden`}
       >
         <div
           className={`text-3xl md:text-4xl xl:text-5xl ${isSelected ? '' : 'grayscale filter'}`}
