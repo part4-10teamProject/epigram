@@ -155,7 +155,7 @@ const Search = () => {
 
   const onRecentSearchClick = (term: string) => {
     setSearchValue(term); // 검색어를 입력값 상태로 설정
-    performSearch(); // 검색 실행
+    setTimeout(() => performSearch(), 0); // 상태가 업데이트된 후에 검색 실행
   };
 
   const deleteSearch = (searchTerm: string) => {
