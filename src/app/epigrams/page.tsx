@@ -1,6 +1,7 @@
 import { getCommentsDatas } from '@/api/server/getCommentDatas';
 import { getEpigramDatas } from '@/api/server/getEpigramDatas';
 import { getTodayData } from '@/api/server/getTodayData';
+import ScrollButton from '@/components/common/ScrollButton';
 import NewCommentList from '@/components/epigramsPage/NewCommentList';
 import NewEpigramList from '@/components/epigramsPage/NewEpigramList';
 import TodayCard from '@/components/epigramsPage/TodayCard';
@@ -50,6 +51,7 @@ const mainPage = async () => {
               <NewCommentList commentList={commentDatas} />
             )}
           </div>
+          <ScrollButton />
         </div>
       </div>
     );
@@ -65,6 +67,7 @@ const mainPage = async () => {
           <NewEpigramList epigramList={epigramDatas} />
           <NewCommentList commentList={commentDatas} />
         </div>
+        <ScrollButton />
       </div>
     </div>
   );
