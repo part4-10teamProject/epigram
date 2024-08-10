@@ -21,6 +21,23 @@ interface DataItem {
   isLiked: boolean;
 }
 
+interface HighlightedTag {
+  name: JSX.Element[] | string;
+  id: number;
+}
+
+interface HighlightedDataItem {
+  likeCount: number;
+  tags: HighlightedTag[];
+  writerId: number;
+  referenceUrl: string;
+  referenceTitle: string;
+  author: JSX.Element[] | string;
+  content: JSX.Element[] | string;
+  id: number;
+  isLiked: boolean;
+}
+
 const data: DataItem[] = [
   {
     likeCount: 10,
@@ -56,7 +73,7 @@ const data: DataItem[] = [
 ];
 
 const highlightText = (text: string, searchTerm: string): JSX.Element[] => {
-  if (!searchTerm) return [text];
+  if (!searchTerm) return [<span key="0">{text}</span>];
   const regex = new RegExp(`(${searchTerm})`, 'gi');
   return text.split(regex).map((part, i) =>
     regex.test(part) ? (
@@ -64,7 +81,7 @@ const highlightText = (text: string, searchTerm: string): JSX.Element[] => {
         {part}
       </span>
     ) : (
-      part
+      <span key={i}>{part}</span>
     ),
   );
 };
@@ -72,7 +89,7 @@ const highlightText = (text: string, searchTerm: string): JSX.Element[] => {
 const Search = () => {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [searchValue, setSearchValue] = useState<string>(''); // 입력값 상태
-  const [filteredData, setFilteredData] = useState<DataItem[]>([]); // 필터링된 데이터 상태
+  const [filteredData, setFilteredData] = useState<HighlightedDataItem[]>([]);
 
   useEffect(() => {
     // 로컬 스토리지에서 최근 검색어를 가져옵니다.
@@ -81,10 +98,6 @@ const Search = () => {
     ) as string[];
     setRecentSearches(storedSearches);
   }, []);
-
-  useEffect(() => {
-    performSearch();
-  }, [searchValue]);
 
   const performSearch = useCallback(() => {
     const searchTerm = searchValue.trim();
@@ -142,7 +155,7 @@ const Search = () => {
 
   const onRecentSearchClick = (term: string) => {
     setSearchValue(term); // 검색어를 입력값 상태로 설정
-    // performSearch(); // useEffect에서 자동으로 호출됨
+    performSearch(); // 검색 실행
   };
 
   const deleteSearch = (searchTerm: string) => {
@@ -181,7 +194,7 @@ const Search = () => {
               <div
                 key={index}
                 className="mb-2 mr-2 flex cursor-pointer items-center rounded border border-gray-300 px-2 py-1"
-                onClick={() => onRecentSearchClick(term)} // 최근 검색어 클릭 시 검색어 설정
+                onClick={() => onRecentSearchClick(term)} // 최근 검색어 클릭 시 검색어 설정 및 검색 실행
               >
                 <span className="mr-2">{term}</span>
                 <button
