@@ -5,6 +5,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import './calendarCustom.css';
 import { Doughnut } from 'react-chartjs-2';
 import angryIcon from '../../../public/assets/icons/emotion/logo_angry.svg';
 import heartIcon from '../../../public/assets/icons/emotion/logo_heart.svg';
@@ -71,6 +72,7 @@ const EmotionCalendar: React.FC = () => {
   return (
     <div className="flex flex-col items-center p-4 text-black-900">
       <Calendar
+        locale="ko"
         value={new Date()} // 오늘 날짜로 기본값
         tileContent={({ date, view }) =>
           //월 형태로 띄움 & 감정Icon 표시
