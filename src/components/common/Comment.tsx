@@ -23,12 +23,16 @@ import exclamation from '../../../public/assets/images/exclamation_mark.png';
 //   },
 //   epigramId: 154,
 // };
+interface EditContentItem {
+  isPrivate: boolean;
+  content: string;
+}
 
 interface CommentProps {
   item: CommentItem;
   isMyComment?: boolean;
   onDelete: (id: number) => void;
-  onEdit: (id: number, content: string) => void;
+  onEdit: (id: number, content: EditContentItem) => void;
 }
 
 // Comment component
@@ -43,13 +47,34 @@ const Comment: React.FC<CommentProps> = ({
   const [isProfileModal, setIsProfileModal] = useState(false); // 프로필 모달창 상태
   const [isDeleteModal, setIsDeleteModal] = useState(false); // 삭제 모달창 상태
   const [isDeleteSuccesModal, setIsDeleteSuccesModal] = useState(false); // 삭제완료 모달창 상태
+  const [isEditModal, setIsEditModal] = useState(false); // 수정 모달창 상태
+  const [isEditSuccesModal, setIsEditSuccesModal] = useState(false); // 수정완료 모달창 상태
 
+  // 프로필 모달을 띄우는 함수
   const handleProfileModal = () => {
     setIsProfileModal(true);
   };
 
+  // 삭제하기 모달을 띄우는 함수
   const handleDeleteModal = () => {
     setIsDeleteModal(true);
+  };
+
+  // 삭제하기 모달을 없애고 삭제완료 모달을 띄우는 함수
+  const handleDeleteSuccesModal = () => {
+    setIsDeleteModal(false);
+    setIsDeleteSuccesModal(true);
+  };
+
+  // 수정하기 모달을 띄우는 함수
+  const handleEditModal = () => {
+    setIsEditModal(true);
+  };
+
+  // 수정하기 모달을 없애고 수정완료 모달을 띄우는 함수
+  const handleEditSuccesModal = () => {
+    setIsEditModal(false);
+    setIsEditSuccesModal(true);
   };
 
   const profileImg =
@@ -65,14 +90,15 @@ const Comment: React.FC<CommentProps> = ({
   };
 
   const handleSaveEdit = () => {
-    onEdit(item.id, editContent);
+    const content = { isPrivate: false, content: editContent }; // 일단 isPrivate는 false를 고정으로 줌
+    onEdit(item.id, content);
     setIsEditing(false);
+    setIsEditSuccesModal(false);
   };
 
-  const handleDelete = (id: number) => {
-    onDelete(id);
-    setIsDeleteModal(false);
-    setIsDeleteSuccesModal(true);
+  const handleDelete = () => {
+    onDelete(item.id);
+    setIsDeleteSuccesModal(false);
   };
 
   return (
@@ -110,7 +136,7 @@ const Comment: React.FC<CommentProps> = ({
                 <>
                   <button
                     className="border-b border-black-600 bg-transparent text-xs text-black-600 md:text-lg xl:text-xl"
-                    onClick={handleSaveEdit}
+                    onClick={handleEditModal}
                   >
                     저장
                   </button>
@@ -140,6 +166,35 @@ const Comment: React.FC<CommentProps> = ({
             </div>
           )}
           <Modal
+            isOpen={isEditModal}
+            onClose={() => setIsEditModal(false)}
+            icon={<Image src={exclamation} alt="삭제이미지" />}
+            message="댓글을 수정하시겠어요?"
+            buttons={[
+              {
+                text: '취소',
+                onClick: () => setIsEditModal(false),
+                type: 'secondary',
+              },
+              {
+                text: '수정하기',
+                onClick: handleEditSuccesModal,
+                type: 'primary',
+              },
+            ]}
+          />
+          <Modal
+            isOpen={isEditSuccesModal}
+            onClose={handleSaveEdit}
+            message="댓글이 수정되었어요"
+            buttons={[
+              {
+                text: '확인',
+                onClick: handleSaveEdit,
+              },
+            ]}
+          />
+          <Modal
             isOpen={isDeleteModal}
             onClose={() => setIsDeleteModal(false)}
             icon={<Image src={exclamation} alt="삭제이미지" />}
@@ -153,19 +208,19 @@ const Comment: React.FC<CommentProps> = ({
               },
               {
                 text: '삭제하기',
-                onClick: () => handleDelete(item.id), // 여기를 클릭하면 삭제 API요청함수실행
+                onClick: handleDeleteSuccesModal, // 여기를 클릭하면 삭제 API요청함수실행
                 type: 'primary',
               },
             ]}
           />
           <Modal
             isOpen={isDeleteSuccesModal}
-            onClose={() => setIsDeleteSuccesModal(false)}
+            onClose={handleDelete}
             message="댓글이 삭제되었어요"
             buttons={[
               {
                 text: '확인',
-                onClick: () => setIsDeleteSuccesModal(false),
+                onClick: handleDelete,
               },
             ]}
           />
