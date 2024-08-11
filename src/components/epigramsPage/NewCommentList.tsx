@@ -11,6 +11,7 @@ import { getNewCommentDatas } from '@/api/client/getNewCommentDatas';
 import { deleteComment } from '@/api/client/deleteComment';
 import { useEffect, useState } from 'react';
 import { editComment } from '@/api/client/editComment';
+import Cookies from 'js-cookie';
 
 interface CommentProps {
   commentList: CommentList;
@@ -28,6 +29,7 @@ interface EditContent {
 
 const NewCommentList: React.FC<CommentProps> = ({ commentList }) => {
   const [isClient, setIsClient] = useState(false); // 서버컴포넌트 데이터와 클라이언트 컴포넌트 데이터를 일치하게 하기 위해서 만든 변수
+  const [userId, setUserId] = useState<number | null>(null);
 
   // 리액트쿼리를 활용해서 데이터를 가져오고 초기 렌더링하는 코드부분
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
@@ -74,6 +76,10 @@ const NewCommentList: React.FC<CommentProps> = ({ commentList }) => {
   // See more info here: https://nextjs.org/docs/messages/react-hydration-error 에러해결하기 위해서 useEffect와 if (!isClient)를 사용함
   useEffect(() => {
     setIsClient(true);
+    const cookieUserId = Cookies.get('userId');
+    if (cookieUserId) {
+      setUserId(Number(cookieUserId));
+    }
   }, []);
 
   if (!isClient) return null;
@@ -89,7 +95,7 @@ const NewCommentList: React.FC<CommentProps> = ({ commentList }) => {
             <div key={comment.id} className="border-t border-[#CFDBEA]">
               <Comment
                 item={comment}
-                isMyComment={true}
+                isMyComment={userId === comment.writer.id}
                 onDelete={(id) => handleDeleteMutation(id)}
                 onEdit={(id, content) => handleEditMutation(id, content)}
               />
