@@ -4,6 +4,7 @@ import 'chart.js/auto';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import Calendar from 'react-calendar';
+import moment from 'moment';
 import 'react-calendar/dist/Calendar.css';
 import './calendarCustom.css';
 import { Doughnut } from 'react-chartjs-2';
@@ -48,6 +49,9 @@ const initialEmotionData: Record<Emotion, number> = {
   슬픔: 17,
   분노: 19,
 };
+
+const LOCALE = 'ko';
+
 //EmotionCalender 컴포넌트 정의
 const EmotionCalendar: React.FC = () => {
   // 선택된감정 상태 관리
@@ -70,25 +74,48 @@ const EmotionCalendar: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-4 text-black-900">
+    <div className="calendar-container flex flex-col items-center p-4 text-black-900">
       <Calendar
-        locale="ko"
-        value={new Date()} // 오늘 날짜로 기본값
+        locale={LOCALE}
+        prev2Label={null}
+        next2Label={null}
+        value={new Date()}
+        prevLabel={
+          <Image
+            src="/assets/icons/chevron_left.svg"
+            alt="왼쪽 화살표"
+            width={20}
+            height={20}
+          />
+        }
+        nextLabel={
+          <Image
+            src="/assets/icons/chevron_right.svg"
+            alt="오른쪽 화살표"
+            width={20}
+            height={20}
+          />
+        }
+        formatDay={(locale, date) => moment(date).format('D')}
+        tileClassName={({ date, view }) =>
+          view === 'month' && selectedEmotion[date.toISOString().slice(0, 10)]
+            ? 'emotion-day'
+            : null
+        }
         tileContent={({ date, view }) =>
           //월 형태로 띄움 & 감정Icon 표시
           view === 'month' &&
           selectedEmotion[date.toISOString().slice(0, 10)] ? (
-            <div className="flex h-full items-center justify-center">
-              <Image // 감정Icon svg로 표시
-                src={emotions[selectedEmotion[date.toISOString().slice(0, 10)]]}
-                alt="Emotion Icon"
-                width={24}
-                height={24}
-              />{' '}
-            </div>
+            <Image
+              // 감정Icon svg로 표시
+              src={emotions[selectedEmotion[date.toISOString().slice(0, 10)]]}
+              alt="Emotion Icon"
+              width={24}
+              height={24}
+            />
           ) : null
         }
-        className="text-black w-full max-w-md rounded-lg border bg-white shadow-lg"
+        className="custom-calendar text-black w-full max-w-md rounded-lg bg-white"
       />
       <div className="mt-8 w-full max-w-md">
         <Doughnut data={chartData} />
