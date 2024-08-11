@@ -3,12 +3,14 @@ import { EpigramList, Epigrams } from '@/types/epigramList';
 import Card from '../common/Card';
 import { getNewEpigramDatas } from '@/api/client/getNewEpigramDatas';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 
 interface EpigramsProps {
   epigramList: EpigramList;
 }
 
 const NewEpigramList: React.FC<EpigramsProps> = ({ epigramList }) => {
+  const [isClient, setIsClient] = useState(false);
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ['epigrams'],
     queryFn: ({ pageParam = 0 }) => getNewEpigramDatas(pageParam, 5), // pageParam는 fetchNextPage를 호출하면 nextCursor 값이 전달된다.
@@ -23,6 +25,12 @@ const NewEpigramList: React.FC<EpigramsProps> = ({ epigramList }) => {
 
   // data.pages에 있는 배열들이 각각의 list배열을 가지고 있는데 이것들을 하나로 합쳐서 배열로 반환함
   const epigrams: Epigrams[] = data.pages.flatMap((page) => page.list);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) return null;
 
   return (
     <div className="flex flex-col gap-10">
