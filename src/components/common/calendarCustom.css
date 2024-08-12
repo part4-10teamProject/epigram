@@ -10,6 +10,28 @@
   padding: 0;
 }
 
+/* 캘린더 & 도넛차트의 반응형 설정 */
+.calendar-wrapper,
+.chart-wrapper {
+  width: 100%;
+  max-width: 640px; /* 데스트탑 기준 최대너비 설정 */
+  margin: 0 auto; /* 가운데 정렬 */
+
+  @media (max-width: 384px) {
+    .calendar-wrapper,
+    .chart-wrapper {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 312px) {
+    .calendar-wrapper,
+    .chart-wrapper {
+      width: 100%;
+    }
+  }
+}
+
 .custom-calendar
   .react-calendar__navigation
   .react-calendar__navigation__label {
