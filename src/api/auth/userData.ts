@@ -1,17 +1,26 @@
-import React from 'react';
+'use client';
+
+import { useQuery } from '@tanstack/react-query';
 
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
 
-//interface propsType =
+//validation에서 가져다 쓸 함수
 
-//해당 유저 정보 유무 판단
+async function getUserData(endPoint: string) {
+  if (!baseURL) {
+    throw new Error('undefined');
+  }
 
-//export function getUserData:React.FC<propsType>() {}
+  const response = await fetch(`${baseURL}/auth/signIn}`, {
+    headers: { 'Content-Type': 'application/json' },
+  });
+  const data = response.json();
 
-//onSubmit에 줄 post 함수
-
-//export function postUserData:React.FC<>'
-
-export async function fetchData(url: string): Promise<propsType> {
-  const response = await fetch(baseURL);
+  return data;
 }
+
+/*
+if(isLoading){return <div>Loadings...</div>}
+
+const {data,isLoading,error} =useQuery(['userData'], getUserData)
+*/

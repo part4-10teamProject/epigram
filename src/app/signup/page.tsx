@@ -1,3 +1,5 @@
+'use client';
+
 import FormField from '@/components/formField/FormField';
 
 function SignupPage() {
