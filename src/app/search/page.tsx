@@ -1,80 +1,50 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useState, useCallback, ChangeEvent, useEffect } from 'react';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { fetchData } from '@/api/getEpigrams';
 import SearchText from '@/components/common/SearchText';
 import Tags from '@/components/common/Tags';
-import { useState, useCallback, ChangeEvent } from 'react';
-
-interface Tag {
-  name: string;
-  id: number;
-}
-
-interface DataItem {
-  likeCount: number;
-  tags: Tag[];
-  writerId: number;
-  referenceUrl: string;
-  referenceTitle: string;
-  author: string;
-  content: string;
-  id: number;
-  isLiked: boolean;
-}
-
-interface HighlightedTag {
-  name: JSX.Element[] | string;
-  id: number;
-}
-
-interface HighlightedDataItem {
-  likeCount: number;
-  tags: HighlightedTag[];
-  writerId: number;
-  referenceUrl: string;
-  referenceTitle: string;
-  author: JSX.Element[] | string;
-  content: JSX.Element[] | string;
-  id: number;
-  isLiked: boolean;
-}
-
-const highlightText = (text: string, searchTerm: string): JSX.Element[] => {
-  if (!searchTerm) return [<span key="0">{text}</span>];
-  const regex = new RegExp(`(${searchTerm})`, 'gi');
-  return text.split(regex).map((part, i) =>
-    regex.test(part) ? (
-      <span key={i} className="text-[#5195ee]">
-        {part}
-      </span>
-    ) : (
-      <span key={i}>{part}</span>
-    ),
-  );
-};
+import { DataItem, HighlightedDataItem } from '@/types/search';
+import { highlightText } from '@/utils/highLightText';
 
 const Search = () => {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
-  const [query, setQuery] = useState<string>(''); // 검색어를 저장할 상태
-  const [hasSearched, setHasSearched] = useState<boolean>(false); // 검색이 수행되었는지 추적
+  const [query, setQuery] = useState<string>('');
+  const [hasSearched, setHasSearched] = useState<boolean>(false);
 
-  const { data, refetch, isLoading, error } = useQuery<{
-    totalCount: number;
-    nextCursor: number;
-    list: DataItem[];
-  }>({
-    queryKey: ['epigrams', { keyword: query }], // query 상태를 사용
+  const queryOptions: UseQueryOptions<
+    {
+      totalCount: number;
+      nextCursor: number;
+      list: DataItem[];
+    },
+    Error
+  > = {
+    queryKey: ['epigrams', { keyword: query }],
     queryFn: () => fetchData({ keyword: query, writerId: undefined }),
-    enabled: false, // 검색어가 있을 때만 refetch를 호출하도록 설정
-  });
+    enabled: query.trim().length > 0 && hasSearched,
+    onSuccess: () => {
+      setHasSearched(false); // 성공적으로 데이터를 가져온 후 초기화
+    },
+  };
+
+  const { data, isLoading, error } = useQuery(queryOptions);
+
+  // 최근 검색어 로딩
+  useEffect(() => {
+    const storedSearches = localStorage.getItem('recentSearches');
+    if (storedSearches) {
+      setRecentSearches(JSON.parse(storedSearches));
+    }
+  }, []);
 
   const performSearch = useCallback(() => {
     const searchTerm = searchValue.trim();
-    if (searchTerm) {
-      setQuery(searchTerm); // query 상태 업데이트
-      setHasSearched(true); // 검색이 수행되었음을 표시
+    if (searchTerm.length > 0) {
+      setQuery(searchTerm);
+      setHasSearched(true);
       setRecentSearches((prevSearches) => {
         const updatedSearches = prevSearches.filter(
           (term) => term !== searchTerm,
@@ -84,13 +54,11 @@ const Search = () => {
         localStorage.setItem('recentSearches', JSON.stringify(limitedSearches));
         return limitedSearches;
       });
-      refetch();
     } else {
-      setQuery(''); // 빈 검색어 처리
-      setHasSearched(true); // 검색이 수행되었음을 표시
-      // 빈 검색어에 대한 처리를 추가할 수도 있음
+      setQuery('');
+      setHasSearched(true);
     }
-  }, [searchValue, refetch]);
+  }, [searchValue]);
 
   const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
@@ -108,26 +76,22 @@ const Search = () => {
 
   const handleRecentSearchClick = (term: string) => {
     setSearchValue(term);
-    performSearch();
+    setQuery(term);
+    setHasSearched(true);
   };
 
-  // 에러 발생 시 메시지 표시
   if (error) return <div>Error occurred: {error.message}</div>;
 
-  // 로딩 중일 때 로딩 표시
   if (isLoading) return <div>Loading...</div>;
 
-  // 데이터가 없는 경우
   const listData = data?.list || [];
-
-  // 데이터에 하이라이트 적용
   const filteredData: HighlightedDataItem[] = listData.map((item) => ({
     ...item,
-    author: highlightText(item.author, query), // query 상태 사용
-    content: highlightText(item.content, query), // query 상태 사용
+    author: highlightText(item.author, query),
+    content: highlightText(item.content, query),
     tags: item.tags.map((tag) => ({
       ...tag,
-      name: highlightText(tag.name, query), // query 상태 사용
+      name: highlightText(tag.name, query),
     })),
   }));
 
@@ -187,10 +151,14 @@ const Search = () => {
         </div>
 
         <div>
-          {hasSearched && filteredData.length === 0 ? (
+          {searchValue.trim().length === 0 ? (
+            <div className="flex h-[200px] w-full items-center justify-center text-xl xl:text-2xl">
+              검색어를 입력해 주세요.
+            </div>
+          ) : hasSearched && filteredData.length === 0 ? (
             <div className="flex h-[200px] w-full items-center justify-center text-xl xl:text-2xl">
               ‘{query || '검색어'}’(이)가 없습니다
-            </div> // 검색어가 있을 때만 표시
+            </div>
           ) : (
             filteredData.map((item) => (
               <div
