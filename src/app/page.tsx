@@ -1,8 +1,6 @@
 // 'use client';
 
 // import { useEffect, useState } from 'react';
-import EmotionBoard from '../components/common/EmotionBoard';
-import EmotionCalender from '../components/common/EmotionCalender';
 
 // export default function Home() {
 //   const [isClient, setIsClient] = useState(false);
@@ -32,15 +30,9 @@ import EmotionCalender from '../components/common/EmotionCalender';
 // const NoSSR = dynamic(() => import('../components/common/EmotionCalender'), {
 //   ssr: false,
 // });
-
-export default function Page() {
-  return (
-    <>
-      <EmotionBoard />
-      <EmotionCalender />
-    </>
-  );
-}
+/*export default function Home() {
+  return <div>랜딩페이지</div>;
+}*/
 
 //참고사항
 // <Calendar
