@@ -13,7 +13,7 @@ const HeaderOnlyLogo: React.FC = () => {
   };
 
   return (
-    <nav className="border-b-line-100 flex h-[52px] items-center border-b md:h-[60px] xl:h-[80px]">
+    <nav className="flex h-[52px] items-center border-b border-b-line-100 md:h-[60px] xl:h-[80px]">
       <div
         onClick={handleLogoClick}
         className="container mx-auto flex cursor-pointer items-center justify-center"
@@ -69,7 +69,7 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <nav className="border-b-line-100 flex h-[52px] items-center border-b px-[24px] md:h-[60px] md:px-[72px] xl:h-[80px] xl:px-[120px]">
+      <nav className="flex h-[52px] items-center border-b border-b-line-100 px-[24px] md:h-[60px] md:px-[72px] xl:h-[80px] xl:px-[120px]">
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex gap-3 md:gap-6 xl:gap-9">
             <div className="md:hidden" onClick={toggleMenu}>
@@ -133,7 +133,7 @@ const Header: React.FC = () => {
             onClick={toggleMenu}
           ></div>
           <div className="fixed inset-y-0 left-0 z-50 w-[220px] bg-white shadow-lg">
-            <div className="border-b-line-100 flex items-center justify-end border-b p-4">
+            <div className="flex items-center justify-end border-b border-b-line-100 p-4">
               <button onClick={toggleMenu} className="text-xl">
                 X
               </button>

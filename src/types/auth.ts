@@ -1,6 +1,8 @@
+'use client';
+
 export interface UserData {
   email: string;
-  nickname?: string;
+  nicknam?: string;
   password: string;
   passwordConfirmation?: string;
 }
@@ -17,4 +19,9 @@ export interface AuthResponse {
     createdAt: string;
     image: null;
   };
+}
+
+export interface ButtonData {
+  userData: UserData;
+  endpoint: string;
 }

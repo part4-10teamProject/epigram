@@ -1,5 +1,4 @@
 'use client';
-// circular reference
 
 import React, { MouseEventHandler, useEffect, useState } from 'react';
 import Input from '@/components/formField/Input';
@@ -8,10 +7,13 @@ import {
   checkNicknameLength,
   checkPassword,
   checkPasswordSame,
+  cookieStore,
 } from '@/components/formField/validation';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { signIn, signUp } from '@/api/auth/auth';
+import { postUserInput } from '@/api/auth/auth';
+import { UserData, AuthResponse, ButtonData } from '@/types/auth';
+import { useMutation, UseMutationResult } from '@tanstack/react-query';
 
 const FormField: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -44,68 +46,6 @@ const FormField: React.FC = () => {
     setNickname(event?.target.value);
   }
 
-  useEffect(() => {
-    const EmailValid = checkEmail(email);
-    const PasswordValid = checkPassword(password);
-    const PasswordSame = checkPasswordSame(password, passwordCheck);
-    const NicknameValid = checkNicknameLength(nickname);
-    setIsEmailValid(EmailValid);
-    setIsPasswordValid(PasswordValid);
-    setIsPasswordSame(PasswordSame);
-    setIsNicknameValid(NicknameValid);
-  }, [email, password, passwordCheck, nickname]);
-
-  // 버튼 활성화 effect
-  useEffect(() => {
-    const isSignupButtonValid =
-      isEmailValid && isNicknameValid && isPasswordSame && isPasswordValid;
-    const isLoginButtonValid = isEmailValid && isPasswordValid;
-
-    setSignupButtonValid(isSignupButtonValid);
-    setLoginButtonValid(isLoginButtonValid);
-  }, [isEmailValid, isNicknameValid, isPasswordSame, isPasswordValid]);
-
-  /*조건 별 에러 메세지
-
-  const [loginErrorMessage, setLoginErrorMessage] = useState('');
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
-
-  useEffect(() => {
-    const emailExisting = true;
-  });*/
-
-  const signupButton: React.MouseEventHandler<HTMLButtonElement> = async (
-    event,
-  ) => {
-    event.preventDefault();
-    if (signupButtonValid) {
-      await signUp(email, nickname, password, passwordCheck)
-        .then((data) => {
-          console.log('Success:', data);
-          router.push('/login');
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
-    }
-  };
-
-  const loginButton: React.MouseEventHandler<HTMLButtonElement> = async (
-    event,
-  ) => {
-    event.preventDefault();
-    if (loginButtonValid) {
-      await signIn(email, password)
-        .then((data) => {
-          console.log('Success:', data);
-          router.push('/');
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
-    }
-  };
-
   const [passwordType, setPasswordType] = useState(false);
   const [passwordCheckType, setPasswordCheckType] = useState(false);
   const visible = 'text';
@@ -119,6 +59,109 @@ const FormField: React.FC = () => {
   const passwordCheckVisibility: MouseEventHandler = (e) => {
     e.preventDefault();
     setPasswordCheckType(!passwordCheckType);
+  };
+
+  useEffect(() => {
+    const emailValid = checkEmail(email);
+    const passwordValid = checkPassword(password);
+    const passwordSame = checkPasswordSame(password, passwordCheck);
+    const nicknameValid = checkNicknameLength(nickname);
+    setIsEmailValid(emailValid);
+    setIsPasswordValid(passwordValid);
+    setIsPasswordSame(passwordSame);
+    setIsNicknameValid(nicknameValid);
+  }, [email, password, passwordCheck, nickname]);
+
+  /*  const [hasEmailExisted, setHasEmailExisted] = useState(false);
+  const [hasNicknameExisted, setHasNicknameExisted] = useState(false);
+
+  
+  useEffect(() => {
+    const checkEmailExistence = async () => {
+      const emailExist = await idExist(email);
+      setHasEmailExisted(emailExist);
+    };
+    const checkNicknameExistence = async () => {
+      const userNicknameExist = await nicknameExist(nickname);
+      setHasNicknameExisted(userNicknameExist);
+    };
+
+    checkEmailExistence();
+    checkNicknameExistence();
+  }, [email, nickname]);*/
+
+  // 버튼 활성화 effect
+  /*!hasEmailExisted &&
+    !hasNicknameExisted &&*/
+  /*hasEmailExisted &&*/
+  /*hasEmailExisted,
+  hasNicknameExisted,*/
+
+  useEffect(() => {
+    const isSignupButtonValid =
+      isEmailValid && isNicknameValid && isPasswordSame && isPasswordValid;
+    const isLoginButtonValid = isEmailValid && isPasswordValid;
+
+    setSignupButtonValid(isSignupButtonValid);
+    setLoginButtonValid(isLoginButtonValid);
+  }, [isEmailValid, isNicknameValid, isPasswordSame, isPasswordValid]);
+
+  //onClick 함수
+
+  const mutation: UseMutationResult<AuthResponse, Error, ButtonData> =
+    useMutation<AuthResponse, Error, ButtonData>({
+      mutationFn: postUserInput,
+      onSuccess: (data: AuthResponse) => {
+        // 성공 시 처리 로직
+        console.log('User signed up successfully:', data);
+      },
+      onError: (error: Error) => {
+        // 실패 시 처리 로직
+        console.error('Error signing up:', error);
+      },
+    });
+
+  const signupData = {
+    userData: {
+      email: email,
+      nickname: nickname,
+      password: password,
+      passwordConfirmation: passwordCheck,
+    },
+    endpoint: 'signUp',
+  };
+  const loginData = {
+    userData: { email: email, password: password },
+    endpoint: 'signIn',
+  };
+
+  const signupButton: React.MouseEventHandler<HTMLButtonElement> = async (
+    event,
+  ) => {
+    event.preventDefault();
+    if (signupButtonValid) {
+      mutation.mutate(signupData);
+      router.push('/login');
+    }
+  };
+
+  const loginButton: React.MouseEventHandler<HTMLButtonElement> = async (
+    event,
+  ) => {
+    event.preventDefault();
+    if (loginButtonValid) {
+      try {
+        const response = mutation.mutateAsync(loginData);
+        if (response) {
+          const data = response;
+          const token = (await data).accessToken;
+          cookieStore('accessToken', token);
+        }
+        router.push('/');
+      } catch (error) {
+        console.error('Error signing up:', error);
+      }
+    }
   };
 
   return (
@@ -193,10 +236,10 @@ const FormField: React.FC = () => {
             <p
               className={`text-[12px] text-redState md:text-[14px] xl:text-[16px] ${isPasswordValid ? 'hidden' : 'inline'}`}
             >
-              숫자, 영어, 특수문자 포함 12자 이상 입력해주세요
+              숫자, 영어 대소문자, 특수문자 포함 8자 이상 입력해주세요
             </p>
           )}
-          {isPasswordSame ? null : (
+          {isPasswordSame && isPasswordValid ? null : (
             <p
               className={`text-[12px] text-redState md:text-[14px] xl:text-[16px] ${isPasswordSame ? 'hidden' : 'inline'}`}
             >
@@ -205,11 +248,7 @@ const FormField: React.FC = () => {
           )}
         </>
       ) : null}
-      <p
-        className={`text-[12px] text-redState md:text-[14px] xl:text-[16px] ${isPasswordSame ? 'hidden' : 'inline'}`}
-      >
-        {/*{passwordErrorMessage}*/}
-      </p>
+
       {pathname === '/signup' ? (
         <>
           <label>닉네임</label>
@@ -229,7 +268,8 @@ const FormField: React.FC = () => {
           <button
             type="submit"
             onClick={signupButton}
-            className={`h-[44px] w-full rounded-[12px] text-white xl:h-[64px] xl:text-[20px] ${signupButtonValid ? 'cursor-pointer bg-black-500' : 'cursor-not-allowed bg-blue-300'}`}
+            disabled={mutation.isPending}
+            className={`h-[44px] w-full rounded-[12px] text-white xl:h-[64px] xl:text-[20px] ${signupButtonValid ? 'cursor-pointer bg-black-500' : 'cursor-default bg-blue-300'}`}
           >
             가입하기
           </button>
@@ -238,7 +278,8 @@ const FormField: React.FC = () => {
         <button
           type="submit"
           onClick={loginButton}
-          className={`h-[44px] w-full rounded-[12px] text-white xl:h-[64px] xl:text-[20px] ${loginButtonValid ? 'cursor-pointer bg-black-500' : 'cursor-not-allowed bg-blue-300'}`}
+          disabled={mutation.isPending}
+          className={`h-[44px] w-full rounded-[12px] text-white xl:h-[64px] xl:text-[20px] ${loginButtonValid ? 'cursor-pointer bg-black-500' : 'cursor-default bg-blue-300'}`}
         >
           로그인
         </button>

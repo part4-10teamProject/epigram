@@ -1,5 +1,8 @@
 //이메일 형식 유효성
 
+import { getUserData } from '@/api/auth/auth';
+import Cookies from 'js-cookie';
+
 export const checkEmail = (email: string) => {
   const emailReg = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
   return emailReg.test(email);
@@ -36,3 +39,25 @@ export const checkNicknameLength = (nickname: string) => {
 };
 
 //api
+/*
+export async function idExist(email: string) {
+  const data = await getUserData();
+  const userEmailData = data.user.email;
+
+  return userEmailData === email;
+}
+
+export async function nicknameExist(nickname: string) {
+  const data = await getUserData();
+  const userNicknameData = data.user.nickname;
+
+  return userNicknameData === nickname;
+}
+*/
+
+//cookies
+
+export function cookieStore(key: string, value: string) {
+  Cookies.set(key, value);
+  console.log(`Cookie succeeded!`);
+}
