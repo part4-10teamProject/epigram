@@ -5,6 +5,7 @@ import ScrollButton from '@/components/common/ScrollButton';
 import NewCommentList from '@/components/epigramsPage/NewCommentList';
 import NewEpigramList from '@/components/epigramsPage/NewEpigramList';
 import TodayCard from '@/components/epigramsPage/TodayCard';
+import TodayEmotion from '@/components/epigramsPage/TodayEmotion';
 
 const mainPage = async () => {
   const todayData = await getTodayData();
@@ -25,9 +26,7 @@ const mainPage = async () => {
               <TodayCard todayData={todayData} />
             )}
 
-            <div className="mb-7 text-[24px] font-semibold">
-              오늘의 감정은 어떤가요?
-            </div>
+            <TodayEmotion />
             {!epigramDatas ? ( // epigramDatas가 존재하지 않을 때
               <div>
                 <div className="mb-7 text-[24px] font-semibold">
@@ -61,9 +60,7 @@ const mainPage = async () => {
       <div className="mx-auto max-w-[312px] py-8 md:max-w-[384px] xl:max-w-[640px] xl:pt-28">
         <div className="flex flex-col gap-40">
           <TodayCard todayData={todayData} />
-          <div className="mb-7 text-[24px] font-semibold">
-            오늘의 감정은 어떤가요?
-          </div>
+          <TodayEmotion />
           <NewEpigramList epigramList={epigramDatas} />
           <NewCommentList commentList={commentDatas} />
         </div>
