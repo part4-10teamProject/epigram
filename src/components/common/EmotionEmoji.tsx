@@ -9,17 +9,17 @@ import smileIcon from '../../../public/assets/icons/emotion/logo_smiling.svg';
 import thinkIcon from '../../../public/assets/icons/emotion/logo_thinking.svg';
 
 interface EmotionIconProps {
-  emotion: '감동' | '기쁨' | '고민' | '슬픔' | '분노';
+  emotion: 'MOVED' | 'HAPPY' | 'WORRIED' | 'SAD' | 'ANGRY';
   isSelected: boolean;
   onClick: () => void;
 }
 
 const emotionColors = {
-  감동: 'border-[#FBC85B]',
-  기쁨: 'border-[#48BB98]',
-  고민: 'border-[#8E80E3]',
-  슬픔: 'border-[#5195EE]',
-  분노: 'border-[#E46E80]',
+  MOVED: 'border-[#FBC85B]',
+  HAPPY: 'border-[#48BB98]',
+  WORRIED: 'border-[#8E80E3]',
+  SAD: 'border-[#5195EE]',
+  ANGRY: 'border-[#E46E80]',
 };
 
 const EmotionIcon: React.FC<EmotionIconProps> = ({
@@ -29,19 +29,19 @@ const EmotionIcon: React.FC<EmotionIconProps> = ({
 }) => {
   let emotionIconSrc;
   switch (emotion) {
-    case '감동':
+    case 'MOVED':
       emotionIconSrc = heartIcon;
       break;
-    case '기쁨':
+    case 'HAPPY':
       emotionIconSrc = smileIcon;
       break;
-    case '고민':
+    case 'WORRIED':
       emotionIconSrc = thinkIcon;
       break;
-    case '슬픔':
+    case 'SAD':
       emotionIconSrc = sadIcon;
       break;
-    case '분노':
+    case 'ANGRY':
       emotionIconSrc = angryIcon;
       break;
   }

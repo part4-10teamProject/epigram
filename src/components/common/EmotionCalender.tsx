@@ -1,5 +1,3 @@
-'use client';
-
 import 'chart.js/auto';
 import moment from 'moment';
 import Image from 'next/image';
@@ -14,85 +12,65 @@ import smileIcon from '../../../public/assets/icons/emotion/logo_smiling.svg';
 import thinkIcon from '../../../public/assets/icons/emotion/logo_thinking.svg';
 import './calendarCustom.css';
 
-// 감정 Icon 타입 정의
-type Emotion = '감동' | '기쁨' | '고민' | '슬픔' | '분노';
+type Emotion = 'MOVED' | 'HAPPY' | 'WORRIED' | 'SAD' | 'ANGRY';
 
-// 감정 Icon svg파일
 const emotions: Record<Emotion, string> = {
-  감동: heartIcon.src,
-  기쁨: smileIcon.src,
-  고민: thinkIcon.src,
-  슬픔: sadIcon.src,
-  분노: angryIcon.src,
+  MOVED: heartIcon.src,
+  HAPPY: smileIcon.src,
+  WORRIED: thinkIcon.src,
+  SAD: sadIcon.src,
+  ANGRY: angryIcon.src,
 };
 
-// 감정별 color 정의
 const emotionColors: Record<Emotion, string> = {
-  감동: '#FBC85B',
-  기쁨: '#48BB98',
-  고민: '#8E80E3',
-  슬픔: '#5195EE',
-  분노: '#E46E80',
+  MOVED: '#FBC85B',
+  HAPPY: '#48BB98',
+  WORRIED: '#8E80E3',
+  SAD: '#5195EE',
+  ANGRY: '#E46E80',
 };
 
-// 초기 감정 데이터 임의 설정 - 캘린더
-const initialSelectedEmotion: Record<string, Emotion> = {
-  '2024-08-01': '감동',
-  '2024-08-02': '기쁨',
-  '2024-08-03': '고민',
-  '2024-08-04': '슬픔',
-  '2024-08-05': '분노',
+type EmotionCalendarProps = {
+  initialSelectedEmotion: Record<string, Emotion>;
+  initialEmotionData: Record<Emotion, number>;
 };
 
-// 감정별 초기 데이터 값 임의 설정 - 도넛 차트
-const initialEmotionData: Record<Emotion, number> = {
-  감동: 35,
-  기쁨: 20,
-  고민: 9,
-  슬픔: 17,
-  분노: 19,
-};
+const LOCALE = 'ko';
 
-const LOCALE = 'ko'; // 언어: 한국어
-
-// EmotionCalendar 컴포넌트 정의
-const EmotionCalendar: React.FC = () => {
-  // 선택된 감정 상태 관리
+const EmotionCalendar: React.FC<EmotionCalendarProps> = ({
+  initialSelectedEmotion,
+  initialEmotionData,
+}) => {
   const [selectedEmotion] = useState<Record<string, Emotion>>(
     initialSelectedEmotion,
   );
 
-  // 감정 데이터 상태 관리
   const [emotionData] = useState<Record<Emotion, number>>(initialEmotionData);
 
-  // 선택된 감정을 표시하기 위한 상태
   const [selectedChartEmotion, setSelectedChartEmotion] =
     useState<Emotion | null>(null);
 
-  // 차트 데이터 설정
   const chartData = {
-    labels: Object.keys(emotionData) as Emotion[], // 감정의 레이블(차트 조각의 범주) 설정
+    labels: Object.keys(emotionData) as Emotion[],
     datasets: [
       {
-        data: Object.values(emotionData), // 감정별 데이터 값 설정
+        data: Object.values(emotionData),
         backgroundColor: Object.keys(emotionColors).map(
-          (emotion) => emotionColors[emotion as Emotion], // 감정별 색상 설정
+          (emotion) => emotionColors[emotion as Emotion],
         ),
       },
     ],
   };
 
-  // 범례를 숨기기 위한 옵션 설정
   const chartOptions = {
     cutout: '90%',
     plugins: {
       legend: {
-        display: false, // 범례 숨기기
+        display: false,
       },
     },
   };
 
-  // 감정 목록을 클릭했을 때 호출되는 함수
   const handleEmotionClick = (emotion: Emotion) => {
     setSelectedChartEmotion(emotion);
   };
@@ -101,9 +79,9 @@ const EmotionCalendar: React.FC = () => {
     <div className="calendar-container flex flex-col items-center p-4 text-black-900">
       <Calendar
         locale={LOCALE}
-        prev2Label={null} //이전 2달 버튼 숨기기
-        next2Label={null} //다음 2달 버튼 숨기기
-        value={new Date()} //현재날짜를 기본값
+        prev2Label={null}
+        next2Label={null}
+        value={new Date()}
         prevLabel={
           <Image
             src="/assets/icons/chevron_left.svg"
@@ -127,11 +105,9 @@ const EmotionCalendar: React.FC = () => {
             : null
         }
         tileContent={({ date, view }) =>
-          // 월 형태로 띄움 & 감정 Icon 표시
           view === 'month' &&
           selectedEmotion[date.toISOString().slice(0, 10)] ? (
             <Image
-              // 감정 Icon svg로 표시
               src={emotions[selectedEmotion[date.toISOString().slice(0, 10)]]}
               alt="Emotion Icon"
               width={24}
@@ -161,16 +137,15 @@ const EmotionCalendar: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col space-y-4">
-          {/* 차트 옆 감정 목록 */}
           {Object.keys(emotionData).map((emotionKey) => (
             <div
               key={emotionKey}
               className={`flex cursor-pointer items-center space-x-2 transition-colors duration-200 ${
                 selectedChartEmotion === emotionKey
-                  ? 'text-black' // 선택된 항목: black로 표시
+                  ? 'text-black'
                   : selectedChartEmotion
-                    ? 'text-gray-400' // 선택X 항목: gray로 표시
-                    : 'hover:text-blue-500' // Hover시 색상 변경
+                    ? 'text-gray-400'
+                    : 'hover:text-blue-500'
               }`}
               onClick={() => handleEmotionClick(emotionKey as Emotion)}
             >

@@ -1,8 +1,8 @@
 // 'use client';
 
 // import { useEffect, useState } from 'react';
-// import EmotionBoard from '../components/common/EmotionBoard';
-// import EmotionCalender from '../components/common/EmotionCalender';
+import EmotionBoard from '../components/common/EmotionBoard';
+import EmotionCalender from '../components/common/EmotionCalender';
 
 // export default function Home() {
 //   const [isClient, setIsClient] = useState(false);
@@ -27,8 +27,6 @@
 
 // 현재 애플리케이션을 렌더링할 때, 서버에서 사전 렌더링된 React 트리와 브라우저에서 처음 렌더링(수화) 중에 렌더링된 React 트리 사이에 차이가 있습니다.
 // 해결방법 : 위와 같이 초기랜더링을 클라이언트 일때 랜더링 하게 하거나, 아래와 같이 다이나믹 옵션으로 서버랜더링 취소 할수 있습니다. 또는 이게 프롭으로 locale='ko'를 넣었습니다. 랜더링 다른부분을 찾아서 해결!
-import EmotionBoard from '@/components/common/EmotionBoard';
-import EmotionCalendar from '@/components/common/EmotionCalender';
 // import dynamic from 'next/dynamic';
 
 // const NoSSR = dynamic(() => import('../components/common/EmotionCalender'), {
@@ -37,10 +35,10 @@ import EmotionCalendar from '@/components/common/EmotionCalender';
 
 export default function Page() {
   return (
-    <div>
+    <>
       <EmotionBoard />
-      <EmotionCalendar />
-    </div>
+      <EmotionCalender />
+    </>
   );
 }
 
