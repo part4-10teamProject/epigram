@@ -1,6 +1,5 @@
 'use client';
 
-import { CommentItem, CommentList } from '@/types/commentList';
 import {
   useInfiniteQuery,
   useMutation,
@@ -12,10 +11,7 @@ import { deleteComment } from '@/api/client/deleteComment';
 import { useEffect, useState } from 'react';
 import { editComment } from '@/api/client/editComment';
 import Cookies from 'js-cookie';
-
-interface CommentProps {
-  commentList: CommentList;
-}
+import { LoadingSpinner } from '../common/LoadingSpinner';
 
 interface EditContentItem {
   isPrivate: boolean;
@@ -27,19 +23,14 @@ interface EditContent {
   content: EditContentItem;
 }
 
-const NewCommentList: React.FC<CommentProps> = ({ commentList }) => {
-  const [isClient, setIsClient] = useState(false); // 서버컴포넌트 데이터와 클라이언트 컴포넌트 데이터를 일치하게 하기 위해서 만든 변수
+const NewCommentList = () => {
   const [userId, setUserId] = useState<number | null>(null);
 
   // 리액트쿼리를 활용해서 데이터를 가져오고 초기 렌더링하는 코드부분
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery({
     queryKey: ['comments'],
     queryFn: ({ pageParam = 0 }) => getNewCommentDatas(pageParam, 5),
     initialPageParam: undefined,
-    initialData: {
-      pages: [commentList],
-      pageParams: [0],
-    },
     getNextPageParam: (lastPage) => lastPage.nextCursor || undefined,
   });
 
@@ -70,19 +61,19 @@ const NewCommentList: React.FC<CommentProps> = ({ commentList }) => {
     editCommentMutation.mutate({ id, content });
   };
 
-  const comments: CommentItem[] = data.pages.flatMap((page) => page.list);
+  const comments = data?.pages.flatMap((page) => page.list) ?? [];
 
-  // Error: Text content does not match server-rendered HTML. 서버 컴포넌트와 클라이언트 컴포넌트가 렌더링되는 데이터가 일치하지 않다는 에러가 뜸
-  // See more info here: https://nextjs.org/docs/messages/react-hydration-error 에러해결하기 위해서 useEffect와 if (!isClient)를 사용함
   useEffect(() => {
-    setIsClient(true);
     const cookieUserId = Cookies.get('userId');
     if (cookieUserId) {
       setUserId(Number(cookieUserId));
     }
-  }, []);
+    return () => {
+      queryClient.removeQueries({ queryKey: ['comments'] }); // 다른화면으로 이동하면 queryKey값을 제거함. 이렇게 해야지 다시 화면을 돌아왔을 때 초기화면이 됨
+    };
+  }, [queryClient]);
 
-  if (!isClient) return null;
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <div className="flex flex-col gap-10">
@@ -91,16 +82,20 @@ const NewCommentList: React.FC<CommentProps> = ({ commentList }) => {
       </h1>
       <div>
         <div>
-          {comments.map((comment) => (
-            <div key={comment.id} className="border-t border-[#CFDBEA]">
-              <Comment
-                item={comment}
-                isMyComment={userId === comment.writer.id}
-                onDelete={(id) => handleDeleteMutation(id)}
-                onEdit={(id, content) => handleEditMutation(id, content)}
-              />
-            </div>
-          ))}
+          {comments && comments.length > 0 ? (
+            comments?.map((comment) => (
+              <div key={comment.id} className="border-t border-[#CFDBEA]">
+                <Comment
+                  item={comment}
+                  isMyComment={userId === comment.writer.id}
+                  onDelete={(id) => handleDeleteMutation(id)}
+                  onEdit={(id, content) => handleEditMutation(id, content)}
+                />
+              </div>
+            ))
+          ) : (
+            <div>댓글이 없습니다.</div>
+          )}
         </div>
         <div className="mt-[72px] text-center">
           <button

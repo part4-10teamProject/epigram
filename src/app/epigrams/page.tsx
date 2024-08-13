@@ -1,6 +1,4 @@
-import { getCommentsDatas } from '@/api/server/getCommentDatas';
-import { getEpigramDatas } from '@/api/server/getEpigramDatas';
-import { getTodayData } from '@/api/server/getTodayData';
+import { getTodayEpigramData } from '@/api/server/getTodayEpigramData';
 import ScrollButton from '@/components/common/ScrollButton';
 import NewCommentList from '@/components/epigramsPage/NewCommentList';
 import NewEpigramList from '@/components/epigramsPage/NewEpigramList';
@@ -8,11 +6,9 @@ import TodayCard from '@/components/epigramsPage/TodayCard';
 import TodayEmotion from '@/components/epigramsPage/TodayEmotion';
 
 const mainPage = async () => {
-  const todayData = await getTodayData();
-  const epigramDatas = await getEpigramDatas(3);
-  const commentDatas = await getCommentsDatas(4);
+  const todayData = await getTodayEpigramData();
 
-  if (!todayData || !epigramDatas || !commentDatas)
+  if (!todayData)
     return (
       <div className="bg-background">
         <div className="mx-auto max-w-[312px] py-8 md:max-w-[384px] xl:max-w-[640px] xl:pt-28">
@@ -27,28 +23,8 @@ const mainPage = async () => {
             )}
 
             <TodayEmotion />
-            {!epigramDatas ? ( // epigramDatas가 존재하지 않을 때
-              <div>
-                <div className="mb-7 text-[24px] font-semibold">
-                  에피그램이 없습니다.
-                </div>
-                <button>에피그램 추가하러가기</button>
-              </div>
-            ) : (
-              // epigramDatas가 존재할 때
-              <NewEpigramList epigramList={epigramDatas} />
-            )}
-            {!commentDatas ? ( // commentDatas가 존재하지 않을 경우
-              <div>
-                <div className="mb-7 text-[24px] font-semibold">
-                  최신 댓글이 없습니다.
-                </div>
-                <button>에피그램 추가하러가기</button>
-              </div>
-            ) : (
-              // commentDatas가 존재함
-              <NewCommentList commentList={commentDatas} />
-            )}
+            <NewEpigramList />
+            <NewCommentList />
           </div>
           <ScrollButton />
         </div>
@@ -61,8 +37,8 @@ const mainPage = async () => {
         <div className="flex flex-col gap-40">
           <TodayCard todayData={todayData} />
           <TodayEmotion />
-          <NewEpigramList epigramList={epigramDatas} />
-          <NewCommentList commentList={commentDatas} />
+          <NewEpigramList />
+          <NewCommentList />
         </div>
         <ScrollButton />
       </div>
