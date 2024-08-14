@@ -1,7 +1,7 @@
-import FormField from '@/components/formField/FormField';
+import LoginForm from '@/components/formField/LoginForm';
 
 function LoginPage() {
-  return <FormField />;
+  return <LoginForm />;
 }
 
 export default LoginPage;

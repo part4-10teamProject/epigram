@@ -2,7 +2,7 @@
 
 export interface UserData {
   email: string;
-  nicknam?: string;
+  nickname?: string;
   password: string;
   passwordConfirmation?: string;
 }

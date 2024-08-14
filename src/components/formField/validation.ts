@@ -1,7 +1,6 @@
-//이메일 형식 유효성
+'use client';
 
-import { getUserData } from '@/api/auth/auth';
-import Cookies from 'js-cookie';
+//이메일 형식 유효성
 
 export const checkEmail = (email: string) => {
   const emailReg = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
@@ -16,48 +15,12 @@ export const checkPassword = (password: string) => {
   return passwordReg.test(password);
 };
 
-//비밀번호 확인 비교
+//닉네임 0자 이상 입력 필요 조건
 
-export const checkPasswordSame = (password: string, passwordCheck: string) => {
-  if (password === passwordCheck) {
-    return true;
-  } else {
+export const checkNickname = (nickname: string) => {
+  if (nickname.length === 0) {
     return false;
+  } else {
+    return true;
   }
 };
-
-//닉네임 길이 유효성
-
-export const checkNicknameLength = (nickname: string) => {
-  if (nickname.length < 12) {
-    return true;
-  } else if (nickname.length > 0) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
-//api
-/*
-export async function idExist(email: string) {
-  const data = await getUserData();
-  const userEmailData = data.user.email;
-
-  return userEmailData === email;
-}
-
-export async function nicknameExist(nickname: string) {
-  const data = await getUserData();
-  const userNicknameData = data.user.nickname;
-
-  return userNicknameData === nickname;
-}
-*/
-
-//cookies
-
-export function cookieStore(key: string, value: string) {
-  Cookies.set(key, value);
-  console.log(`Cookie succeeded!`);
-}

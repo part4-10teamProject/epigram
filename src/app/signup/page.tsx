@@ -1,9 +1,8 @@
-'use client';
-
-import FormField from '@/components/formField/FormField';
+//import FormField from '@/components/formField/FormField';
+import SignUpForm from '@/components/formField/SignupForm';
 
 function SignupPage() {
-  return <FormField />;
+  return <SignUpForm />;
 }
 
 export default SignupPage;
