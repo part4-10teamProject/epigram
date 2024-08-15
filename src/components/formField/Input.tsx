@@ -7,7 +7,7 @@ const Input: React.FC<InputProps> = ({
   value,
   onChange,
   placeholder,
-  style,
+  outlineStyle,
 }) => {
   return (
     <input
@@ -15,7 +15,7 @@ const Input: React.FC<InputProps> = ({
       value={value}
       onChange={onChange}
       placeholder={placeholder}
-      className={`h-[44px] w-full rounded-[12px] border-none bg-blue-200 p-[16px] text-[16px] placeholder-blue-400 xl:h-[64px] xl:text-[20px] ${style}`}
+      className={`h-[44px] w-full rounded-[12px] bg-blue-200 p-[16px] text-[16px] placeholder-blue-400 xl:h-[64px] xl:text-[20px] ${outlineStyle}`}
     />
   );
 };

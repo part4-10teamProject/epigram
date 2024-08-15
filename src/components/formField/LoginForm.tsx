@@ -10,11 +10,16 @@ import Cookies from 'js-cookie';
 import Input from './Input';
 
 const LoginForm: React.FC = () => {
+  //Input의 value를 저장한 state
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
+
+  //서버에 내 입력 이메일의 존재 여부를 저장한 state
+
   const [isEmailExisted, setIsEmailExisted] = useState(true);
 
   const [emailTouched, setEmailTouched] = useState(false);
@@ -24,34 +29,49 @@ const LoginForm: React.FC = () => {
 
   const router = useRouter();
 
+  //이메일 및 비밀번호 input의 onChange 이벤트 핸들러
+
   function handleEmail(event: React.ChangeEvent<HTMLInputElement>) {
     setEmail(event.target.value);
     setIsEmailValid(checkEmail(email));
     setEmailTouched(true);
   }
+
   function handlePassword(event: React.ChangeEvent<HTMLInputElement>) {
     setPassword(event.target.value);
     setIsPasswordValid(checkPassword(password));
     setPasswordTouched(true);
   }
+
+  //두 비밀번호 input의 입력값 눈모양 아이콘 클릭으로 바꾸는 함수
+
   const passwordVisibility = () => {
     setPasswordType(!passwordType);
   };
 
+  //모든 input 값이 조건을 충족시켰을 때 버튼 활성화
+
   const isButtonForm = isEmailValid && isPasswordValid;
+
+  //리액트 쿼리로 postUserInput 함수의 response와 errror 제어
+  //data fetching 성공 시 cookie에 accesstoken과 id 저장
 
   const mutation: UseMutationResult<AuthResponse, Error, ButtonData> =
     useMutation<AuthResponse, Error, ButtonData>({
       mutationFn: postUserInput,
       onSuccess: (data: AuthResponse) => {
         console.log('User signed up successfully:', data);
-        if (data) {
-          router.push('/login');
-        }
+
+        const token = data.accessToken;
+        const id = data.user.id;
+        Cookies.set('token', token);
+        Cookies.set('userId', `${id}`);
+
+        router.push('/login');
       },
       onError: (error: Error) => {
         console.error('Error signing up:', error);
-        if (error.message === '존재하지 않는 이메일입니다.') {
+        if (error.message === 'Request failed with status code 400') {
           setIsEmailExisted(false);
         }
       },
@@ -65,41 +85,34 @@ const LoginForm: React.FC = () => {
     event,
   ) => {
     event.preventDefault();
-    try {
-      const response = mutation.mutateAsync(loginData);
-      if (response) {
-        const data = response;
-        const token = (await data).accessToken;
-        const id = (await data).user.id;
-        Cookies.set('token', token);
-        Cookies.set('userId', `${id}`);
-      }
-    } catch (error) {
-      console.error('Error signing in:', error);
-    }
+    mutation.mutateAsync(loginData);
   };
 
   return (
     <form className="flex w-[312px] flex-col justify-between gap-[16px] md:w-[384px] xl:w-[640px]">
-      <Input
-        type="email"
-        placeholder="이메일"
-        onChange={handleEmail}
-        style={
-          isEmailValid && emailTouched
-            ? 'border-none'
-            : 'border-redState border-[1px]'
-        }
-      />
-      {isEmailExisted && emailTouched ? (
-        <p>존재하지 않는 이메일입니다.</p>
-      ) : null}
+      <div>
+        <Input
+          type="email"
+          placeholder="이메일"
+          onChange={handleEmail}
+          outlineStyle={
+            isEmailValid && emailTouched
+              ? 'border-none'
+              : 'border-redState border-[1px]'
+          }
+        />
+        {!isEmailExisted && emailTouched ? (
+          <p className="text-[12px] text-redState md:text-[14px] xl:text-[16px]">
+            존재하지 않는 이메일입니다.
+          </p>
+        ) : null}
+      </div>
       <div className="relative h-[44px] w-full xl:h-[64px]">
         <Input
           type={passwordType ? 'text' : 'password'}
           placeholder="비밀번호"
           onChange={handlePassword}
-          style={
+          outlineStyle={
             isPasswordValid && passwordTouched
               ? 'border-none'
               : 'border-redState border-[1px]'

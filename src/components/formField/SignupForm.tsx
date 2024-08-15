@@ -13,48 +13,74 @@ import { AuthResponse, ButtonData } from '@/types/auth';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 
 const SignUpForm: React.FC = () => {
+  //Input의 value를 저장한 state
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const [nickname, setNickname] = useState('');
 
-  // 유효성검사여부( 처음에 렌더링될 때는 이거를 토대로 에러메시지띄움)
+  //위 value의 유효성 여부를 저장한 state
+
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [isPasswordSame, setIsPasswordSame] = useState(false);
   const [isNicknameValid, setIsNicknameValid] = useState(false);
 
+  //서버에 내 입력 이메일 혹은 닉네임이 중복됨 여부를 저장한 state
+
   const [hasEmailExisted, setHasEmailExisted] = useState(false);
   const [hasNicknameExisted, setHasNicknameExisted] = useState(false);
 
+  //Input에 값을 입력했는가 여부를 저장한 state
+
   const [emailTouched, setEmailTouched] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
   const [passwordCheckTouched, setPasswordCheckTouched] = useState(false);
   const [nicknameTouched, setNicknameTouched] = useState(false);
 
-  const router = useRouter();
+  //password input의 타입 => 입력 값 보이고 안 보이고를 state로
 
   const [passwordType, setPasswordType] = useState(false);
   const [passwordCheckType, setPasswordCheckType] = useState(false);
 
+  //현재 sagment 가져옴 => .push 메소드로 다른 페이지(sagment)로 이동
+  const router = useRouter();
+
+  //이메일 input의 onChange 이벤트 핸들러
+
   function handleEmail(event: React.ChangeEvent<HTMLInputElement>) {
+    setEmailTouched(true);
     setEmail(event.target.value);
     setIsEmailValid(checkEmail(event.target.value));
-    setEmailTouched(true);
   }
+
+  //비밀번호 input의 onChange 이벤트 핸들러
+
   function handlePassword(event: React.ChangeEvent<HTMLInputElement>) {
+    setPasswordTouched(true);
     setPassword(event.target.value);
     setIsPasswordValid(checkPassword(event.target.value));
+    setIsPasswordSame(passwordCheck === event.target.value);
   }
+
+  //비밀번호 확인 input의 onChange 이벤트 핸들러
+
   function handlePasswordCheck(event: React.ChangeEvent<HTMLInputElement>) {
+    setPasswordCheckTouched(true);
     setPasswordCheck(event.target.value);
     setIsPasswordSame(password === event.target.value);
-    setPasswordCheckTouched(true);
   }
+
+  //닉네임 input의 onChange 이벤트 핸들러
+
   function handleNickname(event: React.ChangeEvent<HTMLInputElement>) {
+    setNicknameTouched(true);
     setNickname(event.target.value);
     setIsNicknameValid(checkNickname(event.target.value));
-    setNicknameTouched(true);
   }
+
+  //두 비밀번호 input의 입력값 눈모양 아이콘 클릭으로 바꾸는 함수
 
   const passwordVisibility = () => {
     setPasswordType(!passwordType);
@@ -64,8 +90,13 @@ const SignUpForm: React.FC = () => {
     setPasswordCheckType(!passwordCheckType);
   };
 
+  //모든 input 값이 조건을 충족시켰을 때 버튼 활성화
+
   const isButtonForm =
     isEmailValid && isPasswordValid && isPasswordSame && isNicknameValid;
+
+  //리액트 쿼리로 postUserInput 함수의 response와 errror 제어
+  //postUserInput: /auth가 url인 api POST 함수
 
   const mutation: UseMutationResult<AuthResponse, Error, ButtonData> =
     useMutation<AuthResponse, Error, ButtonData>({
@@ -86,6 +117,9 @@ const SignUpForm: React.FC = () => {
       },
     });
 
+  //userData: Post 시 request body에 넣을 객체 => axios 통해 자동으로 json화
+  //endpoint: url 정함
+
   const signupData = {
     userData: {
       email: email,
@@ -95,6 +129,8 @@ const SignUpForm: React.FC = () => {
     },
     endpoint: 'signUp',
   };
+
+  //onClick의 이벤트 핸들러 함수
 
   const signupButton: React.MouseEventHandler<HTMLButtonElement> = async (
     event,
@@ -111,7 +147,9 @@ const SignUpForm: React.FC = () => {
           type="email"
           placeholder="이메일"
           onChange={handleEmail}
-          style={`${isEmailValid ? 'border-none' : 'border-redState border-[1px]'}`}
+          outlineStyle={
+            isEmailValid ? 'outline-none' : 'outline-redState outline-[1px]'
+          }
         />
         {emailTouched && !isEmailValid ? (
           <p className="text-[12px] text-redState md:text-[14px] xl:text-[16px]">
@@ -132,7 +170,11 @@ const SignUpForm: React.FC = () => {
             type={passwordType ? 'text' : 'password'}
             placeholder="비밀번호"
             onChange={handlePassword}
-            style={`${isPasswordValid ? 'border-none' : 'border-redState border-[1px]'}`}
+            outlineStyle={
+              isPasswordValid
+                ? 'outline-none'
+                : 'outline-redState outline-[1px]'
+            }
           />
 
           <img
@@ -149,9 +191,9 @@ const SignUpForm: React.FC = () => {
           type={passwordCheckType ? 'text' : 'password'}
           placeholder="비밀번호 확인"
           onChange={handlePasswordCheck}
-          style={`${
-            isPasswordSame ? 'border-none' : 'border-redState border-[1px]'
-          }`}
+          outlineStyle={
+            isPasswordSame ? 'outline-none' : 'outline-redState outline-[1px]'
+          }
         />
         <img
           onClick={passwordCheckVisibility}
@@ -180,7 +222,11 @@ const SignUpForm: React.FC = () => {
         <Input
           placeholder="닉네임"
           onChange={handleNickname}
-          style={`${!hasNicknameExisted ? 'border-none' : 'border-redState border-[1px]'}`}
+          outlineStyle={
+            !hasNicknameExisted
+              ? 'outline-none'
+              : 'outline-redState outline-[1px]'
+          }
         />
       </div>
       {hasNicknameExisted ? (
