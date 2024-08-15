@@ -96,9 +96,7 @@ const LoginForm: React.FC = () => {
           placeholder="이메일"
           onChange={handleEmail}
           outlineStyle={
-            isEmailValid && emailTouched
-              ? 'border-none'
-              : 'border-redState border-[1px]'
+            isEmailValid ? 'outline-none' : 'outline-redState outline-[1px]'
           }
         />
         {!isEmailExisted && emailTouched ? (
@@ -113,9 +111,7 @@ const LoginForm: React.FC = () => {
           placeholder="비밀번호"
           onChange={handlePassword}
           outlineStyle={
-            isPasswordValid && passwordTouched
-              ? 'border-none'
-              : 'border-redState border-[1px]'
+            isPasswordValid ? 'outline-none' : 'outline-redState outline-[1px]'
           }
         />
         <img
@@ -125,7 +121,7 @@ const LoginForm: React.FC = () => {
           className="absolute right-[16px] top-3 h-[24px] w-[24px] cursor-pointer xl:top-[20px]"
         />
       </div>
-      {!isPasswordValid && passwordTouched ? (
+      {!isPasswordValid && !passwordTouched ? (
         <p
           className={`xl:text-[16px]} text-[12px] text-redState md:text-[14px]`}
         >
