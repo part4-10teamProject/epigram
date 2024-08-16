@@ -1,16 +1,23 @@
 export const highlightText = (
   text: string,
   searchTerm: string,
-): JSX.Element[] => {
-  if (!searchTerm) return [<span key="0">{text}</span>];
+): JSX.Element => {
+  if (!searchTerm) return <span>{text}</span>;
+
   const regex = new RegExp(`(${searchTerm})`, 'gi');
-  return text.split(regex).map((part, i) =>
-    regex.test(part) ? (
-      <span key={i} className="text-[#5195ee]" style={{ color: '#5195ee' }}>
-        {part}
-      </span>
-    ) : (
-      <span key={i}>{part}</span>
-    ),
+  const parts = text.split(regex);
+
+  return (
+    <>
+      {parts.map((part, index) =>
+        regex.test(part) ? (
+          <span key={index} className="text-highlight">
+            {part}
+          </span>
+        ) : (
+          <span key={index}>{part}</span>
+        ),
+      )}
+    </>
   );
 };

@@ -1,4 +1,3 @@
-// EpigramItem.tsx
 import React from 'react';
 import Tags from '@/components/common/Tags';
 import { HighlightedDataItem } from '@/types/search';
@@ -16,16 +15,10 @@ const EpigramItem: React.FC<EpigramItemProps> = ({ item, onClick }) => {
       onClick={() => onClick(item.id)}
     >
       <div className="flex flex-col items-start justify-between gap-1 font-custom text-xl md:gap-2 xl:gap-6 xl:text-2xl xl:leading-[28px]">
-        <p className="text-left text-black-600">
-          {typeof item.content === 'string'
-            ? item.content
-            : item.content.map((part, i) => <span key={i}>{part}</span>)}
-        </p>
+        <p className="text-left text-black-600">{item.content}</p>
         <p className="bottom-[24px] right-[24px] text-right text-blue-400">
           -&nbsp;
-          {typeof item.author === 'string'
-            ? item.author
-            : item.author.map((part, i) => <span key={i}>{part}</span>)}
+          {item.author}
           &nbsp;-
         </p>
       </div>
@@ -34,7 +27,7 @@ const EpigramItem: React.FC<EpigramItemProps> = ({ item, onClick }) => {
           ...item,
           tags: item.tags.map((tag) => ({
             ...tag,
-            name: tag.name,
+            name: tag.name, // JSX.Element[]로 이미 처리된 상태
           })),
         }}
         containerClassName={

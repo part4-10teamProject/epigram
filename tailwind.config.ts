@@ -1,11 +1,7 @@
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
-  content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
+  content: ['./src/**/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
       backgroundImage: {
@@ -51,6 +47,7 @@ const config: Config = {
           300: '#ABABAB',
           400: '#919191',
         },
+        highlight: '#5195EE',
         background: '#F5F7FA',
         redState: '#FF6577',
         line: {
