@@ -2,7 +2,7 @@ import { instance } from './AxiosInstance';
 import Cookies from 'js-cookie';
 
 export interface Addepigram {
-  tag: string[];
+  tags: string[];
   referenceUrl: string;
   referenceTitle: string;
   author: string;
