@@ -163,11 +163,7 @@ const Search = () => {
           onRemoveItem={removeRecentSearch}
         />
         <div>
-          {searchValue.trim().length === 0 ? (
-            <div className="flex h-[200px] w-full items-center justify-center text-xl xl:text-2xl">
-              검색어를 입력해 주세요.
-            </div>
-          ) : filteredData.length === 0 ? (
+          {filteredData.length === 0 ? (
             <div className="flex h-[200px] w-full items-center justify-center text-xl xl:text-2xl">
               ‘{query || '검색어'}’(이)가 없습니다
             </div>
