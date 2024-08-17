@@ -1,3 +1,4 @@
+import OauthButtons from '@/components/formField/OauthButtons';
 import React from 'react';
 
 const LoginLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -18,18 +19,7 @@ const LoginLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </p>
             <hr className="border-[2px] border-blue-400" />
           </div>
-          <div className="flex w-[96px] justify-between xl:w-[136px]">
-            <img
-              alt="google"
-              src="/assets/icons/logo_google.svg"
-              className="h-[40px] w-[40px] xl:h-[60px] xl:w-[60px]"
-            />
-            <img
-              alt="kakao"
-              src="/assets/icons/logo_kakao.svg"
-              className="h-[40px] w-[40px] xl:h-[60px] xl:w-[60px]"
-            />
-          </div>
+          <OauthButtons />
         </div>
       </div>
     </div>

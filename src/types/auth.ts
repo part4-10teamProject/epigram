@@ -25,3 +25,24 @@ export interface ButtonData {
   userData: UserData;
   endpoint: string;
 }
+
+//oauth
+
+export interface PostOauth {
+  redirectUri: string;
+  token: string;
+}
+
+export interface OauthResponse {
+  accessToken: string;
+  refreshToken: string;
+  user: {
+    id: number;
+    email: string;
+    nickname: string;
+    teamId: string;
+    updatedAt: string;
+    createdAt: string;
+    image?: string;
+  };
+}
