@@ -1,41 +1,38 @@
-import { redirect } from 'next/navigation';
+'use client';
 
-export async function getServerSideProps(context) {
-  const codeToken = context.query.code;
+import { postCodeToken } from '@/api/auth/auth';
+import { OauthResponse, PostOauth } from '@/types/auth';
+import { useMutation, UseMutationResult } from '@tanstack/react-query';
+import Cookies from 'js-cookie';
+import { useEffect } from 'react';
+import { redirect, useSearchParams } from 'next/navigation';
 
-  if (codeToken) {
-    console.log('Authorization Code:', codeToken);
+export default function GOOGLERedirectPage() {
+  const searchParams = useSearchParams();
+  const authCode = searchParams.get('code');
 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/auth/signIn/GOOGLE`,
-      {
-        method: 'POST',
-        headers: { 'Content-type': 'application/json' },
-        body: JSON.stringify({
-          redirectUri: 'http://localhost:3000/login/oauth/GOOGLE',
-          token: codeToken,
-        }),
+  const mutation: UseMutationResult<OauthResponse, Error, PostOauth> =
+    useMutation<OauthResponse, Error, PostOauth>({
+      mutationFn: postCodeToken,
+      onSuccess: (data) => {
+        const token = data.accessToken;
+        Cookies.set('token', token);
+        Cookies.set('userId', `${data.user.id}`);
+        redirect('/');
       },
-    );
-    if (response.status === 403) {
-      return {
-        redirect: { destination: '/signup', permanent: false },
-      };
-    }
-    const data = await response.json();
-    if (data.accessToken) {
-      return {
-        redirect: {
-          destination: '/login',
-          permanetnt: false,
+    });
+
+  useEffect(() => {
+    if (authCode) {
+      const requestBody: PostOauth = {
+        postBody: {
+          redirectUri: `http://localhost:3000/login/oauth/GOOGLE`,
+          token: authCode,
         },
+        endpoint: 'GOOGLE',
       };
+
+      mutation.mutate(requestBody);
     }
-  }
-
-  return { props: {} };
-}
-
-export default function OAuthCallback() {
-  return null;
+  }, [authCode]);
 }

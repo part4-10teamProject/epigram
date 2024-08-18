@@ -29,8 +29,11 @@ export interface ButtonData {
 //oauth
 
 export interface PostOauth {
-  redirectUri: string;
-  token: string;
+  postBody: {
+    redirectUri: string;
+    token: string;
+  };
+  endpoint: string;
 }
 
 export interface OauthResponse {
