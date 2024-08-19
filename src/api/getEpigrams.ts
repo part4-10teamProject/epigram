@@ -1,4 +1,4 @@
-import { instance } from './AxiosInstance';
+import { instance } from './client/AxiosInstance';
 import { FetchDataResponse } from '@/types/search';
 
 interface FetchDataParams {
