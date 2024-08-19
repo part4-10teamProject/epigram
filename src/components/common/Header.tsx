@@ -69,7 +69,7 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <nav className="flex h-[52px] items-center border-b border-b-line-100 bg-white px-[24px] md:h-[60px] md:px-[72px] xl:h-[80px] xl:px-[120px]">
+      <nav className="flex h-[52px] items-center border-b border-b-line-100 px-[24px] md:h-[60px] md:px-[72px] xl:h-[80px] xl:px-[120px]">
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex gap-3 md:gap-6 xl:gap-9">
             <div className="md:hidden" onClick={toggleMenu}>
