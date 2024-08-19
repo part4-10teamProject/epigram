@@ -26,6 +26,13 @@ export interface ButtonData {
   endpoint: string;
 }
 
+export interface ErrorDataAxios {
+  detail: {
+    password: { message: string };
+  };
+  message: string;
+}
+
 //oauth
 
 export interface PostOauth {

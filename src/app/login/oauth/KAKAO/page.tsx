@@ -5,11 +5,13 @@ import { OauthResponse, PostOauth } from '@/types/auth';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';
-import { redirect, useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 
-export default function KakaoRedirectPage() {
+export default function KakaoRedirect() {
   const searchParams = useSearchParams();
   const authCode = searchParams.get('code');
+
+  const router = useRouter();
 
   const mutation: UseMutationResult<OauthResponse, Error, PostOauth> =
     useMutation<OauthResponse, Error, PostOauth>({
@@ -18,7 +20,10 @@ export default function KakaoRedirectPage() {
         const token = data.accessToken;
         Cookies.set('token', token);
         Cookies.set('userId', `${data.user.id}`);
-        redirect('/');
+        router.push('/');
+      },
+      onError: (error) => {
+        console.error('Signing error', error);
       },
     });
 
@@ -26,13 +31,13 @@ export default function KakaoRedirectPage() {
     if (authCode) {
       const requestBody: PostOauth = {
         postBody: {
-          redirectUri: `http://localhost:3000/login/oauth/KAKAO`,
+          redirectUri: `http://localhost:3000/login/oauth/GOOGLE`,
           token: authCode,
         },
-        endpoint: 'KAKAO',
+        endpoint: 'GOOGLE',
       };
 
       mutation.mutate(requestBody);
     }
-  }, [authCode]);
+  }, [authCode, mutation]);
 }

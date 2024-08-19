@@ -2,12 +2,13 @@
 
 import { useState } from 'react';
 import { checkEmail, checkPassword } from './validation';
-import { AuthResponse, ButtonData } from '@/types/auth';
+import { AuthResponse, ButtonData, ErrorDataAxios } from '@/types/auth';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { postUserInput } from '@/api/auth/auth';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import Input from './Input';
+import { AxiosError } from 'axios';
 
 const LoginForm: React.FC = () => {
   //Input의 value를 저장한 state
@@ -15,8 +16,9 @@ const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [isEmailValid, setIsEmailValid] = useState(true);
-  const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [isPasswordExisted, setIsPasswordExisted] = useState(false);
 
   //서버에 내 입력 이메일의 존재 여부를 저장한 state
 
@@ -66,13 +68,15 @@ const LoginForm: React.FC = () => {
         const id = data.user.id;
         Cookies.set('token', token);
         Cookies.set('userId', `${id}`);
-
-        router.push('/login');
+        router.push('/');
       },
-      onError: (error: Error) => {
-        console.error('Error signing up:', error);
-        if (error.message === 'Request failed with status code 400') {
+      onError: (error: AxiosError<ErrorDataAxios>) => {
+        const errorResponse: ErrorDataAxios = error.response.data;
+        console.error('Error signing up:', errorResponse);
+        if (errorResponse.message === '존재하지 않는 이메일입니다') {
           setIsEmailExisted(false);
+        } else if (errorResponse.message === '비밀번호가 일치하지 않습니다') {
+          setIsPasswordExisted(false);
         }
       },
     });
@@ -105,29 +109,40 @@ const LoginForm: React.FC = () => {
           </p>
         ) : null}
       </div>
-      <div className="relative h-[44px] w-full xl:h-[64px]">
-        <Input
-          type={passwordType ? 'text' : 'password'}
-          placeholder="비밀번호"
-          onChange={handlePassword}
-          outlineStyle={
-            isPasswordValid ? 'outline-none' : 'outline-redState outline-[1px]'
-          }
-        />
-        <img
-          onClick={passwordVisibility}
-          src="/assets/icons/visibility.png"
-          alt="eye"
-          className="absolute right-[16px] top-3 h-[24px] w-[24px] cursor-pointer xl:top-[20px]"
-        />
+      <div>
+        <div className="relative h-[44px] w-full xl:h-[64px]">
+          <Input
+            type={passwordType ? 'text' : 'password'}
+            placeholder="비밀번호"
+            onChange={handlePassword}
+            outlineStyle={
+              isPasswordValid
+                ? 'outline-none'
+                : 'outline-redState outline-[1px]'
+            }
+          />
+          <img
+            onClick={passwordVisibility}
+            src="/assets/icons/visibility.png"
+            alt="eye"
+            className="absolute right-[16px] top-3 h-[24px] w-[24px] cursor-pointer xl:top-[20px]"
+          />
+        </div>
+        {!isPasswordValid && !passwordTouched ? (
+          <p
+            className={`xl:text-[16px]} text-[12px] text-redState md:text-[14px]`}
+          >
+            숫자, 영어 대소문자, 특수문자 포함 8자 이상 입력해주세요
+          </p>
+        ) : null}
+        {isPasswordExisted ? (
+          <p
+            className={`xl:text-[16px]} text-[12px] text-redState md:text-[14px]`}
+          >
+            비밀번호가 일치하지 않습니다
+          </p>
+        ) : null}
       </div>
-      {!isPasswordValid && !passwordTouched ? (
-        <p
-          className={`xl:text-[16px]} text-[12px] text-redState md:text-[14px]`}
-        >
-          숫자, 영어 대소문자, 특수문자 포함 8자 이상 입력해주세요
-        </p>
-      ) : null}
 
       <button
         type="submit"

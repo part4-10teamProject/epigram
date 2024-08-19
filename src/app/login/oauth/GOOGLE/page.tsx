@@ -5,11 +5,13 @@ import { OauthResponse, PostOauth } from '@/types/auth';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';
-import { redirect, useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 
-export default function GOOGLERedirectPage() {
+export default function GoogleRedirect() {
   const searchParams = useSearchParams();
   const authCode = searchParams.get('code');
+
+  const router = useRouter();
 
   const mutation: UseMutationResult<OauthResponse, Error, PostOauth> =
     useMutation<OauthResponse, Error, PostOauth>({
@@ -18,7 +20,10 @@ export default function GOOGLERedirectPage() {
         const token = data.accessToken;
         Cookies.set('token', token);
         Cookies.set('userId', `${data.user.id}`);
-        redirect('/');
+        router.push('/');
+      },
+      onError: (error) => {
+        console.error('Signing error', error);
       },
     });
 
@@ -34,5 +39,5 @@ export default function GOOGLERedirectPage() {
 
       mutation.mutate(requestBody);
     }
-  }, [authCode]);
+  }, [authCode, mutation]);
 }
