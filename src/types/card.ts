@@ -10,5 +10,5 @@ export interface ResponseData {
   author: string | JSX.Element;
   content: string | JSX.Element;
   id: number;
-  isLiked: boolean;
+  isLiked?: boolean;
 }
