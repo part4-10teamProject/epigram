@@ -4,12 +4,14 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { getNewFeedDatas } from '@/api/getNewFeedDatas';
 
 const FeedEpigramList = () => {
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery({
     queryKey: ['FeedDatas'],
     queryFn: ({ pageParam = 0 }) => getNewFeedDatas(pageParam, 6, 4),
     initialPageParam: undefined,
     getNextPageParam: (lastPage) => lastPage.nextCursor || undefined,
   });
+
+  if (isLoading) return <div>로딩중</div>;
 
   const epigrams = data?.pages.flatMap((page) => page.list) ?? [];
 
