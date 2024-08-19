@@ -71,7 +71,7 @@ const Search = () => {
 
   useEffect(() => {
     if (query.trim().length > 0) {
-      queryClient.removeQueries(['epigrams', query], { exact: true });
+      queryClient.removeQueries({ queryKey: ['epigrams', query], exact: true });
       refetch();
     }
   }, [query, queryClient, refetch]);

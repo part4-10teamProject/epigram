@@ -11,7 +11,7 @@ const EpigramItem: React.FC<EpigramItemProps> = ({ item, onClick }) => {
   return (
     <div
       key={item.id}
-      className="border-b border-gray-100 py-4 md:px-6 xl:py-6"
+      className="cursor-pointer border-b border-gray-100 py-4 md:px-6 xl:py-6"
       onClick={() => onClick(item.id)}
     >
       <div className="flex flex-col items-start justify-between gap-1 font-custom text-xl md:gap-2 xl:gap-6 xl:text-2xl xl:leading-[28px]">
