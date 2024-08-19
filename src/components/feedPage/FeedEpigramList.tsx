@@ -2,6 +2,7 @@
 import { getNewFeedDatas } from '@/api/client/getNewFeedDatas';
 import FeedCard from './FeedCard';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { LoadingSpinner } from '../common/LoadingSpinner';
 
 const FeedEpigramList = () => {
   const { data, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery({
@@ -11,7 +12,7 @@ const FeedEpigramList = () => {
     getNextPageParam: (lastPage) => lastPage.nextCursor || undefined,
   });
 
-  if (isLoading) return <div>로딩중</div>;
+  if (isLoading) return <LoadingSpinner />;
 
   const epigrams = data?.pages.flatMap((page) => page.list) ?? [];
 
