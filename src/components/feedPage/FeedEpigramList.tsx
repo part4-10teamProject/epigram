@@ -1,7 +1,7 @@
 'use client';
+import { getNewFeedDatas } from '@/api/client/getNewFeedDatas';
 import FeedCard from './FeedCard';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { getNewFeedDatas } from '@/api/getNewFeedDatas';
 
 const FeedEpigramList = () => {
   const { data, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery({
