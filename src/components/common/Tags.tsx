@@ -10,7 +10,7 @@ const Tags: React.FC<Props> = ({
   containerClassName,
   tagClassName,
 }) => {
-  const tagDataArray = responseData.tags;
+  const tagDataArray = responseData.tags ?? [];
 
   return (
     <div
