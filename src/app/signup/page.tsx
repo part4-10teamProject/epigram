@@ -1,10 +1,8 @@
-const SignUpPage = () => {
-  return (
-    <div>
-      <h1>SignUp Page</h1>
-      {/* SignUp page content */}
-    </div>
-  );
-};
+//import FormField from '@/components/formField/FormField';
+import SignUpForm from '@/components/formField/SignupForm';
 
-export default SignUpPage;
+function SignupPage() {
+  return <SignUpForm />;
+}
+
+export default SignupPage;

@@ -1,19 +1,26 @@
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
-  content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
+  content: ['./src/**/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        // 'striped'라는 이름으로 줄무늬 배경을 정의
+
+        'zigzag-pattern': "url('/assets/images/landing/img_zigzag.png')",
+
+        striped:
+          'repeating-linear-gradient(180deg, #f2f2f2, #f2f2f2 1px, #ffffff 1px, #ffffff 23px)',
       },
+      backgroundRepeat: {
+        'repeat-x': 'repeat-x',
+      },
+
       fontFamily: {
+        pretendard: ['Pretendard'],
         custom: ['IropkeBatang'],
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
@@ -52,7 +59,7 @@ const config: Config = {
           400: '#919191',
           500: '#AFBACD',
         },
-
+        highlight: '#5195EE',
         background: '#F5F7FA',
         redState: '#FF6577',
         line: {
@@ -69,7 +76,12 @@ const config: Config = {
         xl: ['1rem', { lineHeight: '1.625rem' }], // 16px / 26px
         '2xl': ['1.25rem', { lineHeight: '2rem' }], // 20px / 32px
         '3xl': ['2rem', { lineHeight: '2.625rem' }], // 32px / 42px
+        '4xl': ['2.5rem', { lineHeight: '4rem' }], // 40px / 64px
       },
+    },
+    transform: ['responsive', 'hover', 'focus'],
+    scale: {
+      '-1': '-1',
     },
   },
   plugins: [],
