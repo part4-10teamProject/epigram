@@ -1,35 +1,28 @@
 'use client';
 
+import { getDetailData } from '@/api/client/getDetailData';
+import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import DetailCommentList from '@/components/detailPage/DetailCommentList';
 import EpigramDetails from '@/components/detailPage/EpigramDetails';
-
-const mockData = {
-  likeCount: 4,
-  tags: [
-    {
-      name: '태그1111',
-      id: 1,
-    },
-    {
-      name: '태그2222',
-      id: 2,
-    },
-  ],
-  writerId: 1,
-  referenceUrl: 'https://www.naver.com',
-  referenceTitle: '왕도로 가는길!',
-  author: '앙드레 말로',
-  content: '오랫동안 꿈을 그리는 사람은 마침내 그 꿈을 닮아 간다.',
-  id: 356,
-  isLiked: true,
-};
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'next/navigation';
 
 const DetailPage = () => {
+  const { id } = useParams();
+  const Id = Array.isArray(id) ? id[0] : id;
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['detailData'],
+    queryFn: () => getDetailData(Id),
+  });
+
+  if (isLoading) return <LoadingSpinner />;
+
   return (
     <div>
       <div className="h-[300px] bg-striped md:h-[366px] xl:h-[400px]">
         <div className="mx-auto w-[312px] pt-10 md:w-[384px] xl:w-[640px]">
-          <EpigramDetails epigram={mockData} />
+          <EpigramDetails epigram={data} />
         </div>
       </div>
       <div className="relative h-screen bg-background">
