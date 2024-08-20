@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { QueryProvider } from '@/contexts/QueryProvider';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import ClientHeader from '@/components/common/Header';
 
 export const metadata: Metadata = {
@@ -17,7 +18,10 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <ClientHeader />
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          {children}
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryProvider>
       </body>
     </html>
   );
