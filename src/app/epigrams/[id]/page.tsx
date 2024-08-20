@@ -1,5 +1,6 @@
 'use client';
 
+import DetailCommentList from '@/components/detailPage/DetailCommentList';
 import EpigramDetails from '@/components/detailPage/EpigramDetails';
 
 const mockData = {
@@ -33,8 +34,10 @@ const DetailPage = () => {
       </div>
       <div className="relative h-screen bg-background">
         <div className="absolute left-0 top-[-15px] h-[40px] w-full bg-zigzag-pattern">
-          <div className="mx-auto mt-20 w-[312px] md:w-[384px] xl:w-[640px]">
-            <div>댓글내용</div>
+          <div className="mx-auto mt-20 md:w-[384px] xl:w-[640px]">
+            <div>
+              <DetailCommentList />
+            </div>
           </div>
         </div>
       </div>

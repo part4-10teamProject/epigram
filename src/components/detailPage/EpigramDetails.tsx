@@ -66,7 +66,7 @@ const EpigramDetails: React.FC<EpigramProps> = ({ epigram }) => {
           {likeCount}
         </button>
         <Link href={`${epigram.referenceUrl}`}>
-          <div className="flex items-center gap-[5px] rounded-full bg-[#F2F2F2] px-[14px] py-[6px] text-[#ABABAB] xl:text-2xl">
+          <div className="flex items-center gap-[5px] rounded-full bg-[#F2F2F2] px-[14px] py-[6px] text-lg text-[#ABABAB] xl:text-2xl">
             {epigram.referenceTitle}
             <Image
               className="h-5 w-5 xl:h-9 xl:w-9"
