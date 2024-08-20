@@ -36,11 +36,8 @@ export interface ErrorDataAxios {
 //oauth
 
 export interface PostOauth {
-  postBody: {
-    redirectUri: string;
-    token: string;
-  };
-  endpoint: string;
+  redirectUri: string;
+  token: string;
 }
 
 export interface OauthResponse {
