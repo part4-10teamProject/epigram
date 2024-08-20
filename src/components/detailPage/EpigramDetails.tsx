@@ -4,24 +4,31 @@ import Tags from '../common/Tags';
 import toggle from '../../../public/assets/images/toggle.png';
 import Image from 'next/image';
 import Link from 'next/link';
+import exclamation from '../../../public/assets/images/exclamation_mark.png';
 import like from '../../../public/assets/icons/like.svg';
 import move from '../../../public/assets/images/move.png';
 import redlike from '../../../public/assets/icons/redlike.svg';
 import { Epigrams } from '@/types/epigramList';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
 import { instance } from '@/api/client/AxiosInstance';
+import { useRouter } from 'next/navigation';
+import { deleteEpigram } from '@/api/client/deleteEpigram';
+import { Modal } from '../common/Modal';
 
 interface EpigramProps {
   epigram: Epigrams;
 }
 
 const EpigramDetails: React.FC<EpigramProps> = ({ epigram }) => {
-  const [isMyPost, setIsMyPost] = useState(true);
+  const [isMyPost, setIsMyPost] = useState(false);
   const [isDropDown, setIsDropDown] = useState(false);
   const [isLike, setIsLike] = useState(epigram.isLiked);
   const [likeCount, setLikeCount] = useState(epigram.likeCount);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [deleteSuccesModal, setDeleteSuccesModal] = useState(false);
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const handleLikeToggle = async () => {
     const token = Cookies.get('token');
@@ -49,11 +56,28 @@ const EpigramDetails: React.FC<EpigramProps> = ({ epigram }) => {
     }
   };
 
+  const moveMainPage = () => {
+    router.push('/epigrams');
+  };
+
+  const deleteEpigramMutation = useMutation({
+    mutationFn: () => deleteEpigram(epigram.id),
+    onSuccess: moveMainPage,
+  });
+
+  const handledelete = () => {
+    deleteEpigramMutation.mutate();
+  };
+
   useEffect(() => {
+    const userId = Cookies.get('userId');
+    if (Number(userId) === epigram.writerId) {
+      setIsMyPost(true);
+    }
     return () => {
       queryClient.removeQueries({ queryKey: ['detailData'] });
     };
-  }, [queryClient]);
+  }, [queryClient, epigram.writerId]);
 
   return (
     <div>
@@ -72,11 +96,47 @@ const EpigramDetails: React.FC<EpigramProps> = ({ epigram }) => {
                   <div className="rounded- h-[40px] w-[97px] rounded-bl-[0px] rounded-br-[0px] rounded-tl-[16px] rounded-tr-[16px] bg-background px-6 py-2 text-lg hover:bg-blue-300 xl:h-[56px] xl:w-[134px] xl:px-8 xl:py-3 xl:text-2xl">
                     <Link href="/">수정하기</Link>
                   </div>
-                  <div className="h-[40px] w-[97px] rounded-bl-[16px] rounded-br-[16px] rounded-tl-[0px] rounded-tr-[0px] bg-background px-6 py-2 text-lg hover:bg-blue-300 xl:h-[56px] xl:w-[134px] xl:px-8 xl:py-3 xl:text-2xl">
+                  <div
+                    onClick={() => setDeleteModal(true)}
+                    className="h-[40px] w-[97px] rounded-bl-[16px] rounded-br-[16px] rounded-tl-[0px] rounded-tr-[0px] bg-background px-6 py-2 text-lg hover:bg-blue-300 xl:h-[56px] xl:w-[134px] xl:px-8 xl:py-3 xl:text-2xl"
+                  >
                     삭제하기
                   </div>
                 </div>
               )}
+              <Modal
+                isOpen={deleteModal}
+                onClose={() => setDeleteModal(false)}
+                icon={<Image src={exclamation} alt="모달이미지" />}
+                message="게시물을 삭제하시겠어요?"
+                content="게시물은 삭제 후 복구할 수 없어요."
+                buttons={[
+                  {
+                    text: '취소',
+                    onClick: () => setDeleteModal(false),
+                    type: 'secondary',
+                  },
+                  {
+                    text: '삭제하기',
+                    onClick: () => {
+                      setDeleteModal(false);
+                      setDeleteSuccesModal(true);
+                    },
+                    type: 'primary',
+                  },
+                ]}
+              />
+              <Modal
+                isOpen={deleteSuccesModal}
+                onClose={handledelete}
+                message="게시물이 삭제되었습니다"
+                buttons={[
+                  {
+                    text: '확인',
+                    onClick: handledelete,
+                  },
+                ]}
+              />
             </div>
           )}
         </div>
