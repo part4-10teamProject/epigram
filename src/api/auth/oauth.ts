@@ -3,7 +3,6 @@
 import { instance } from '@/api/client/AxiosInstance';
 import Cookies from 'js-cookie';
 import { PostOauth } from '@/types/auth';
-import { error } from 'console';
 import { useEffect } from 'react';
 
 //redirect된 메인 페이지에서 동작
@@ -12,15 +11,17 @@ import { useEffect } from 'react';
 //존재하면 동작하는 걸로로
 
 export const getCodeTokenKakao = () => {
-  fetch(
-    `https://kauth.kakao.com/oauth/authorize?grant_type=authorization_code&client_id=${process.env.NEXT_PUBLIC_KAKAO_JS_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}&response_type=code&endpoint=kakao`,
-    {},
-  );
+  window.location.href = `https://kauth.kakao.com/oauth/authorize?grant_type=authorization_code&client_id=${process.env.NEXT_PUBLIC_KAKAO_JS_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}&response_type=code&endpoint=kakao`;
+  return 'KAKAO';
+};
+export const getCodeTokenGoogle = () => {
+  window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile&endpoint=google`;
+  return 'GOOGLE';
 };
 
-export const usePostCodeToken = (authCode) => {
+export const usePostCodeToken = (authCode, endpoint) => {
   if (!authCode) {
-    console.log(error);
+    console.log('Error');
   }
 
   async function postCodeToken(requestBody: PostOauth) {

@@ -64,10 +64,9 @@ const LoginForm: React.FC = () => {
       onSuccess: (data: AuthResponse) => {
         console.log('User signed up successfully:', data);
 
-        const token = data.accessToken;
-        const id = data.user.id;
-        Cookies.set('token', token);
-        Cookies.set('userId', `${id}`);
+        Cookies.set('token', data.accessToken);
+        Cookies.set('userId', `${data.user.id}`);
+        Cookies.set('refresh', data.refreshToken);
         router.push('/');
       },
       onError: (error: AxiosError<ErrorDataAxios>) => {

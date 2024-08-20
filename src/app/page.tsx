@@ -1,8 +1,6 @@
 import Image from 'next/image';
 import { landingImages } from '../utils/landingImages';
 import ButtonStart from '@/components/common/ButtonStart';
-import { useSearchParams } from 'next/navigation';
-import { postCodeToken } from '@/api/auth/oauth';
 
 const imagesForCard = (key: string) => {
   return landingImages[key].map((image, index) => (
@@ -18,10 +16,6 @@ const imagesForCard = (key: string) => {
 };
 
 export default function Home() {
-  const searchParams = useSearchParams();
-  const authCode = searchParams.get('code');
-  postCodeToken(authCode);
-
   return (
     <div className="mx-auto flex w-full flex-col items-center">
       <div className="flex h-[672px] w-full flex-col items-center gap-[168px] bg-striped md:h-[676px] md:gap-[106px] xl:h-[960px] xl:gap-[214px]">
