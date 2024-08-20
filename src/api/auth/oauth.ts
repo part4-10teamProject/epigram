@@ -1,6 +1,6 @@
 'use client';
 
-import { instance } from '../AxiosInstance';
+import { instance } from '@/api/client/AxiosInstance';
 import Cookies from 'js-cookie';
 import { PostOauth } from '@/types/auth';
 import { error } from 'console';

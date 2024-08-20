@@ -1,7 +1,7 @@
 'use client';
 
 import { AuthResponse, ButtonData } from '@/types/auth';
-import { instance } from '../AxiosInstance';
+import { instance } from '@/api/client/AxiosInstance';
 
 export async function postUserInput(
   buttonData: ButtonData,

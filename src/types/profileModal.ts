@@ -7,5 +7,5 @@ export interface ProfileModalProps {
 interface Writer {
   id: number;
   nickname: string;
-  image: string;
+  image: string | null;
 }
