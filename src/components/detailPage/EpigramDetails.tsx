@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Tags from '../common/Tags';
 import toggle from '../../../public/assets/images/toggle.png';
 import Image from 'next/image';
@@ -8,6 +8,9 @@ import like from '../../../public/assets/icons/like.svg';
 import move from '../../../public/assets/images/move.png';
 import redlike from '../../../public/assets/icons/redlike.svg';
 import { Epigrams } from '@/types/epigramList';
+import { useQueryClient } from '@tanstack/react-query';
+import Cookies from 'js-cookie';
+import { instance } from '@/api/client/AxiosInstance';
 
 interface EpigramProps {
   epigram: Epigrams;
@@ -18,6 +21,39 @@ const EpigramDetails: React.FC<EpigramProps> = ({ epigram }) => {
   const [isDropDown, setIsDropDown] = useState(false);
   const [isLike, setIsLike] = useState(epigram.isLiked);
   const [likeCount, setLikeCount] = useState(epigram.likeCount);
+  const queryClient = useQueryClient();
+
+  const handleLikeToggle = async () => {
+    const token = Cookies.get('token');
+
+    try {
+      if (isLike) {
+        await instance.delete(`/epigrams/${epigram.id}/like`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setIsLike(false);
+        setLikeCount(likeCount - 1);
+      } else {
+        await instance.post(
+          `/epigrams/${epigram.id}/like`,
+          {},
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
+        setIsLike(true);
+        setLikeCount(likeCount + 1);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      queryClient.removeQueries({ queryKey: ['detailData'] });
+    };
+  }, [queryClient]);
 
   return (
     <div>
@@ -52,7 +88,10 @@ const EpigramDetails: React.FC<EpigramProps> = ({ epigram }) => {
         </div>
       </div>
       <div className="absolute left-1/2 top-[300px] flex -translate-x-1/2 transform items-center gap-4 md:top-[365px] xl:top-[400px]">
-        <button className="flex items-center gap-1 rounded-full bg-black-600 px-[14px] py-[6px] text-white">
+        <button
+          onClick={handleLikeToggle}
+          className="flex items-center gap-1 rounded-full bg-black-600 px-[14px] py-[6px] text-white"
+        >
           {isLike ? (
             <Image
               src={redlike}
