@@ -3,6 +3,7 @@ import './globals.css';
 import { QueryProvider } from '@/contexts/QueryProvider';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import ClientHeader from '@/components/common/Header';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 export const metadata: Metadata = {
   title: 'epigram',
@@ -17,10 +18,12 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <ClientHeader />
         <QueryProvider>
-          {children}
-          <ReactQueryDevtools initialIsOpen={false} />
+          <AuthProvider>
+            <ClientHeader />
+            {children}
+            <ReactQueryDevtools initialIsOpen={false} />
+          </AuthProvider>
         </QueryProvider>
       </body>
     </html>

@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 
 const HeaderOnlyLogo: React.FC = () => {
   const router = useRouter();
@@ -35,25 +36,18 @@ const Header: React.FC = () => {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-
+  const { isLoggedIn, userInfo } = useAuth();
+  
   useEffect(() => {
-    const checkLoginStatus = (): void => {
-      const loggedIn = localStorage.getItem('isLoggedIn') === 'true'; // 로컬 스토리지에서 로그인상태를 가져옵니다. 아무값도 저장 안되있으니까 undefined로 false가 될겁니다.
-      setIsLoggedIn(loggedIn); // 만약 로그인상태로 테스트하고 싶으면 개발자도구 열고 콘솔창에서 localStorage.setItem('isLoggedIn', 'true'); 입력하세요
-
-      if (
-        !loggedIn &&
-        pathname !== '/login' &&
-        pathname !== '/signup' &&
-        pathname !== '/'
-      ) {
-        router.push('/login');
-      }
-    };
-
-    checkLoginStatus();
-  }, [pathname, router]);
+    if (
+      !isLoggedIn &&
+      pathname !== '/login' &&
+      pathname !== '/signup' &&
+      pathname !== '/'
+    ) {
+      router.push('/login');
+    }
+  }, [pathname, router, isLoggedIn]);
 
   const toggleMenu = (): void => {
     setIsMenuOpen(!isMenuOpen);
@@ -67,6 +61,9 @@ const Header: React.FC = () => {
     router.push('/mypage');
   };
 
+  const userProfile = userInfo?.image
+    ? userInfo.image
+    : '/assets/icons/default_user.svg';
   return (
     <>
       <nav className="flex h-[52px] items-center border-b border-b-line-100 px-[24px] md:h-[60px] md:px-[72px] xl:h-[80px] xl:px-[120px]">
@@ -113,14 +110,16 @@ const Header: React.FC = () => {
             onClick={handleProfileClick}
           >
             <Image
-              src="/assets/icons/default_user.svg"
+              src={userProfile}
               alt="User Profile"
               width={16}
               height={16}
               className="h-[16px] w-[16px] xl:h-[24px] xl:w-[24px]"
             />
             {isLoggedIn && (
-              <p className="text-md text-gray-300 xl:text-lg">김코드</p>
+              <p className="text-md text-gray-300 xl:text-lg">
+                {userInfo?.nickname}
+              </p>
             )}
           </div>
         </div>

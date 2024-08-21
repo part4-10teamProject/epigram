@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import Input from './Input';
 import { AxiosError } from 'axios';
+import { useAuth } from '@/contexts/AuthContext';
 
 const LoginForm: React.FC = () => {
   //Input의 value를 저장한 state
@@ -32,6 +33,9 @@ const LoginForm: React.FC = () => {
   const router = useRouter();
 
   //이메일 및 비밀번호 input의 onChange 이벤트 핸들러
+
+  //useContext 사용
+  const { login } = useAuth();
 
   function handleEmail(event: React.ChangeEvent<HTMLInputElement>) {
     setEmail(event.target.value);
@@ -67,6 +71,7 @@ const LoginForm: React.FC = () => {
         Cookies.set('token', data.accessToken);
         Cookies.set('userId', `${data.user.id}`);
         Cookies.set('refresh', data.refreshToken);
+        login(data.accessToken);
         router.push('/');
       },
       onError: (error: AxiosError<ErrorDataAxios>) => {
