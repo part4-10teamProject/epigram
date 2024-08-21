@@ -15,7 +15,7 @@ interface UserInfo {
 
 interface AuthContextType {
   isLoggedIn: boolean;
-  userInfo: UserInfo | null; // userInfo가 없을 수도 있으므로 null을 허용합니다.
+  userInfo: UserInfo | null; 
   login: (token: string) => void;
   logout: () => void;
 }
@@ -38,14 +38,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [refetch]);
 
   const login = (token) => {
-    // 로그인 후 쿠키에 토큰 저장
     Cookies.set('token', token);
     setIsLoggedIn(true);
     refetch();
   };
 
   const logout = () => {
-    // 로그아웃 시 쿠키에서 토큰 제거
     Cookies.remove('token');
     setIsLoggedIn(false);
   };

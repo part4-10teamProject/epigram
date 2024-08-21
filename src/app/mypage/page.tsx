@@ -3,22 +3,15 @@ import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 
 const MyPage: React.FC = () => {
-  const { isLoggedIn, login, logout } = useAuth();
-
+  const { logout } = useAuth();
+  // 이런식으로 로그인 상태쓰면 됩니다.
   return (
     <div>
       <h1>Welcome to the MyPage!</h1>
-      {isLoggedIn ? (
-        <>
-          <p>You are logged in!</p>
-          <button onClick={logout}>로그아웃</button>
-        </>
-      ) : (
-        <>
-          <p>You are not logged in.</p>
-          <button onClick={login}>로그인</button>
-        </>
-      )}
+      <p>You are logged in!</p>
+      <button className="border bg-yellow-300" onClick={logout}>
+        로그아웃
+      </button>
     </div>
   );
 };
