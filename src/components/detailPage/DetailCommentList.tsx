@@ -4,16 +4,29 @@ import Image from 'next/image';
 import defaultProfile from '../../../public/assets/images/default_profile.png';
 import Comment from '../common/Comment';
 import React, { useState } from 'react';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { getDetailCommentData } from '@/api/client/getDetailCommentData';
 import { LoadingSpinner } from '../common/LoadingSpinner';
+import { addComment } from '@/api/client/addComment';
 
 interface IdProps {
   id: number;
 }
 
+interface AddCommentType {
+  epigramId: number;
+  isPrivate: boolean;
+  content: string;
+}
+
 const DetailCommentList: React.FC<IdProps> = ({ id }) => {
   const [commentInput, setCommentInput] = useState('');
+  const queryClient = useQueryClient();
+
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentInput(e.target.value);
   };
@@ -25,15 +38,35 @@ const DetailCommentList: React.FC<IdProps> = ({ id }) => {
     getNextPageParam: (lastPage) => lastPage.nextCursor || undefined,
   });
 
+  const AddCommentMutation = useMutation({
+    mutationFn: (content: AddCommentType) => addComment(content),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ['detailComment'] }),
+  });
+
+  const handleAddMutation = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    const content: AddCommentType = {
+      epigramId: id,
+      isPrivate: false,
+      content: commentInput,
+    };
+    AddCommentMutation.mutate(content);
+    setCommentInput('');
+  };
+
   const comments = data?.pages.flatMap((page) => page.list) ?? [];
+  const { totalCount } = data?.pages[0] ?? 0;
 
   if (isLoading) return <LoadingSpinner />;
-
   return (
     <div>
       <div className="flex flex-col gap-10">
         <div className="mx-auto">
-          <h1 className="pb-6 text-xl font-semibold xl:text-2xl">댓글</h1>
+          <h1 className="pb-6 text-xl font-semibold xl:text-2xl">
+            댓글 ({totalCount})
+          </h1>
           <div className="flex gap-6">
             <div>
               <Image
@@ -53,7 +86,10 @@ const DetailCommentList: React.FC<IdProps> = ({ id }) => {
               />
               {commentInput && (
                 <div className="text-end">
-                  <button className="mt-3 rounded-lg bg-black-500 px-4 py-2 text-white">
+                  <button
+                    onClick={handleAddMutation}
+                    className="mt-3 rounded-lg bg-black-500 px-4 py-2 text-white"
+                  >
                     저장
                   </button>
                 </div>
