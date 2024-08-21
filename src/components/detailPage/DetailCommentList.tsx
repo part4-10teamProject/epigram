@@ -3,54 +3,32 @@
 import Image from 'next/image';
 import defaultProfile from '../../../public/assets/images/default_profile.png';
 import Comment from '../common/Comment';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { getDetailCommentData } from '@/api/client/getDetailCommentData';
+import { LoadingSpinner } from '../common/LoadingSpinner';
 
-const items = [
-  {
-    id: 66,
-    content: '테스트하는중',
-    isPrivate: true,
-    createdAt: '2024-07-29T05:05:39.994Z',
-    updatedAt: '2024-07-29T05:05:39.994Z',
-    writer: {
-      id: 107,
-      nickname: '닉네임',
-      image: null,
-    },
-    epigramId: 154,
-  },
-  {
-    id: 66,
-    content: '테스트하는중',
-    isPrivate: true,
-    createdAt: '2024-07-29T05:05:39.994Z',
-    updatedAt: '2024-07-29T05:05:39.994Z',
-    writer: {
-      id: 107,
-      nickname: '닉네임',
-      image: null,
-    },
-    epigramId: 154,
-  },
-  {
-    id: 66,
-    content: '테스트하는중',
-    isPrivate: true,
-    createdAt: '2024-07-29T05:05:39.994Z',
-    updatedAt: '2024-07-29T05:05:39.994Z',
-    writer: {
-      id: 107,
-      nickname: '닉네임',
-      image: null,
-    },
-    epigramId: 154,
-  },
-];
-const DetailCommentList = () => {
+interface IdProps {
+  id: number;
+}
+
+const DetailCommentList: React.FC<IdProps> = ({ id }) => {
   const [commentInput, setCommentInput] = useState('');
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentInput(e.target.value);
   };
+
+  const { data, isLoading, fetchNextPage } = useInfiniteQuery({
+    queryKey: ['detailComment'],
+    queryFn: ({ pageParam = 0 }) => getDetailCommentData(id, pageParam, 3, 4),
+    initialPageParam: undefined,
+    getNextPageParam: (lastPage) => lastPage.nextCursor || undefined,
+  });
+
+  const comments = data?.pages.flatMap((page) => page.list) ?? [];
+
+  if (isLoading) return <LoadingSpinner />;
+
   return (
     <div>
       <div className="flex flex-col gap-10">
@@ -83,10 +61,10 @@ const DetailCommentList = () => {
             </form>
           </div>
         </div>
-        {items.map((item) => (
-          <div className="border-t border-[#CFDBEA]">
+        {comments.map((comment) => (
+          <div key={comment.id} className="border-t border-[#CFDBEA]">
             <Comment
-              item={item}
+              item={comment}
               isMyComment={true}
               onDelete={() => console.log('삭제')}
               onEdit={() => console.log('수정')}
@@ -96,6 +74,7 @@ const DetailCommentList = () => {
       </div>
       <div className="mt-20 text-center">
         <button
+          onClick={() => fetchNextPage()}
           className={`rounded-full border border-[#CFDBEA] px-[20px] py-3 text-lg font-medium text-[#8B9DBC] xl:px-[50px] xl:text-2xl`}
         >
           + 댓글 더보기

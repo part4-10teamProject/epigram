@@ -27,9 +27,10 @@ const DetailPage = () => {
       </div>
       <div className="relative h-screen bg-background">
         <div className="absolute left-0 top-[-15px] h-[40px] w-full bg-zigzag-pattern">
-          <div className="mx-auto mt-20 md:w-[384px] xl:w-[640px]">
-            <div>
-              <DetailCommentList />
+          <div className="bg-background">
+            {/*이 부분에 백그라운드 색깔을 안넣으면 더보기를 클릭해서 데이터를 더 불러왔을 때 배경이 하얀색으로 바뀜*/}
+            <div className="mx-auto mt-20 md:w-[384px] xl:w-[640px]">
+              <DetailCommentList id={data.id} />
             </div>
           </div>
         </div>
