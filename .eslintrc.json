@@ -1,3 +1,19 @@
 {
-  "extends": "next/core-web-vitals"
+  "parser": "@typescript-eslint/parser", // TypeScript 파서를 사용
+  "plugins": ["@typescript-eslint"], // @typescript-eslint 플러그인 사용
+  "extends": [
+    "react-app",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ], // TypeScript 규칙 추가
+  "rules": {
+    "no-var": "error", // var 금지
+    "no-multiple-empty-lines": "error", // 여러 줄 공백 금지
+    "no-console": ["warn", { "allow": ["warn", "error", "info"] }], // console.log() 금지까지는 아니고 노란밑줄로 경고
+    "eqeqeq": "error", // 비교 연산자, == 말고 ===를 사용하도록 강제
+    "dot-notation": "error", // 객체 프로퍼티에 접근할 때 점표기법으로 사용하게 강제함
+    "@typescript-eslint/no-unused-vars": "warn", // TypeScript에서 사용되지 않는 변수 경고
+    "@typescript-eslint/no-explicit-any": "error", // any 타입 사용 불가
+    "react/jsx-no-useless-fragment": "error" // 불필요한 Fragment(<></>) 사용 금지
+  }
 }
