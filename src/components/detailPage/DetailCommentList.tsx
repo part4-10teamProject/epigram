@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import defaultProfile from '../../../public/assets/images/default_profile.png';
 import Comment from '../common/Comment';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   useInfiniteQuery,
   useMutation,
@@ -44,7 +44,7 @@ const DetailCommentList: React.FC<IdProps> = ({ id }) => {
     setCommentInput(e.target.value);
   };
 
-  const { data, isLoading, fetchNextPage } = useInfiniteQuery({
+  const { data, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ['detailComment'],
     queryFn: ({ pageParam = 0 }) => getDetailCommentData(id, pageParam, 3, 4),
     initialPageParam: undefined,
@@ -97,6 +97,12 @@ const DetailCommentList: React.FC<IdProps> = ({ id }) => {
   const comments = data?.pages.flatMap((page) => page.list) ?? [];
   const { totalCount } = data?.pages[0] ?? 0;
   const userId = Number(Cookies.get('userId'));
+
+  useEffect(() => {
+    return () => {
+      queryClient.removeQueries({ queryKey: ['detailComment'] });
+    };
+  }, [queryClient]);
 
   if (isLoading) return <LoadingSpinner />;
 
@@ -154,10 +160,11 @@ const DetailCommentList: React.FC<IdProps> = ({ id }) => {
       </div>
       <div className="mt-20 text-center">
         <button
+          disabled={!hasNextPage}
           onClick={() => fetchNextPage()}
-          className={`rounded-full border border-[#CFDBEA] px-[20px] py-3 text-lg font-medium text-[#8B9DBC] xl:px-[50px] xl:text-2xl`}
+          className={`${hasNextPage ? 'hover:bg-[#919191] hover:text-black-950' : 'border-[#CFDBEA]'} rounded-full border border-[#CFDBEA] px-[20px] py-3 text-lg font-medium text-[#8B9DBC] xl:px-[50px] xl:text-2xl`}
         >
-          + 댓글 더보기
+          {hasNextPage ? '+ 댓글 더보기' : '댓글 없음'}
         </button>
       </div>
     </div>

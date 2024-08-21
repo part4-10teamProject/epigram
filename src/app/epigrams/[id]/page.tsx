@@ -5,11 +5,16 @@ import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import DetailCommentList from '@/components/detailPage/DetailCommentList';
 import EpigramDetails from '@/components/detailPage/EpigramDetails';
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 const DetailPage = () => {
   const { id } = useParams();
   const Id = Array.isArray(id) ? id[0] : id;
+  const router = useRouter();
+
+  const moveLoginPage = () => {
+    router.push('/login');
+  };
 
   const { data, isLoading } = useQuery({
     queryKey: ['detailData'],
@@ -17,7 +22,7 @@ const DetailPage = () => {
   });
 
   if (isLoading) return <LoadingSpinner />;
-  if (!data) return <div>로그인페이지로 이동하세요</div>;
+  if (!data) return moveLoginPage(); // 로그인이 안된상태거나 토큰이 만료된 상태에서 상세페이지로 이동하면 로그인 페이지로 이동하는 부분
 
   return (
     <div>
