@@ -1,3 +1,5 @@
+'use client';
+
 import { getCodeTokenGoogle, getCodeTokenKakao } from '@/api/auth/oauth';
 
 const OauthButtons: React.FC = (token) => {

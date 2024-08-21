@@ -15,7 +15,7 @@ const imagesForCard = (key: string) => {
   ));
 };
 
-export default function Home() {
+export default function Home(endpoint: string) {
   return (
     <div className="mx-auto flex w-full flex-col items-center">
       <div className="flex h-[672px] w-full flex-col items-center gap-[168px] bg-striped md:h-[676px] md:gap-[106px] xl:h-[960px] xl:gap-[214px]">
