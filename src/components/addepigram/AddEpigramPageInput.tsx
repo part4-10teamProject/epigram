@@ -4,8 +4,12 @@ import { AddEpigramPost } from '@/api/Addepigramapi';
 import { useMutation } from '@tanstack/react-query';
 import { ChangeEvent, useState } from 'react';
 import React from 'react';
-import Cookies from 'js-cookie';
 import { Addepigram } from '@/api/Addepigramapi';
+import { useRouter } from 'next/navigation';
+
+interface epigrams {
+  id: number;
+}
 
 const AddEpigramPageInput: React.FC = () => {
   const [tags, setTag] = useState<string[]>([]);
@@ -14,9 +18,13 @@ const AddEpigramPageInput: React.FC = () => {
   const [author, setAuthor] = useState('');
   const [content, setContent] = useState('');
 
+  const router = useRouter();
+
   const EpigramPostMutation = useMutation({
     mutationFn: (epigram: Addepigram) => AddEpigramPost(epigram),
-    onSuccess: () => Cookies.set('isNewEpigram', 'true', { expires: 1 }),
+    onSuccess: (epigram: epigrams) => {
+      router.push(`/epigrams/${epigram.id}`);
+    },
     onError: (error) => console.error(error),
   });
 
@@ -87,53 +95,53 @@ const AddEpigramPageInput: React.FC = () => {
         <div className="pt-[80px]">
           <div>
             <div>
-              <p className="w-[600px] pb-2 text-[20px] font-semibold leading-8">
+              <p className="h-[26px] w-[38px] pb-2 text-[14px] font-semibold leading-6 xl:w-[600px] xl:text-[20px] xl:leading-8">
                 {' '}
                 저자{' '}
-                <span className="w-[500px] text-[24px] leading-8 text-red-500">
+                <span className="h-[26px] w-[9px] text-red-500 xl:w-[500px] xl:text-[24px] xl:leading-8">
                   {' '}
                   ⚹{' '}
                 </span>
               </p>
             </div>
-            <div className="h-[32px] w-[333px] gap-6 pt-3">
-              <label className="h-[32px] w-[107px] gap-2">
+            <div className="h-[26px] w-[268px] gap-4 xl:h-[32px] xl:w-[333px] xl:gap-6 xl:pt-3">
+              <label className="h-[26px] w-[88px] md:gap-1 xl:h-[32px] xl:w-[107px] xl:gap-2">
                 <input
                   type="radio"
                   name="직접 입력"
-                  className="h-[24px] w-[24px] rounded-[40px] border-2 border-blue-300 align-middle"
+                  className="h-[20px] w-[20px] rounded-[10px] border-2 border-blue-300 align-middle xl:h-[24px] xl:w-[24px] xl:rounded-[40px]"
                   color="black"
                 />{' '}
-                <span className="h-[32px] w-[75px] pl-1 align-middle text-[20px] font-medium leading-8">
+                <span className="h-[26px] w-[60px] pl-1 align-middle text-[16px] font-medium leading-6 xl:h-[32px] xl:w-[75px] xl:text-[20px] xl:leading-8">
                   직접 입력
                 </span>
               </label>
-              <label className="h-[32px] w-[111px] gap-2 pl-5">
+              <label className="h-[26px] w-[92px] gap-2 pl-[10px] xl:h-[32px] xl:w-[111px] xl:gap-2">
                 <input
                   type="radio"
                   name="직접 입력"
-                  className="h-[24px] w-[24px] rounded-[40px] border-2 border-blue-300 align-middle"
+                  className="h-[20px] w-[20px] rounded-[10px] border-2 border-blue-300 align-middle xl:h-[24px] xl:w-[24px] xl:rounded-[40px]"
                   color="black"
                 />{' '}
-                <span className="h-[32px] w-[79px] pl-1 align-middle text-[20px] font-medium leading-8">
+                <span className="h-[26px] w-[64px] align-middle text-[16px] font-medium leading-6 xl:h-[32px] xl:w-[79px] xl:text-[20px] xl:leading-8">
                   알 수 없음
                 </span>
               </label>
-              <label className="h-[32px] w-[67px] gap-2 pl-5">
+              <label className="h-[26px] w-[56px] gap-2 pl-[10px] xl:h-[32px] xl:w-[67px] xl:gap-2 xl:pl-3">
                 <input
                   type="radio"
                   name="직접 입력"
-                  className="h-[24px] w-[24px] rounded-[40px] border-2 border-blue-300 align-middle"
+                  className="h-[20px] w-[20px] rounded-[10px] border-2 border-blue-300 align-middle xl:h-[24px] xl:w-[24px] xl:rounded-[40px]"
                   color="black"
                 />{' '}
-                <span className="h-[32px] w-[35px] pl-1 align-middle text-[20px] font-medium leading-8">
+                <span className="h-[26px] w-[28px] align-middle text-[16px] font-medium leading-6 xl:h-[32px] xl:w-[35px] xl:pl-1 xl:text-[20px] xl:leading-8">
                   본인
                 </span>
               </label>
             </div>
             <div className="pt-8">
               <input
-                className="focus: peer h-[64px] w-[640px] gap-2 rounded-xl border-2 border-blue-300 pl-3 text-[20px] focus:border-red-500 active:border-red-500"
+                className="focus: Border-1 peer h-[44px] w-[312px] rounded-xl border border-blue-300 pl-2 focus:border-red-500 active:border-red-500 md:h-[44px] md:w-[384px] xl:h-[64px] xl:w-[640px] xl:gap-2 xl:rounded-xl xl:border-2 xl:pl-3 xl:text-[20px]"
                 placeholder="저자 이름 입력"
                 name=""
                 type="text"
@@ -147,14 +155,17 @@ const AddEpigramPageInput: React.FC = () => {
           </div>
         </div>
         <div className="pt-[40px]">
-          <div className="h-[200px] w-[640px] gap-6">
+          <div className="h-[128px] w-[312px] gap-2 md:h-[130px] md:w-[384px] md:gap-2 xl:h-[200px] xl:w-[640px] xl:gap-6">
             <div>
-              <p className="text-[20px] font-semibold leading-8"> 출처 </p>
+              <p className="h-[24px] w-[25px] text-[14px] font-semibold leading-6 md:h-[26px] md:w-[28px] md:text-[16px] xl:h-[32px] xl:w-[35px] xl:text-[20px] xl:leading-8">
+                {' '}
+                출처{' '}
+              </p>
             </div>
             <div className="pt-[30px]">
               <label>
                 <input
-                  className="h-[64px] w-[640px] gap-2 rounded-xl border-2 border-blue-300 pl-3 placeholder:align-middle placeholder:text-[20px] placeholder:font-normal placeholder:text-blue-400"
+                  className="h-[44px] w-[312px] gap-2 rounded-xl border-2 border-blue-300 pl-3 placeholder:align-middle placeholder:text-[16px] placeholder:font-normal placeholder:text-blue-400 md:h-[44px] md:w-[384px] md:gap-2 xl:h-[64px] xl:w-[640px] xl:gap-2 xl:placeholder:text-[20px]"
                   placeholder="출처 제목 입력"
                   name=""
                   type="text"
@@ -166,7 +177,7 @@ const AddEpigramPageInput: React.FC = () => {
             <div className="pt-[20px]">
               <label>
                 <input
-                  className="h-[64px] w-[640px] gap-2 rounded-xl border-2 border-blue-300 pl-3 placeholder:align-middle placeholder:text-[20px] placeholder:font-normal placeholder:text-blue-500"
+                  className="h-[44px] w-[312px] gap-2 rounded-xl border-2 border-blue-300 pl-3 placeholder:align-middle placeholder:text-[16px] placeholder:font-normal placeholder:text-blue-400 md:h-[44px] md:w-[384px] md:gap-2 xl:h-[64px] xl:w-[640px] xl:gap-2 xl:placeholder:text-[20px]"
                   placeholder="URL (ex. https://www.website.com)"
                   name=""
                   type="text"
@@ -178,9 +189,9 @@ const AddEpigramPageInput: React.FC = () => {
           </div>
         </div>
         <div className="pt-[60px]">
-          <div className="h-[120px] w-[640px] gap-6">
+          <div className="h-[76px] w-[312px] gap-2 md:h-[78px] md:w-[384px] md:gap-2 xl:h-[120px] xl:w-[640px] xl:gap-6">
             <div>
-              <p className="h-32px] w-[35px] text-[20px] font-semibold leading-8">
+              <p className="h-[24px] w-[25px] text-[14px] font-semibold leading-6 md:h-[26px] md:w-[28px] md:text-[16px] xl:h-[32px] xl:w-[35px] xl:text-[20px] xl:leading-8">
                 {' '}
                 태그{' '}
               </p>
@@ -188,7 +199,7 @@ const AddEpigramPageInput: React.FC = () => {
             <div className="pt-[30px]">
               <label>
                 <input
-                  className="h-[64px] w-[640px] gap-2 rounded-xl border-2 border-blue-300 pl-3 placeholder:align-middle placeholder:text-blue-500"
+                  className="h-[44px] w-[312px] gap-2 rounded-xl border-2 border-blue-300 pl-3 placeholder:align-middle placeholder:text-[16px] placeholder:font-normal placeholder:text-blue-400 md:h-[44px] md:w-[384px] md:gap-2 xl:h-[64px] xl:w-[640px] xl:gap-2 xl:placeholder:text-[20px]"
                   placeholder="입력하여 태그 작성 (최대 10자)"
                   name=""
                   type="text"
@@ -201,7 +212,7 @@ const AddEpigramPageInput: React.FC = () => {
         </div>
         <div className="pt-[60px]">
           <button
-            className="h-[64px] w-[640px] cursor-pointer rounded-lg border bg-slate-300 text-white hover:text-black-800"
+            className="h-[48px] w-[312px] cursor-pointer rounded-lg border bg-slate-300 text-white hover:text-black-800 md:h-[48px] md:w-[384px] xl:h-[64px] xl:w-[640px]"
             type="submit"
             name="complete"
           >

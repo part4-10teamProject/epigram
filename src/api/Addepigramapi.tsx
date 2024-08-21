@@ -18,6 +18,7 @@ export const AddEpigramPost = async (epigram: Addepigram) => {
         Authorization: `Bearer ${token}`,
       },
     });
+
     return response.data;
   } catch (error) {
     console.error('에피그램이 등록되지 않았습니다!');
