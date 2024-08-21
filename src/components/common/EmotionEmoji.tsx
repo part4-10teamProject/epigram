@@ -11,7 +11,6 @@ import thinkIcon from '../../../public/assets/icons/emotion/logo_thinking.svg';
 interface EmotionIconProps {
   emotion: 'MOVED' | 'HAPPY' | 'WORRIED' | 'SAD' | 'ANGRY';
   isSelected: boolean;
-  onClick: () => void;
 }
 
 const emotionColors = {
@@ -21,12 +20,16 @@ const emotionColors = {
   SAD: 'border-[#5195EE]',
   ANGRY: 'border-[#E46E80]',
 };
+//감정보드에 한글로 표기
+const emotionKorean = {
+  MOVED: '감동',
+  HAPPY: '기쁨',
+  WORRIED: '고민',
+  SAD: '슬픔',
+  ANGRY: '분노',
+};
 
-const EmotionIcon: React.FC<EmotionIconProps> = ({
-  emotion,
-  isSelected,
-  onClick,
-}) => {
+const EmotionIcon: React.FC<EmotionIconProps> = ({ emotion, isSelected }) => {
   let emotionIconSrc;
   switch (emotion) {
     case 'MOVED':
@@ -48,8 +51,7 @@ const EmotionIcon: React.FC<EmotionIconProps> = ({
 
   return (
     <div className="flex flex-col items-center">
-      <button
-        onClick={onClick}
+      <div //Button 없앰
         className={`flex h-[56px] w-[56px] items-center justify-center rounded-2xl border-[3px] md:h-[64px] md:w-[64px] md:border-[3px] xl:h-[96px] xl:w-[96px] xl:border-[4px] ${
           isSelected ? `${emotionColors[emotion]}` : 'border-transparent'
         } ${isSelected ? 'text-current' : 'text-gray-400'} ${
@@ -65,11 +67,11 @@ const EmotionIcon: React.FC<EmotionIconProps> = ({
             src={emotionIconSrc}
           />
         </div>
-      </button>
+      </div>
       <div
         className={`mt-1 text-center text-sm md:text-base xl:text-lg ${isSelected ? '' : 'text-gray-400'}`}
       >
-        {emotion}
+        {emotionKorean[emotion]}
       </div>
     </div>
   );
