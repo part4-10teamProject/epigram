@@ -12,6 +12,9 @@ import {
 import { getDetailCommentData } from '@/api/client/getDetailCommentData';
 import { LoadingSpinner } from '../common/LoadingSpinner';
 import { addComment } from '@/api/client/addComment';
+import Cookies from 'js-cookie';
+import { deleteComment } from '@/api/client/deleteComment';
+import { editComment } from '@/api/client/editComment';
 
 interface IdProps {
   id: number;
@@ -21,6 +24,16 @@ interface AddCommentType {
   epigramId: number;
   isPrivate: boolean;
   content: string;
+}
+
+interface EditContentItem {
+  isPrivate: boolean;
+  content: string;
+}
+
+interface EditContent {
+  id: number;
+  content: EditContentItem;
 }
 
 const DetailCommentList: React.FC<IdProps> = ({ id }) => {
@@ -38,6 +51,7 @@ const DetailCommentList: React.FC<IdProps> = ({ id }) => {
     getNextPageParam: (lastPage) => lastPage.nextCursor || undefined,
   });
 
+  // 댓글을 추가하면 실행되는 부분
   const AddCommentMutation = useMutation({
     mutationFn: (content: AddCommentType) => addComment(content),
     onSuccess: () =>
@@ -56,10 +70,36 @@ const DetailCommentList: React.FC<IdProps> = ({ id }) => {
     setCommentInput('');
   };
 
+  // 삭제시 실행되는 코드 부분
+  const deleteCommentMutation = useMutation({
+    mutationFn: (id: number) => deleteComment(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['detailComment'] });
+    },
+  });
+
+  const handleDeleteMutation = (id: number) => {
+    deleteCommentMutation.mutate(id);
+  };
+
+  // 수정시 실행되는 코드 부분
+  const editCommentMutation = useMutation({
+    mutationFn: ({ id, content }: EditContent) => editComment(id, content),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['detailComment'] });
+    },
+  });
+
+  const handleEditMutation = (id: number, content: EditContentItem) => {
+    editCommentMutation.mutate({ id, content });
+  };
+
   const comments = data?.pages.flatMap((page) => page.list) ?? [];
   const { totalCount } = data?.pages[0] ?? 0;
+  const userId = Number(Cookies.get('userId'));
 
   if (isLoading) return <LoadingSpinner />;
+
   return (
     <div>
       <div className="flex flex-col gap-10">
@@ -97,16 +137,20 @@ const DetailCommentList: React.FC<IdProps> = ({ id }) => {
             </form>
           </div>
         </div>
-        {comments.map((comment) => (
-          <div key={comment.id} className="border-t border-[#CFDBEA]">
-            <Comment
-              item={comment}
-              isMyComment={true}
-              onDelete={() => console.log('삭제')}
-              onEdit={() => console.log('수정')}
-            />
-          </div>
-        ))}
+        {comments && comments.length > 0 ? (
+          comments.map((comment) => (
+            <div key={comment.id} className="border-t border-[#CFDBEA]">
+              <Comment
+                item={comment}
+                isMyComment={userId === comment.writer.id}
+                onDelete={(id) => handleDeleteMutation(id)}
+                onEdit={(id, content) => handleEditMutation(id, content)}
+              />
+            </div>
+          ))
+        ) : (
+          <div className="text-center text-2xl">댓글을 추가해주세요</div>
+        )}
       </div>
       <div className="mt-20 text-center">
         <button

@@ -17,6 +17,7 @@ const DetailPage = () => {
   });
 
   if (isLoading) return <LoadingSpinner />;
+  if (!data) return <div>로그인페이지로 이동하세요</div>;
 
   return (
     <div>
