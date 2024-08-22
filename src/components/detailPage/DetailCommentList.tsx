@@ -15,6 +15,7 @@ import { addComment } from '@/api/client/addComment';
 import Cookies from 'js-cookie';
 import { deleteComment } from '@/api/client/deleteComment';
 import { editComment } from '@/api/client/editComment';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface IdProps {
   id: number;
@@ -39,6 +40,8 @@ interface EditContent {
 const DetailCommentList: React.FC<IdProps> = ({ id }) => {
   const [commentInput, setCommentInput] = useState('');
   const queryClient = useQueryClient();
+  const { userInfo } = useAuth();
+  const userImg = userInfo.image === null ? defaultProfile : userInfo.image;
 
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentInput(e.target.value);
@@ -118,8 +121,8 @@ const DetailCommentList: React.FC<IdProps> = ({ id }) => {
               <Image
                 width={48}
                 height={48}
-                className="rounded-full"
-                src={defaultProfile}
+                className="h-[48px] w-[48px] rounded-full"
+                src={userImg}
                 alt="이미지"
               />
             </div>
