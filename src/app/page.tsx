@@ -1,6 +1,10 @@
+'use client';
+
 import Image from 'next/image';
 import { landingImages } from '../utils/landingImages';
 import ButtonStart from '@/components/common/ButtonStart';
+import Cookies from 'js-cookie';
+import GooglePage from '@/app/login/oauth/GOOGLE/page';
 
 const imagesForCard = (key: string) => {
   return landingImages[key].map((image, index) => (
@@ -15,7 +19,7 @@ const imagesForCard = (key: string) => {
   ));
 };
 
-export default function Home(endpoint: string) {
+export default function Home() {
   return (
     <div className="mx-auto flex w-full flex-col items-center">
       <div className="flex h-[672px] w-full flex-col items-center gap-[168px] bg-striped md:h-[676px] md:gap-[106px] xl:h-[960px] xl:gap-[214px]">
