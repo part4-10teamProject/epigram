@@ -93,10 +93,7 @@ const Header: React.FC = () => {
             </div>
 
             <div className="hidden items-center gap-6 md:flex xl:gap-9">
-              <Link
-                href="/epigrams"
-                className="text-lg text-black-600 xl:text-xl"
-              >
+              <Link href="/feed" className="text-lg text-black-600 xl:text-xl">
                 피드
               </Link>
               <Link
@@ -143,7 +140,7 @@ const Header: React.FC = () => {
             <ul>
               <li className="px-5 py-6">
                 <Link
-                  href="/epigrams"
+                  href="/feed"
                   className="text-xl text-black-600"
                   onClick={toggleMenu}
                 >
