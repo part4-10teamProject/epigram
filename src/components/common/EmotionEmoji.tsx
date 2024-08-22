@@ -55,7 +55,7 @@ const EmotionIcon: React.FC<EmotionIconProps> = ({ emotion, isSelected }) => {
         className={`flex h-[56px] w-[56px] items-center justify-center rounded-2xl border-[3px] md:h-[64px] md:w-[64px] md:border-[3px] xl:h-[96px] xl:w-[96px] xl:border-[4px] ${
           isSelected ? `${emotionColors[emotion]}` : 'border-transparent'
         } ${isSelected ? 'text-current' : 'text-gray-400'} ${
-          isSelected ? '' : 'bg-gray-500 opacity-75 hover:bg-gray-200'
+          isSelected ? '' : 'bg-[#AFBACD26] opacity-75 hover:bg-gray-200'
         } overflow-hidden`}
       >
         <div
