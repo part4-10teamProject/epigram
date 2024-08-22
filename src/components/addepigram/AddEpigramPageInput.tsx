@@ -12,7 +12,7 @@ interface epigrams {
 }
 
 const AddEpigramPageInput: React.FC = () => {
-  const [tags, setTag] = useState<string[]>([]);
+  const [tags, setTag] = useState('');
   const [referenceUrl, setReferenceUrl] = useState('');
   const [referenceTitle, setReferenceTitle] = useState('');
   const [author, setAuthor] = useState('');
@@ -41,8 +41,7 @@ const AddEpigramPageInput: React.FC = () => {
   };
 
   const handleTagChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setTag([...tags, value]);
+    setTag(e.target.value);
   };
 
   const handleReferenceUrlChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -202,7 +201,6 @@ const AddEpigramPageInput: React.FC = () => {
                   className="h-[44px] w-[312px] gap-2 rounded-xl border-2 border-blue-300 pl-3 placeholder:align-middle placeholder:text-[16px] placeholder:font-normal placeholder:text-blue-400 md:h-[44px] md:w-[384px] md:gap-2 xl:h-[64px] xl:w-[640px] xl:gap-2 xl:placeholder:text-[20px]"
                   placeholder="입력하여 태그 작성 (최대 10자)"
                   name=""
-                  type="text"
                   value={tags}
                   onChange={handleTagChange}
                 ></input>
