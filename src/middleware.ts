@@ -23,11 +23,8 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
     const data = await postCodeToken(authCode, 'KAKAO');
 
     const res = NextResponse.redirect(pageUrl);
-    res.headers.set('Set-Cookie', `accessToken=${data.accessToken};Path=/`);
-    res.headers.append(
-      'Set-Cookie',
-      `refreshToken=${data.refreshToken};Path=/`,
-    );
+    res.headers.set('Set-Cookie', `token=${data.accessToken};Path=/`);
+    res.headers.append('Set-Cookie', `refresh=${data.refreshToken};Path=/`);
     res.headers.append('Set-Cookie', `userId=${data.user.id};Path=/`);
 
     return res;
