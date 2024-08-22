@@ -1,6 +1,6 @@
+import ButtonStart from '@/components/common/ButtonStart';
 import Image from 'next/image';
 import { landingImages } from '../utils/landingImages';
-import ButtonStart from '@/components/common/ButtonStart';
 
 const imagesForCard = (key: string) => {
   return landingImages[key].map((image, index) => (
@@ -18,7 +18,7 @@ const imagesForCard = (key: string) => {
 export default function Home() {
   return (
     <div className="mx-auto flex w-full flex-col items-center">
-      <div className="flex h-[672px] w-full flex-col items-center gap-[168px] bg-striped md:h-[676px] md:gap-[106px] xl:h-[960px] xl:gap-[214px]">
+      <div className="bg-striped flex h-[672px] w-full flex-col items-center gap-[168px] md:h-[676px] md:gap-[106px] xl:h-[960px] xl:gap-[214px]">
         <div className="mt-[200px] flex h-[184px] w-[250px] flex-col items-center justify-between md:mt-[204px] md:h-[228px] md:w-[332px] xl:mt-[320px] xl:h-[308px] xl:w-[415px]">
           <div>
             <h2 className="mb-[8px] text-center font-custom text-2xl font-normal leading-[40px] text-black-500 md:mb-[24px] md:text-3xl md:leading-[48px] xl:mb-[40px] xl:text-4xl">
@@ -50,7 +50,7 @@ export default function Home() {
       </div>
 
       <div className="relative flex w-full flex-col items-center gap-[196px] border-b border-[#f2f2f2] bg-background md:gap-[220px] xl:gap-[380px]">
-        <div className="absolute left-0 top-[-15px] h-[40px] w-full bg-zigzag-pattern" />
+        <div className="bg-zigzag-pattern absolute left-0 top-[-15px] h-[40px] w-full" />
         <div className="mt-[139px] flex h-[382px] w-[312px] flex-col justify-between md:h-[390px] md:w-[384px] xl:mt-[155px] xl:h-[388px] xl:w-[1188px] xl:flex-row xl:items-end">
           {imagesForCard('one')}
           <div>
@@ -106,10 +106,10 @@ export default function Home() {
           </h3>
           {imagesForCard('four')}
         </div>
-        <div className="absolute bottom-[-13px] left-0 h-[40px] w-full scale-y-[-1] bg-zigzag-pattern" />
+        <div className="bg-zigzag-pattern absolute bottom-[-13px] left-0 h-[40px] w-full scale-y-[-1]" />
       </div>
 
-      <div className="flex h-[600px] w-full flex-col items-center bg-striped md:h-[528px] xl:h-[1040px]">
+      <div className="bg-striped flex h-[600px] w-full flex-col items-center md:h-[528px] xl:h-[1040px]">
         <div className="mb-[270px] mt-[180px] flex h-[150px] w-[122px] flex-col items-center justify-between md:mb-[198px] md:mt-[180px] xl:mb-[403px] xl:mt-[420px] xl:h-[217px] xl:w-[286px]">
           <div>
             <Image
