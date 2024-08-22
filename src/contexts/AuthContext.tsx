@@ -15,29 +15,35 @@ interface UserInfo {
 
 interface AuthContextType {
   isLoggedIn: boolean;
-  userInfo: UserInfo | null; 
+  userInfo: UserInfo | null;
+  isLoading: boolean; // 추가된 로딩 상태
   login: (token: string) => void;
   logout: () => void;
 }
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true); // 초기 로딩 상태 추가
   const { data: userInfo, refetch } = useUserInfo();
 
   useEffect(() => {
     const token = Cookies.get('token');
     if (token) {
-      refetch();
-      setIsLoggedIn(true);
+      refetch().then(() => {
+        setIsLoggedIn(true);
+        setIsLoading(false); // 로딩 완료
+      });
     } else {
       setIsLoggedIn(false);
+      setIsLoading(false); // 로딩 완료
     }
   }, [refetch]);
 
-  const login = (token) => {
+  const login = (token: string) => {
     Cookies.set('token', token);
     setIsLoggedIn(true);
     refetch();
@@ -49,7 +55,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, userInfo, login, logout }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, userInfo, isLoading, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

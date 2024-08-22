@@ -36,18 +36,21 @@ const Header: React.FC = () => {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const router = useRouter();
-  const { isLoggedIn, userInfo } = useAuth();
-  
+  const { isLoggedIn, userInfo, isLoading } = useAuth();
+
   useEffect(() => {
-    if (
-      !isLoggedIn &&
-      pathname !== '/login' &&
-      pathname !== '/signup' &&
-      pathname !== '/'
-    ) {
-      router.push('/login');
+    if (!isLoading) {
+      // 로딩이 끝난 후에만 실행
+      if (
+        !isLoggedIn &&
+        pathname !== '/login' &&
+        pathname !== '/signup' &&
+        pathname !== '/'
+      ) {
+        router.push('/login');
+      }
     }
-  }, [pathname, router, isLoggedIn]);
+  }, [pathname, router, isLoggedIn, isLoading]);
 
   const toggleMenu = (): void => {
     setIsMenuOpen(!isMenuOpen);
