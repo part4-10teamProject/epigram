@@ -16,6 +16,7 @@ import {
 import { highlightText } from '@/utils/highLightText';
 import { useRouter } from 'next/navigation';
 import { fetchData } from '@/api/client/getEpigrams';
+import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 
 const Search = () => {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
@@ -133,7 +134,7 @@ const Search = () => {
     router.push(`epigrams/${id}`);
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingSpinner />;
   if (error) return <div>Error occurred: {error.message}</div>;
 
   const listData = data?.pages.flatMap((page) => page.list) || [];

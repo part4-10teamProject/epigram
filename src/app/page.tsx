@@ -1,6 +1,6 @@
+import ButtonStart from '@/components/common/ButtonStart';
 import Image from 'next/image';
 import { landingImages } from '../utils/landingImages';
-import ButtonStart from '@/components/common/ButtonStart';
 
 const imagesForCard = (key: string) => {
   return landingImages[key].map((image, index) => (

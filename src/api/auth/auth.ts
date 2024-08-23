@@ -13,7 +13,6 @@ export async function postUserInput(
     `/auth/${buttonEndpointData}`,
     buttonUserData,
   );
-  console.log('Response:', response.data);
   const data: AuthResponse = await response.data;
   return data;
 }
