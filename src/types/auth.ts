@@ -41,8 +41,6 @@ export interface PostOauth {
 }
 
 export interface OauthResponse {
-  accessToken: string;
-  refreshToken: string;
   user: {
     id: number;
     email: string;
@@ -52,4 +50,15 @@ export interface OauthResponse {
     createdAt: string;
     image?: string;
   };
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface GoogleOauthResponse {
+  access_token: string;
+  expires_in: string;
+  id_token: string;
+  scope: string;
+  token_type: string;
+  refresh_token?: string;
 }

@@ -24,3 +24,11 @@ export const checkNickname = (nickname: string) => {
     return true;
   }
 };
+
+export const checkPasswordSame = (password: string, passwordCheck: string) => {
+  if (password === passwordCheck) {
+    return true;
+  } else {
+    return false;
+  }
+};
