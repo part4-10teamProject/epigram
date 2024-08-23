@@ -5,8 +5,4 @@ export const isEmptyValue = (value: string | []) => {
   return false;
 };
 
-export const sanitizeHashTag = (tag: string) =>
-  tag
-    .trim()
-    .replace(/[\{\}\[\]\/?.;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g, '')
-    .replace(/,/g, '');
+export const sanitizeHashTag = (tag: string) => tag.trim().replace(/,/g, '');
