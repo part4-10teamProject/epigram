@@ -130,7 +130,7 @@ const LoginForm: React.FC = () => {
             className="absolute right-[16px] top-3 h-[24px] w-[24px] cursor-pointer xl:top-[20px]"
           />
         </div>
-        {!isPasswordValid && !passwordTouched ? (
+        {!isPasswordValid && passwordTouched ? (
           <p
             className={`xl:text-[16px]} text-[12px] text-redState md:text-[14px]`}
           >
