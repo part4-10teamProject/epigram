@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import Input from './Input';
 import { AxiosError } from 'axios';
+import { useAuth } from '@/contexts/AuthContext';
 
 const LoginForm: React.FC = () => {
   //Input의 value를 저장한 state
@@ -33,15 +34,18 @@ const LoginForm: React.FC = () => {
 
   //이메일 및 비밀번호 input의 onChange 이벤트 핸들러
 
+  //useContext 사용
+  const { login } = useAuth();
+
   function handleEmail(event: React.ChangeEvent<HTMLInputElement>) {
     setEmail(event.target.value);
-    setIsEmailValid(checkEmail(email));
+    setIsEmailValid(checkEmail(event.target.value));
     setEmailTouched(true);
   }
 
   function handlePassword(event: React.ChangeEvent<HTMLInputElement>) {
     setPassword(event.target.value);
-    setIsPasswordValid(checkPassword(password));
+    setIsPasswordValid(checkPassword(event.target.value));
     setPasswordTouched(true);
   }
 
@@ -62,11 +66,10 @@ const LoginForm: React.FC = () => {
     useMutation<AuthResponse, Error, ButtonData>({
       mutationFn: postUserInput,
       onSuccess: (data: AuthResponse) => {
-        console.log('User signed up successfully:', data);
-
         Cookies.set('token', data.accessToken);
         Cookies.set('userId', `${data.user.id}`);
         Cookies.set('refresh', data.refreshToken);
+        login(data.accessToken);
         router.push('/');
       },
       onError: (error: AxiosError<ErrorDataAxios>) => {
@@ -127,7 +130,7 @@ const LoginForm: React.FC = () => {
             className="absolute right-[16px] top-3 h-[24px] w-[24px] cursor-pointer xl:top-[20px]"
           />
         </div>
-        {!isPasswordValid && !passwordTouched ? (
+        {!isPasswordValid && passwordTouched ? (
           <p
             className={`xl:text-[16px]} text-[12px] text-redState md:text-[14px]`}
           >
