@@ -1,4 +1,4 @@
-import { OauthResponse, PostOauth } from '@/types/auth';
+import { GoogleOauthResponse, OauthResponse, PostOauth } from '@/types/auth';
 
 export const postCodeToken = async (authCode: string, endpoint: string) => {
   const requestBody: PostOauth = {
@@ -26,27 +26,25 @@ export const postCodeToken = async (authCode: string, endpoint: string) => {
   }
 };
 
+export const postJWTToken = async (authCode) => {
+  const res = await fetch(
+    `https://oauth2.googleapis.com/token?code=${authCode}&client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&client_secret=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_AUTH_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}&grant_type=authorization_code`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    },
+  );
+  const data: GoogleOauthResponse = await res.json();
+  const token = data.id_token;
+  console.log(data);
+  const response = await postCodeToken(token, 'GOOGLE');
+  return response;
+};
+
 //구글
 /*
 export const postJWTToken = async (authCode) => {
-  const res = await fetch(`https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/${process.env.NEXT_PUBLIC_GOOGLE_SERVICE_EMAIL}:generateIdToken`,{method:'POST',
-    body:{
-      audience: ``,
-      includeEmail: "true"
-    }
-  });
-  const data: GoogleOauthResponse = await res.json();
-
-  const response = await fetch(
-    `https://www.googleapis.com/drive/v2/files?access_token=${data.access_token}`,
-  );
-  if (!response.ok) {
-    throw new Error(`Network response was not ok: ${response}`);
-  }
-  const authData = await response.json();
-  console.log(authData);
-};
-/*  const requestBody: PostOauth = {
+   const requestBody: PostOauth = {
     redirectUri: `${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`,
     token: data.access_token,
   };

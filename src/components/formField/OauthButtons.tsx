@@ -3,10 +3,14 @@
 import Link from 'next/link';
 
 const OauthButtons: React.FC = (token) => {
+  const nonce =
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15);
+
   return (
     <div className="flex w-[96px] justify-between xl:w-[136px]">
       <Link
-        href={`https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile&endpoint=google`}
+        href={`https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&nonce=${nonce}&response_type=code&scope=openid%20profile%20email&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`}
       >
         <img
           alt="google"

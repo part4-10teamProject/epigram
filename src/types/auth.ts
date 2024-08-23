@@ -56,8 +56,9 @@ export interface OauthResponse {
 
 export interface GoogleOauthResponse {
   access_token: string;
-  expires_in: number;
-  token_type: string;
+  expires_in: string;
+  id_token: string;
   scope: string;
-  refresh_token: string;
+  token_type: string;
+  refresh_token?: string;
 }
