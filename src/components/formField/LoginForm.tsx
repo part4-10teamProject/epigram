@@ -39,13 +39,13 @@ const LoginForm: React.FC = () => {
 
   function handleEmail(event: React.ChangeEvent<HTMLInputElement>) {
     setEmail(event.target.value);
-    setIsEmailValid(checkEmail(email));
+    setIsEmailValid(checkEmail(event.target.value));
     setEmailTouched(true);
   }
 
   function handlePassword(event: React.ChangeEvent<HTMLInputElement>) {
     setPassword(event.target.value);
-    setIsPasswordValid(checkPassword(password));
+    setIsPasswordValid(checkPassword(event.target.value));
     setPasswordTouched(true);
   }
 
