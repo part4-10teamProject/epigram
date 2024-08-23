@@ -6,17 +6,40 @@ import { ChangeEvent, useState } from 'react';
 import React from 'react';
 import { Addepigram } from '@/api/Addepigramapi';
 import { useRouter } from 'next/navigation';
+import { isEmptyValue, sanitizeHashTag } from '@/utils/hashtag';
 
 interface epigrams {
   id: number;
 }
 
 const AddEpigramPageInput: React.FC = () => {
-  const [tags, setTag] = useState('');
+  const [tags, setTags] = useState<string[]>([]);
   const [referenceUrl, setReferenceUrl] = useState('');
   const [referenceTitle, setReferenceTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [content, setContent] = useState('');
+  const [hashTags, setHashTags] = useState('');
+
+  const handleHashTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!['Enter', 'NumpadEnter'].includes(e.code)) return;
+
+    const newHashTag = sanitizeHashTag(e.currentTarget.value);
+
+    if (!isEmptyValue(newHashTag) && !tags.includes(newHashTag)) {
+      setTags((prevHashTags) =>
+        Array.from(new Set([...prevHashTags, newHashTag])),
+      );
+      setHashTags('');
+    }
+  };
+
+  const handleEnterKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!['Enter', 'NumpadEnter'].includes(e.code)) return;
+    e.preventDefault();
+
+    const regExp = /^[a-z|A-Z|가-힣|ㄱ-ㅎ|ㅏ-ㅣ|0-9| \t|]+$/g;
+    if (!regExp.test(e.currentTarget.value)) setHashTags('');
+  };
 
   const router = useRouter();
 
@@ -41,7 +64,7 @@ const AddEpigramPageInput: React.FC = () => {
   };
 
   const handleTagChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTag(e.target.value);
+    setHashTags(e.target.value);
   };
 
   const handleReferenceUrlChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -201,13 +224,29 @@ const AddEpigramPageInput: React.FC = () => {
                   className="h-[44px] w-[312px] gap-2 rounded-xl border-2 border-blue-300 pl-3 placeholder:align-middle placeholder:text-[16px] placeholder:font-normal placeholder:text-blue-400 md:h-[44px] md:w-[384px] md:gap-2 xl:h-[64px] xl:w-[640px] xl:gap-2 xl:placeholder:text-[20px]"
                   placeholder="입력하여 태그 작성 (최대 10자)"
                   name=""
-                  value={tags}
+                  value={hashTags}
                   onChange={handleTagChange}
+                  onKeyUp={handleHashTag}
+                  onKeyDown={handleEnterKey}
                 ></input>
               </label>
             </div>
           </div>
         </div>
+
+        <div className="flex w-full flex-wrap gap-2 pt-8 xl:h-[56px] xl:w-[614px]">
+          {tags.map((tags) => (
+            <div
+              className="rounded-3xl bg-[#F5F7FA] xl:h-[56px] xl:w-[194px] xl:gap-2 xl:px-[14px] xl:py-3"
+              key={tags}
+            >
+              <p className="grid place-items-center text-[#5E5E5E] xl:h-[32px] xl:w-[166px] xl:text-[24px] xl:font-normal xl:leading-8">
+                {tags}
+              </p>
+            </div>
+          ))}
+        </div>
+
         <div className="pt-[60px]">
           <button
             className="h-[48px] w-[312px] cursor-pointer rounded-lg border bg-slate-300 text-white hover:text-black-800 md:h-[48px] md:w-[384px] xl:h-[64px] xl:w-[640px]"
