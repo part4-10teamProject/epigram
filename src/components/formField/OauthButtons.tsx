@@ -3,6 +3,7 @@
 import Link from 'next/link';
 
 const OauthButtons: React.FC = (token) => {
+  //OpenID Connect과정에서 필수 param임
   const nonce =
     Math.random().toString(36).substring(2, 15) +
     Math.random().toString(36).substring(2, 15);
