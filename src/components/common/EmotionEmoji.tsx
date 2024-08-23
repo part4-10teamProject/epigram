@@ -20,6 +20,7 @@ const emotionColors = {
   SAD: 'border-[#5195EE]',
   ANGRY: 'border-[#E46E80]',
 };
+
 //감정보드에 한글로 표기
 const emotionKorean = {
   MOVED: '감동',

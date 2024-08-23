@@ -35,9 +35,8 @@ const SignUpForm: React.FC = () => {
   //Input에 값을 입력했는가 여부를 저장한 state
 
   const [emailTouched, setEmailTouched] = useState(false);
-  const [passwordTouched, setPasswordTouched] = useState(false);
+
   const [passwordCheckTouched, setPasswordCheckTouched] = useState(false);
-  const [nicknameTouched, setNicknameTouched] = useState(false);
 
   //password input의 타입 => 입력 값 보이고 안 보이고를 state로
 
@@ -58,7 +57,6 @@ const SignUpForm: React.FC = () => {
   //비밀번호 input의 onChange 이벤트 핸들러
 
   function handlePassword(event: React.ChangeEvent<HTMLInputElement>) {
-    setPasswordTouched(true);
     setPassword(event.target.value);
     setIsPasswordValid(checkPassword(event.target.value));
     setIsPasswordSame(passwordCheck === event.target.value);
@@ -75,7 +73,6 @@ const SignUpForm: React.FC = () => {
   //닉네임 input의 onChange 이벤트 핸들러
 
   function handleNickname(event: React.ChangeEvent<HTMLInputElement>) {
-    setNicknameTouched(true);
     setNickname(event.target.value);
     setIsNicknameValid(checkNickname(event.target.value));
   }
@@ -102,7 +99,6 @@ const SignUpForm: React.FC = () => {
     useMutation<AuthResponse, Error, ButtonData>({
       mutationFn: postUserInput,
       onSuccess: (data: AuthResponse) => {
-        console.log('User signed up successfully:', data);
         if (data) {
           router.push('/login');
         }

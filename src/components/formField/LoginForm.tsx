@@ -39,13 +39,13 @@ const LoginForm: React.FC = () => {
 
   function handleEmail(event: React.ChangeEvent<HTMLInputElement>) {
     setEmail(event.target.value);
-    setIsEmailValid(checkEmail(email));
+    setIsEmailValid(checkEmail(event.target.value));
     setEmailTouched(true);
   }
 
   function handlePassword(event: React.ChangeEvent<HTMLInputElement>) {
     setPassword(event.target.value);
-    setIsPasswordValid(checkPassword(password));
+    setIsPasswordValid(checkPassword(event.target.value));
     setPasswordTouched(true);
   }
 
@@ -66,8 +66,6 @@ const LoginForm: React.FC = () => {
     useMutation<AuthResponse, Error, ButtonData>({
       mutationFn: postUserInput,
       onSuccess: (data: AuthResponse) => {
-        console.log('User signed up successfully:', data);
-
         Cookies.set('token', data.accessToken);
         Cookies.set('userId', `${data.user.id}`);
         Cookies.set('refresh', data.refreshToken);
@@ -132,7 +130,7 @@ const LoginForm: React.FC = () => {
             className="absolute right-[16px] top-3 h-[24px] w-[24px] cursor-pointer xl:top-[20px]"
           />
         </div>
-        {!isPasswordValid && !passwordTouched ? (
+        {!isPasswordValid && passwordTouched ? (
           <p
             className={`xl:text-[16px]} text-[12px] text-redState md:text-[14px]`}
           >
