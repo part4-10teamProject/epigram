@@ -1,41 +1,45 @@
-'use client';
+import { GoogleOauthResponse, OauthResponse, PostOauth } from '@/types/auth';
 
-import { instance } from '@/api/client/AxiosInstance';
-import Cookies from 'js-cookie';
-import { PostOauth } from '@/types/auth';
-import { useEffect } from 'react';
+//endpoint 다르게 입력해 구글 fetch 함수에서도 사용 가능하게 함
 
-//redirect된 메인 페이지에서 동작
-//이 동작 자체가 리다이렉트된 후에만 동작해야 되는 거고
-//메인 페이지 자체로 첫 마운트 됐을 땐 param이 없으니까
-//존재하면 동작하는 걸로로
+export const postCodeToken = async (authCode: string, endpoint: string) => {
+  const requestBody: PostOauth = {
+    redirectUri: `http://localhost:3000/login/oauth/${endpoint}`,
+    token: authCode,
+  };
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/auth/signIn/${endpoint}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody),
+      },
+    );
 
-export const getCodeTokenKakao = () => {
-  window.location.href = `https://kauth.kakao.com/oauth/authorize?grant_type=authorization_code&client_id=${process.env.NEXT_PUBLIC_KAKAO_JS_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}&response_type=code&endpoint=kakao`;
-  return 'KAKAO';
-};
-export const getCodeTokenGoogle = () => {
-  window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile&endpoint=google`;
-  return 'GOOGLE';
-};
+    if (!response.ok) {
+      throw new Error(`Network response was not ok: ${response}`);
+    }
 
-export const usePostCodeToken = (authCode, endpoint) => {
-  if (!authCode) {
-    console.log('Error');
+    const data: OauthResponse = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching data and setting cookies:', error);
   }
+};
 
-  async function postCodeToken(requestBody: PostOauth) {
-    const response = instance.post(`/auth/signIn/${endpoint}`, requestBody);
+//구글만
 
-    const data = (await response).data;
-    Cookies.set('userData', data);
-  }
-
-  useEffect(() => {
-    const requestBody: PostOauth = {
-      redirectUri: `http://localhost:3000`,
-      token: authCode,
-    };
-    postCodeToken(requestBody);
-  }, [authCode]);
+export const postJWTToken = async (authCode) => {
+  const res = await fetch(
+    `https://oauth2.googleapis.com/token?code=${authCode}&client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&client_secret=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_AUTH_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}&grant_type=authorization_code`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    },
+  );
+  const data: GoogleOauthResponse = await res.json();
+  const token = data.id_token;
+  const response = await postCodeToken(token, 'GOOGLE');
+  return response;
 };

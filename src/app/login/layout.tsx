@@ -3,8 +3,8 @@ import React from 'react';
 
 const LoginLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <div className="flex h-[720px] items-center justify-center xl:h-[1080px]">
-      <div className="flex h-[456px] w-[312px] flex-col items-center justify-between gap-[50px] md:w-[384px] md:gap-[60px] xl:h-[568px] xl:w-[640px]">
+    <div className="flex h-[calc(100vh-52px)] w-screen items-center justify-center">
+      <div className="flex h-auto w-[312px] flex-col items-center justify-between gap-[50px] md:w-[384px] md:gap-[60px] xl:w-[640px]">
         <img
           src="/assets/images/logo_epigram.svg"
           alt="logo"

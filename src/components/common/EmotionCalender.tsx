@@ -115,6 +115,7 @@ const EmotionCalendar: React.FC<EmotionCalendarProps> = ({
       },
     ],
   };
+
   //도넛 차트 옵션 정의
   const chartOptions = {
     cutout: '90%', //가운데 구멍 크기

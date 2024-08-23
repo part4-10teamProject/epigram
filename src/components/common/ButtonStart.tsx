@@ -1,7 +1,7 @@
 'use client';
 
+import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
 
 interface ButtonStartProps {
   text: string;
@@ -10,12 +10,7 @@ interface ButtonStartProps {
 
 const ButtonStart: React.FC<ButtonStartProps> = ({ text, className = '' }) => {
   const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    const storedValue = localStorage.getItem('isLoggedIn');
-    setIsLoggedIn(storedValue === 'true'); // isLoggedIn 값이 "true"일 때 로그인 상태로 간주
-  }, []);
+  const { isLoggedIn } = useAuth();
 
   const handleClick = () => {
     if (isLoggedIn) {
