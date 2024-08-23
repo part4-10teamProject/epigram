@@ -40,7 +40,6 @@ export const postJWTToken = async (authCode) => {
   );
   const data: GoogleOauthResponse = await res.json();
   const token = data.id_token;
-  console.log(data);
   const response = await postCodeToken(token, 'GOOGLE');
   return response;
 };
