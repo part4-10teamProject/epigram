@@ -60,6 +60,10 @@ const EpigramDetails: React.FC<EpigramProps> = ({ epigram }) => {
     router.push('/epigrams');
   };
 
+  const moveEditPage = () => {
+    router.push(`/editepigram/${epigram.id}`);
+  };
+
   const deleteEpigramMutation = useMutation({
     mutationFn: () => deleteEpigram(epigram.id),
     onSuccess: moveMainPage,
@@ -93,8 +97,11 @@ const EpigramDetails: React.FC<EpigramProps> = ({ epigram }) => {
               />
               {isDropDown && (
                 <div className="absolute right-0 top-12 rounded-2xl border border-blue-300">
-                  <div className="rounded- h-[40px] w-[97px] rounded-bl-[0px] rounded-br-[0px] rounded-tl-[16px] rounded-tr-[16px] bg-background px-6 py-2 text-lg hover:bg-blue-300 xl:h-[56px] xl:w-[134px] xl:px-8 xl:py-3 xl:text-2xl">
-                    <Link href="/">수정하기</Link>
+                  <div
+                    onClick={moveEditPage}
+                    className="rounded- h-[40px] w-[97px] rounded-bl-[0px] rounded-br-[0px] rounded-tl-[16px] rounded-tr-[16px] bg-background px-6 py-2 text-lg hover:bg-blue-300 xl:h-[56px] xl:w-[134px] xl:px-8 xl:py-3 xl:text-2xl"
+                  >
+                    수정하기
                   </div>
                   <div
                     onClick={() => setDeleteModal(true)}
