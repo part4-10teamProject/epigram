@@ -1,10 +1,9 @@
 'use client';
 
-import { AddEpigramPost } from '@/api/Addepigramapi';
+import { Addepigram, AddEpigramPost } from '@/api/client/Addepigramapi';
 import { useMutation } from '@tanstack/react-query';
 import { ChangeEvent, useState } from 'react';
 import React from 'react';
-import { Addepigram } from '@/api/Addepigramapi';
 import { useRouter } from 'next/navigation';
 import { isEmptyValue, sanitizeHashTag } from '@/utils/hashtag';
 
