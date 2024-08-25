@@ -49,7 +49,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
         <div className="flex flex-col items-center justify-center gap-6">
           <div>
             <Image
-              className="rounded-full"
+              className="h-[48px] w-[48px] rounded-full"
               src={profileSrc}
               alt="프로필 이미지"
               width={48}
