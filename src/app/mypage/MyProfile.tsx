@@ -7,6 +7,7 @@ interface ProfileProps {
   imageUrl: string;
   onLogout: () => void;
   onImageChange: (newImageUrl: string) => void;
+  onProfileUpdate: () => void;
 }
 
 const MyProfile: React.FC<ProfileProps> = ({
