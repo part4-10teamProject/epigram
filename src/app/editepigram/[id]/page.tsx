@@ -40,7 +40,8 @@ const Editpage: React.FC = () => {
         setAuthor(res.author);
         setReferenceTitle(res.referenceTitle);
         setReferenceUrl(res.referenceUrl);
-        setTags(res.tags);
+        const tagName = res.tags.map((tag) => tag.name) ?? [];
+        setTags(tagName);
       });
   }, []);
 
