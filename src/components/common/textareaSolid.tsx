@@ -12,14 +12,14 @@ function TextAreaSolid() {
   return (
     <label className="">
       <textarea
-        name="에피그램 내용 작성"
+        name="내용"
         typeof="text"
         value={text}
         id="내용"
         maxLength={500}
         onChange={handleChange}
         placeholder="500자 이내로 입력해주세요"
-        className="resize: none h-[132px] w-[312px] border pl-2 pt-2 text-xl font-normal leading-[26px] group-hover:border-red-500 group-active:border-red-500 md:h-[132px] md:w-[384px] xl:h-[148px] xl:w-[640px]"
+        className="resize: none h-[132px] w-[312px] rounded-md border-2 border-blue-300 pl-2 pt-2 text-[20px] font-normal leading-[26px] group-hover:border-red-500 group-active:border-red-500 md:h-[132px] md:w-[384px] xl:h-[148px] xl:w-[640px]"
       ></textarea>
 
       <p
