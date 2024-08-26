@@ -10,7 +10,7 @@ const OauthButtons: React.FC = (token) => {
 
   return (
     <div className="flex w-[96px] justify-between xl:w-[136px]">
-      {window.location.hostname === 'https://codeit-epigram.netlify.app' ? (
+      {window.location.hostname === 'codeit-epigram.netlify.app' ? (
         <Link
           href={`https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&nonce=${nonce}&response_type=code&scope=openid%20profile%20email&redirect_uri=${process.env.NEXT_PUBLIC_NETLIFY_GOOGLE_URI}`}
         >
@@ -31,7 +31,7 @@ const OauthButtons: React.FC = (token) => {
           />
         </Link>
       )}{' '}
-      {window.location.hostname === 'https://codeit-epigram.netlify.app' ? (
+      {window.location.hostname === 'codeit-epigram.netlify.app' ? (
         <Link
           href={`https://kauth.kakao.com/oauth/authorize?grant_type=authorization_code&client_id=${process.env.NEXT_PUBLIC_KAKAO_JS_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_NETLIFY_KAKAO_URI}&response_type=code&endpoint=kakao`}
         >
