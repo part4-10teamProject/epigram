@@ -7,7 +7,7 @@ interface ProfileProps {
   imageUrl: string;
   onLogout: () => void;
   onImageChange: (newImageUrl: string) => void;
-  onProfileUpdate: () => void;
+  onProfileUpdate: (image: string, nickname: string) => void;
 }
 
 const MyProfile: React.FC<ProfileProps> = ({
@@ -15,13 +15,13 @@ const MyProfile: React.FC<ProfileProps> = ({
   imageUrl,
   onLogout,
   onImageChange,
+  onProfileUpdate,
 }) => {
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        console.log('새로운 이미지 로드 완료:', reader.result); // 이미지 로드 확인용 로그
         onImageChange(reader.result as string);
       };
       reader.readAsDataURL(file);
