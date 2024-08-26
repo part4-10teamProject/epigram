@@ -8,7 +8,7 @@ export const postCodeToken = async (authCode: string, endpoint: string) => {
   const host = headersList.get('host');
   const requestBody: PostOauth = {
     redirectUri:
-      host === 'https://codeit-epigram.netlify.app'
+      host === 'codeit-epigram.netlify.app'
         ? `https://codeit-epigram.netlify.app/login/oauth/${endpoint}`
         : `http://localhost:3000/login/oauth/${endpoint}`,
     token: authCode,
@@ -41,7 +41,7 @@ export const postJWTToken = async (authCode) => {
   const host = headersList.get('host');
 
   const res = await fetch(
-    host === 'https://codeit-epigram.netlify.app'
+    host === 'codeit-epigram.netlify.app'
       ? `https://oauth2.googleapis.com/token?code=${authCode}&client_id=${process.env.NEXT_PUBLIC_NETLIFY_GOOGLE_URI}&client_secret=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_AUTH_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}&grant_type=authorization_code`
       : `https://oauth2.googleapis.com/token?code=${authCode}&client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&client_secret=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_AUTH_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}&grant_type=authorization_code`,
     {
