@@ -1,10 +1,7 @@
+import AddEpigramPageInput from '@/components/addepigram/AddEpigramPageInput';
+
 const AddEpigramPage = () => {
-  return (
-    <div>
-      <h1>Add Epigram Page</h1>
-      {/* Add Epigram page content */}
-    </div>
-  );
+  return <AddEpigramPageInput />;
 };
 
 export default AddEpigramPage;

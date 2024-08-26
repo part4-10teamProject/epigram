@@ -49,7 +49,6 @@ const Comment: React.FC<CommentProps> = ({
   const [isDeleteSuccesModal, setIsDeleteSuccesModal] = useState(false); // 삭제완료 모달창 상태
   const [isEditModal, setIsEditModal] = useState(false); // 수정 모달창 상태
   const [isEditSuccesModal, setIsEditSuccesModal] = useState(false); // 수정완료 모달창 상태
-
   // 프로필 모달을 띄우는 함수
   const handleProfileModal = () => {
     setIsProfileModal(true);
