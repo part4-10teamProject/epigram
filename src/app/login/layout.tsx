@@ -1,5 +1,10 @@
-import OauthButtons from '@/components/formField/OauthButtons';
+import dynamic from 'next/dynamic';
 import React from 'react';
+
+const OauthButtons = dynamic(
+  () => import('@/components/formField/OauthButtons'),
+  { ssr: false },
+);
 
 const LoginLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (

@@ -1,16 +1,18 @@
-import Cookies from 'js-cookie';
 import { instance } from './AxiosInstance';
+import Cookies from 'js-cookie';
 
-export const getUserCommentDatas = async (
+export const getDetailCommentData = async (
+  id: number,
   cursor: number,
+  firstdata: number,
   limitNumber: number,
-  userId: number,
 ) => {
-  const token = Cookies.get('token');
-  const limit = cursor === 0 ? 4 : limitNumber;
+  const limit = cursor === 0 ? firstdata : limitNumber;
+
   try {
+    const token = Cookies.get('token');
     const response = await instance.get(
-      `users/${userId}/comments?limit=${limit}&cursor=${cursor}`,
+      `/epigrams/${id}/comments?limit=${limit}&cursor=${cursor}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

@@ -2,6 +2,7 @@
 
 import updateUserProfile from '@/api/client/updateUserProfile';
 import { useMutation } from '@tanstack/react-query';
+
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 
