@@ -28,6 +28,7 @@ const Editpage: React.FC = () => {
   const [content, setContent] = useState('');
   const [name, setName] = useState('');
   const [isAuthorTouched, setIsAuthorTouched] = useState(false); // 저자 작성 유무확인하는 변수
+  const [selectedOption, setSelectedOption] = useState('');
 
   const params = useParams();
   const id = params.id;
@@ -38,12 +39,13 @@ const Editpage: React.FC = () => {
       .then((res) => {
         setContent(res.content);
         setAuthor(res.author);
+        setSelectedOption(res.author);
         setReferenceTitle(res.referenceTitle);
         setReferenceUrl(res.referenceUrl);
         const tagName = res.tags.map((tag) => tag.name) ?? [];
         setTags(tagName);
       });
-  }, []);
+  }, [id]);
 
   const EditEpigramPost = async (edit: Addepigram) => {
     try {
@@ -134,17 +136,21 @@ const Editpage: React.FC = () => {
     setTags(tags.filter((tag) => tag !== tagId));
   };
 
+  const handleChange = (value) => {
+    setSelectedOption(value);
+    setAuthor(value);
+  };
   return (
     <form onSubmit={handleSubmit}>
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-screen justify-center">
         <div className="">
-          <p className="w-[312px] text-[16px] font-semibold leading-8 antialiased md:h-[32px] md:w-[384px] md:text-[20px] xl:h-[32px] xl:w-[640px] xl:text-[24px]">
-            에피그램 만들기
+          <p className="mt-6 w-[312px] text-[16px] font-semibold leading-8 antialiased md:mt-8 md:h-[32px] md:w-[384px] md:text-[20px] xl:mt-[56px] xl:h-[32px] xl:w-[640px] xl:text-[24px]">
+            에피그램 수정
           </p>
           <div className="h-[26px] w-[38px] gap-6 pt-[30px] md:h-[28px] md:w-[41px] xl:h-[35px] xl:w-[53px] xl:gap-1">
-            <p className="h-[24px] w-[25px] pb-2 text-[14px] font-semibold leading-8 md:h-[26px] md:w-[28px] md:text-[16px] xl:h-[32px] xl:w-[35px] xl:text-[20px]">
-              내용
-              <span className="h-[26px] w-[9px] text-[16px] leading-8 text-red-500 xl:h-[32px] xl:w-[12px] xl:text-[24px]">
+            <p className="h-[26px] w-[38px] pb-2 text-[14px] font-semibold leading-6 xl:w-[600px] xl:text-[20px] xl:leading-8">
+              내용{' '}
+              <span className="h-[26px] w-[9px] text-red-500 xl:w-[500px] xl:text-[24px] xl:leading-8">
                 {' '}
                 ⚹{' '}
               </span>
@@ -187,9 +193,13 @@ const Editpage: React.FC = () => {
                   <input
                     type="radio"
                     name="직접 입력"
+                    checked={
+                      selectedOption !== '본인' &&
+                      selectedOption !== '알 수 없음'
+                    }
                     className="h-[20px] w-[20px] rounded-[10px] border-2 border-blue-300 align-middle xl:h-[24px] xl:w-[24px] xl:rounded-[40px]"
                     color="black"
-                    onClick={() => setAuthor('')}
+                    onClick={() => handleChange('')}
                   />{' '}
                   <span className="h-[26px] w-[60px] pl-1 align-middle text-[16px] font-medium leading-6 xl:h-[32px] xl:w-[75px] xl:text-[20px] xl:leading-8">
                     직접 입력
@@ -198,10 +208,11 @@ const Editpage: React.FC = () => {
                 <label className="h-[26px] w-[92px] gap-2 pl-[10px] xl:h-[32px] xl:w-[111px] xl:gap-2">
                   <input
                     type="radio"
-                    name="직접 입력"
+                    name="알 수 없음"
+                    checked={selectedOption === '알 수 없음'}
                     className="h-[20px] w-[20px] rounded-[10px] border-2 border-blue-300 align-middle xl:h-[24px] xl:w-[24px] xl:rounded-[40px]"
                     color="black"
-                    onClick={() => setAuthor('알 수 없음')}
+                    onClick={() => handleChange('알 수 없음')}
                   />{' '}
                   <span className="h-[26px] w-[64px] align-middle text-[16px] font-medium leading-6 xl:h-[32px] xl:w-[79px] xl:text-[20px] xl:leading-8">
                     알 수 없음
@@ -210,10 +221,11 @@ const Editpage: React.FC = () => {
                 <label className="h-[26px] w-[56px] gap-2 pl-[10px] xl:h-[32px] xl:w-[67px] xl:gap-2 xl:pl-3">
                   <input
                     type="radio"
-                    name="직접 입력"
+                    name="본인"
+                    checked={selectedOption === '본인'}
                     className="h-[20px] w-[20px] rounded-[10px] border-2 border-blue-300 align-middle xl:h-[24px] xl:w-[24px] xl:rounded-[40px]"
                     color="black"
-                    onClick={() => setAuthor('본인')}
+                    onClick={() => handleChange('본인')}
                   />{' '}
                   <span className="h-[26px] w-[28px] align-middle text-[16px] font-medium leading-6 xl:h-[32px] xl:w-[35px] xl:pl-1 xl:text-[20px] xl:leading-8">
                     본인
@@ -309,11 +321,12 @@ const Editpage: React.FC = () => {
 
           <div className="pt-[60px]">
             <button
-              className="h-[48px] w-[312px] cursor-pointer rounded-lg border bg-slate-300 text-white hover:text-black-800 md:h-[48px] md:w-[384px] xl:h-[64px] xl:w-[640px]"
+              disabled={!content || !author}
+              className={`${content && author ? 'bg-slate-700' : ''} h-[48px] w-[312px] cursor-pointer rounded-lg border bg-slate-300 text-white md:h-[48px] md:w-[384px] xl:h-[64px] xl:w-[640px]`}
               type="submit"
               name="complete"
             >
-              작성 완료
+              수정 완료
             </button>
           </div>
         </div>
