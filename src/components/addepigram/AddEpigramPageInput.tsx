@@ -104,9 +104,9 @@ const AddEpigramPageInput: React.FC = () => {
               에피그램 만들기
             </p>
             <div className="h-[26px] w-[38px] gap-6 pt-[30px] md:h-[28px] md:w-[41px] xl:h-[35px] xl:w-[53px] xl:gap-1">
-              <p className="h-[24px] w-[25px] pb-2 text-[14px] font-semibold leading-8 md:h-[26px] md:w-[28px] md:text-[16px] xl:h-[32px] xl:w-[35px] xl:text-[20px]">
-                내용
-                <span className="h-[26px] w-[9px] text-[16px] leading-8 text-red-500 xl:h-[32px] xl:w-[12px] xl:text-[24px]">
+              <p className="h-[26px] w-[38px] pb-2 text-[14px] font-semibold leading-6 xl:w-[600px] xl:text-[20px] xl:leading-8">
+                내용{' '}
+                <span className="h-[26px] w-[9px] text-red-500 xl:w-[500px] xl:text-[24px] xl:leading-8">
                   {' '}
                   ⚹{' '}
                 </span>
