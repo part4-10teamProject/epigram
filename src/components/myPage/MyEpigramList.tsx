@@ -11,7 +11,7 @@ const MyEpigramList = () => {
   const { userInfo } = useAuth(); // 유저 정보를 가져옴
 
   const { data, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery({
-    queryKey: ['epigrams'],
+    queryKey: ['MyEpigrams'],
     queryFn: ({ pageParam = 0 }) => {
       if (!userInfo?.id) {
         return Promise.resolve({ list: [], nextCursor: undefined });
@@ -29,7 +29,7 @@ const MyEpigramList = () => {
 
   useEffect(() => {
     return () => {
-      queryClient.removeQueries({ queryKey: ['epigrams'] });
+      queryClient.removeQueries({ queryKey: ['MyEpigrams'] });
     };
   }, [queryClient]);
 

@@ -1,54 +1,41 @@
 'use client';
 
-import React from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import React, { useState } from 'react';
+import defaultImg from '../../../public/assets/images/profile_sample.png';
+import Image from 'next/image';
+import { MyProfileModal } from './MyProfileModal';
 
-interface ProfileProps {
-  name: string;
-  imageUrl: string;
-  onLogout: () => void;
-  onImageChange: (newImageUrl: string) => void;
-  onProfileUpdate: (image: string, nickname: string) => void;
-}
+const MyProfile = () => {
+  const { logout, userInfo } = useAuth();
+  const [profileModal, setProfileModal] = useState(false);
 
-const MyProfile: React.FC<ProfileProps> = ({
-  name,
-  imageUrl,
-  onLogout,
-  onImageChange,
-  onProfileUpdate,
-}) => {
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        onImageChange(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  const userImg = userInfo?.image ?? defaultImg;
+
+  if (!userInfo) return;
 
   return (
     <div className="flex flex-col items-center">
       <div className="relative h-24 w-24 overflow-hidden rounded-full border-4 border-white shadow-lg">
-        <label htmlFor="profileImageInput">
-          <img
-            src={imageUrl}
-            alt={`${name}'s profile`}
-            className="h-full w-full cursor-pointer object-cover"
-          />
-        </label>
-        <input
-          id="profileImageInput"
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-          className="hidden"
+        <Image
+          src={userImg}
+          alt={`${userInfo.nickname}'s profile`}
+          onClick={() => setProfileModal(true)}
+          layout="fill"
+          objectFit="cover"
+          className="cursor-pointer"
         />
       </div>
-      <h2 className="mt-4 text-2xl font-semibold text-black-950">{name}</h2>
+      <MyProfileModal
+        isOpen={profileModal}
+        onClose={() => setProfileModal(false)}
+        writer={userInfo}
+      />
+      <h2 className="mt-4 text-2xl font-semibold text-black-950">
+        {userInfo.nickname}
+      </h2>
       <button
-        onClick={onLogout}
+        onClick={logout}
         className="mt-2 rounded-[100px] bg-line-100 px-4 py-2 text-gray-500 hover:bg-gray-300 focus:outline-none"
       >
         로그아웃
