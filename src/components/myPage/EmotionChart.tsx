@@ -80,14 +80,18 @@ const EmotionChart: React.FC<EmotionChartProps> = ({
     setTotalEmotions(total);
   }, [initialSelectedEmotion]);
 
+  // 차트 데이터를 준비합니다.
   const chartData = {
     labels: Object.keys(emotionData) as Emotion[],
     datasets: [
       {
-        data: Object.values(emotionData),
-        backgroundColor: Object.keys(emotionColors).map(
-          (emotion) => emotionColors[emotion as Emotion],
-        ),
+        data: totalEmotions > 0 ? Object.values(emotionData) : [1], // 데이터가 없을 경우 1을 넣어 빈 차트를 만듭니다.
+        backgroundColor:
+          totalEmotions > 0
+            ? Object.keys(emotionColors).map(
+                (emotion) => emotionColors[emotion as Emotion],
+              )
+            : ['#f0f0f0'], // 데이터가 없을 경우 빈 차트의 색상을 설정합니다.
       },
     ],
   };
@@ -98,78 +102,77 @@ const EmotionChart: React.FC<EmotionChartProps> = ({
       legend: {
         display: false,
       },
+      tooltip: {
+        enabled: totalEmotions > 0, // 데이터가 없을 경우 툴팁 비활성화
+      },
     },
   };
 
   const handleEmotionClick = (emotion: Emotion) => {
-    setSelectedChartEmotion(emotion);
+    if (totalEmotions > 0) {
+      setSelectedChartEmotion(emotion);
+    }
   };
 
   return (
-    // 도넛차트 & 감정리스트 컨테이너
-    <div>
-      <div className="text-xl font-semibold xl:text-[24px] xl:leading-8">
-        감정차트
-      </div>
-      <div className="mt-8 flex w-[312px] items-center justify-center space-x-8 md:w-[384px] xl:w-[640px]">
-        <div className="relative h-60 w-60">
-          <Doughnut data={chartData} options={chartOptions} />
-          {/* 도넛 차트 */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            {/* 선택된 감정이 있을 때 아이콘&라벨 표시 */}
-            {selectedChartEmotion && (
-              <>
+    <div className="mt-8 flex w-[235px] items-center justify-between md:w-[263px] xl:w-[416px]">
+      <div className="w-[120 px] relative h-[120px] xl:h-[180px] xl:w-[180px]">
+        <Doughnut data={chartData} options={chartOptions} />
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          {totalEmotions > 0 && selectedChartEmotion && (
+            <>
+              <div className="relative h-[24px] w-[24px] xl:h-[40px] xl:w-[40px]">
                 <Image
                   src={emotions[selectedChartEmotion]}
                   alt={selectedChartEmotion}
-                  width={50}
-                  height={50}
+                  layout="fill"
+                  objectFit="contain"
                 />
-                <span className="mt-2 text-lg font-bold">
-                  {emotionLabels[selectedChartEmotion]}{' '}
-                  {/* 도넛차트 감정명 한글로 표기 */}
-                </span>
-              </>
-            )}
-          </div>
+              </div>
+              <span className="mt-2 text-lg font-bold">
+                {emotionLabels[selectedChartEmotion]}
+              </span>
+            </>
+          )}
         </div>
-        <div className="flex flex-col space-y-4">
-          {/* 감정 리스트를 순회하면서 각각의 감정 퍼센티지를 표시 */}
-          {Object.keys(emotionData).map((emotionKey) => {
-            const count = emotionData[emotionKey as Emotion];
-            const percentage =
-              totalEmotions > 0
-                ? ((count / totalEmotions) * 100).toFixed(1)
-                : 0;
-            return (
+      </div>
+      <div className="flex flex-col gap-[10px] xl:gap-[14px]">
+        {Object.keys(emotionData).map((emotionKey) => {
+          const count = emotionData[emotionKey as Emotion];
+          const percentage =
+            totalEmotions > 0 ? ((count / totalEmotions) * 100).toFixed(1) : 0;
+          return (
+            <div
+              key={emotionKey}
+              className={`flex cursor-pointer items-center space-x-2 transition-colors duration-200 ${
+                selectedChartEmotion === emotionKey
+                  ? 'text-black'
+                  : selectedChartEmotion
+                    ? 'text-gray-400'
+                    : 'hover:text-blue-500'
+              }`}
+              onClick={() => handleEmotionClick(emotionKey as Emotion)}
+            >
               <div
-                key={emotionKey}
-                className={`flex cursor-pointer items-center space-x-2 transition-colors duration-200 ${
-                  selectedChartEmotion === emotionKey
-                    ? 'text-black' // 선택된 감정
-                    : selectedChartEmotion
-                      ? 'text-gray-400'
-                      : 'hover:text-blue-500' // 그 외 나머지 감정들
-                }`}
-                onClick={() => handleEmotionClick(emotionKey as Emotion)}
-              >
-                <div
-                  className="h-4 w-4 flex-shrink-0 rounded-sm"
-                  style={{
-                    backgroundColor: emotionColors[emotionKey as Emotion],
-                  }}
-                />
+                className="h-2 w-2 flex-shrink-0 rounded-sm xl:h-4 xl:w-4"
+                style={{
+                  backgroundColor: emotionColors[emotionKey as Emotion],
+                }}
+              />
+              <div className="relative h-4 w-4 xl:h-6 xl:w-6">
                 <Image
                   src={emotions[emotionKey as Emotion]}
                   alt={emotionKey}
-                  width={24}
-                  height={24}
+                  layout="fill"
+                  objectFit="contain"
                 />
-                <span className="text-sm font-bold">{percentage}%</span>
               </div>
-            );
-          })}
-        </div>
+              <span className="text-sm font-semibold xl:text-2xl">
+                {percentage}%
+              </span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -4,7 +4,6 @@ import moment from 'moment'; //날짜&시간 다루는 Moment.js 라이브러리
 import Image from 'next/image'; //next.js의 최적화 이미지 컴포넌트
 import React, { useState } from 'react';
 import Calendar from 'react-calendar'; //react-calender 컴포넌트 임포트
-import 'react-calendar/dist/Calendar.css'; //Calender 컴포넌트의 css
 import angryIcon from '../../../public/assets/icons/emotion/logo_angry.svg';
 import heartIcon from '../../../public/assets/icons/emotion/logo_heart.svg';
 import sadIcon from '../../../public/assets/icons/emotion/logo_sad.svg';
@@ -83,61 +82,64 @@ const EmotionCalendar = () => {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div>
-      <div className="flex items-center justify-center">
-        <div className="calendar-container flex w-[312px] flex-col items-center justify-center p-4 text-black-900 md:w-[384px] xl:w-[640px]">
-          <Calendar
-            locale={LOCALE}
-            prev2Label={null}
-            next2Label={null}
-            value={new Date()}
-            onActiveStartDateChange={({ activeStartDate }) =>
-              getActiveMonth(activeStartDate)
-            }
-            prevLabel={
+    <>
+      <div>
+        <Calendar
+          locale={LOCALE}
+          prev2Label={null}
+          next2Label={null}
+          value={new Date()}
+          onActiveStartDateChange={({ activeStartDate }) =>
+            getActiveMonth(activeStartDate)
+          }
+          prevLabel={
+            <Image
+              src="/assets/icons/chevron_left.svg"
+              alt="왼쪽 화살표"
+              width={20}
+              height={20}
+            />
+          }
+          nextLabel={
+            <Image
+              src="/assets/icons/chevron_right.svg"
+              alt="오른쪽 화살표"
+              width={20}
+              height={20}
+            />
+          }
+          formatDay={(locale, date) => moment(date).format('D')}
+          tileClassName={({ date, view }) =>
+            view === 'month' &&
+            selectedEmotion[moment(date).format('YYYY-MM-DD')]
+              ? 'emotion-day'
+              : null
+          }
+          tileContent={({ date, view }) =>
+            view === 'month' &&
+            selectedEmotion[moment(date).format('YYYY-MM-DD')] ? (
               <Image
-                src="/assets/icons/chevron_left.svg"
-                alt="왼쪽 화살표"
-                width={20}
-                height={20}
+                src={
+                  emotions[selectedEmotion[moment(date).format('YYYY-MM-DD')]]
+                }
+                alt="Emotion Icon"
+                width={24}
+                height={24}
               />
-            }
-            nextLabel={
-              <Image
-                src="/assets/icons/chevron_right.svg"
-                alt="오른쪽 화살표"
-                width={20}
-                height={20}
-              />
-            }
-            formatDay={(locale, date) => moment(date).format('D')}
-            tileClassName={({ date, view }) =>
-              view === 'month' &&
-              selectedEmotion[moment(date).format('YYYY-MM-DD')]
-                ? 'emotion-day'
-                : null
-            }
-            tileContent={({ date, view }) =>
-              view === 'month' &&
-              selectedEmotion[moment(date).format('YYYY-MM-DD')] ? (
-                <Image
-                  src={
-                    emotions[selectedEmotion[moment(date).format('YYYY-MM-DD')]]
-                  }
-                  alt="Emotion Icon"
-                  width={24}
-                  height={24}
-                />
-              ) : null
-            }
-            className="custom-calendar text-black w-full rounded-lg bg-white"
-          />
-          <div className="pt-[165px]">
-            <EmotionChart initialSelectedEmotion={data} />
-          </div>
+            ) : null
+          }
+          className="custom-calendar text-black w-full rounded-lg bg-white"
+        />
+      </div>
+      <div className="mt-[58px] flex h-[218px] w-full flex-col justify-between md:mt-[62px] xl:mt-[157px] xl:h-[344px]">
+        <h2 className="text-xl font-semibold xl:text-[24px] xl:leading-8">
+          감정 차트
+        </h2>
+        <div className="flex justify-center">
+          <EmotionChart initialSelectedEmotion={data} />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

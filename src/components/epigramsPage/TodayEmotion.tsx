@@ -16,7 +16,7 @@ const TodayEmotion = () => {
 
   const emotionPostMutaion = useMutation({
     mutationFn: (emoji: TodayEmotionItem) => todayEmotionPost(emoji),
-    onSuccess: () => Cookies.set('isTodayEmotion', 'ture', { expires: 1 }), // 데이터 요청을 성공하면 쿠키에 isTodayEmotion 키값으로 true를 저장함
+    onSuccess: () => Cookies.set('isTodayEmotion', 'true', { expires: 1 }), // 데이터 요청을 성공하면 쿠키에 isTodayEmotion 키값으로 true를 저장함
     onError: (error) => console.error(error),
   });
 

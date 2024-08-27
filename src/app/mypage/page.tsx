@@ -12,15 +12,19 @@ const MyPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'epigram' | 'comment'>('epigram');
 
   return (
-    <div className="min-h-screen bg-background">
-      <main className="container mx-auto px-4 py-8">
-        <div className="relative w-full rounded-[24px] bg-white p-8 shadow-lg">
-          <MyProfile />
-          <div className="mt-8 flex justify-center">
-            <EmotionBoard />
-          </div>
-          <div className="mt-8">
-            <EmotionCalender />
+    <div className="bg-background pt-[64px] xl:pt-[128px]">
+      <main className="w-full">
+        <div className="relative h-[1004px] items-center rounded-[24px] bg-white shadow-lg md:h-[1111px] xl:h-[1901px]">
+          <div className="absolute left-1/2 top-[-40px] mb-[36px] flex w-[312px] -translate-x-1/2 transform flex-col items-center justify-between gap-[58px] md:mb-[59px] md:w-[384px] md:gap-[62px] xl:top-[-60px] xl:mb-[87px] xl:w-[640px] xl:gap-[157px]">
+            <div className="mb-[-2px] md:mb-[-6px] xl:mb-[-69px]">
+              <MyProfile />
+            </div>
+            <div className="h-[134px] w-full md:h-[146px] xl:h-[216px]">
+              <EmotionBoard />
+            </div>
+            <div className="h-[316px] w-full md:h-[380px] xl:h-[648px]">
+              <EmotionCalender />
+            </div>
           </div>
         </div>
         <div className="relative mt-8 flex flex-col justify-center">

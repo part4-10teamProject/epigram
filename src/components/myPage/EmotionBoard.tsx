@@ -27,27 +27,28 @@ const EmotionBoard = () => {
   if (isLoading) return <LoadingSpinner />;
   if (!data)
     return (
-      <div className="text-2xl font-semibold">오늘의 감정을 선택해주세요</div>
+      <div className="flex h-[134px] items-center justify-center text-2xl font-semibold md:h-[146px] xl:h-[216px]">
+        오늘의 감정을 선택해주세요
+      </div>
     );
 
   return (
-    <div>
-      <div className="flex justify-between">
+    <div className="flex h-full flex-col justify-between">
+      <div className="flex flex-row justify-between">
         <div className="text-xl font-semibold xl:text-[24px] xl:leading-8">
           오늘의 감정
         </div>
         <div className="text-xl text-blue-400 xl:text-2xl">{today}</div>
       </div>
-      <div className="flex flex-col items-center justify-center">
-        <div className="justfiy-center flex w-[312px] items-center gap-[16px] p-4 md:w-[384px] xl:w-[640px]">
-          {emotions.map((emotion) => (
-            <EmotionEmoji
-              key={emotion}
-              emotion={emotion}
-              isSelected={data?.emotion === emotion}
-            />
-          ))}
-        </div>
+
+      <div className="mx-auto flex w-[312px] items-center justify-between md:w-[352px] xl:w-[544px]">
+        {emotions.map((emotion) => (
+          <EmotionEmoji
+            key={emotion}
+            emotion={emotion}
+            isSelected={data?.emotion === emotion}
+          />
+        ))}
       </div>
     </div>
   );
