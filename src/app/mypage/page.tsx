@@ -3,43 +3,9 @@
 import React, { useState } from 'react';
 import EmotionBoard from '../../components/myPage/EmotionBoard';
 import EmotionCalender from '../../components/myPage/EmotionCalender';
-import EmotionChart from '../../components/myPage/EmotionChart';
 import MyCommentList from '../../components/myPage/MyCommentList';
 import MyEpigramList from '../../components/myPage/MyEpigramList';
 import MyProfile from '../../components/myPage/MyProfile';
-
-const MockData2 = [
-  {
-    id: 9184,
-    userId: 760,
-    emotion: 'HAPPY',
-    createdAt: '2024-08-16T00:00:00.000Z',
-  },
-  {
-    id: 9184,
-    userId: 760,
-    emotion: 'ANGRY',
-    createdAt: '2024-08-15T00:00:00.000Z',
-  },
-  {
-    id: 9184,
-    userId: 760,
-    emotion: 'SAD',
-    createdAt: '2024-08-14T00:00:00.000Z',
-  },
-  {
-    id: 9094,
-    userId: 760,
-    emotion: 'HAPPY',
-    createdAt: '2024-08-12T00:00:00.000Z',
-  },
-  {
-    id: 9094,
-    userId: 760,
-    emotion: 'MOVED',
-    createdAt: '2024-08-27T00:00:00.000Z',
-  },
-];
 
 const MyPage: React.FC = () => {
   // activeTab 상태 설정
@@ -54,11 +20,7 @@ const MyPage: React.FC = () => {
             <EmotionBoard />
           </div>
           <div className="mt-8">
-            <EmotionCalender initialSelectedEmotion={MockData2} />
-          </div>
-          <div className="mt-8">
-            <h2 className="text-left text-xl">감정 차트</h2>
-            <EmotionChart initialSelectedEmotion={MockData2} />
+            <EmotionCalender />
           </div>
         </div>
         <div className="relative mt-8 flex flex-col justify-center">
