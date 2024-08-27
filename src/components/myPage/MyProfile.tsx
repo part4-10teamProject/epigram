@@ -29,7 +29,7 @@ const MyProfile = () => {
       <MyProfileModal
         isOpen={profileModal}
         onClose={() => setProfileModal(false)}
-        writer={userInfo}
+        userInfo={userInfo}
       />
       <h2 className="mt-4 text-2xl font-semibold text-black-950">
         {userInfo.nickname}

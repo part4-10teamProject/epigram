@@ -2,20 +2,38 @@
 import Image from 'next/image';
 import close from '../../../public/assets/images/close.png';
 import profile from '../../../public/assets/images/profile_sample.png';
-import { ProfileModalProps } from '@/types/profileModal';
 import { useState } from 'react';
-import { instance } from '@/api/client/AxiosInstance';
-import Cookies from 'js-cookie';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { postImgUpload } from '@/api/client/postImgUpload';
+import { patchUserProfileUpdate } from '@/api/client/patchUserProfileUpdate';
+import { Modal } from '../common/Modal';
+import exclamation from '../../../public/assets/images/exclamation_mark.png';
 
-export const MyProfileModal: React.FC<ProfileModalProps> = ({
+export interface MyProfileModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  userInfo: {
+    id: number;
+    image: string;
+    nickname: string;
+    teamId: string;
+    updatedAt: string;
+  };
+}
+
+export const MyProfileModal: React.FC<MyProfileModalProps> = ({
   isOpen,
   onClose,
-  writer,
+  userInfo,
 }) => {
-  const profileSrc = writer.image === null ? profile : writer.image;
-  const [userImg, setUserImg] = useState(profileSrc);
-  const [nickname, setNickName] = useState(writer.nickname);
+  const profileSrc = userInfo.image || profile;
+  const imgSrc = typeof profileSrc === 'string' ? profileSrc : profileSrc.src; // StaticImageData타입 때문에 이런식으로 한번 더 타입을 검사함
+  const [userImg, setUserImg] = useState(imgSrc);
+  const [nickname, setNickName] = useState(userInfo.nickname);
   const [file, setFile] = useState(null);
+  const [editModal, setEditModal] = useState(false);
+  const [editSuccessModal, setEditSuccessModal] = useState(false);
+  const queryClient = useQueryClient();
 
   const onChangeNickName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickName(e.target.value);
@@ -32,28 +50,26 @@ export const MyProfileModal: React.FC<ProfileModalProps> = ({
       reader.readAsDataURL(TestFile);
       setFile(TestFile);
     }
-    // setFile(e.target.files?.[0]);
   };
 
-  const handleSubmit = async () => {
-    if (!file) return;
-    // console.log('testFilr', file);
+  const UserProfileMutation = useMutation({
+    mutationFn: async () => {
+      if (file) {
+        const uploadImg = await postImgUpload(file);
+        return patchUserProfileUpdate(uploadImg.url, nickname);
+      } else {
+        return patchUserProfileUpdate(userImg, nickname);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['userInfo'] });
+      onClose();
+    },
+  });
 
-    const formData = new FormData();
-    formData.append('image', file);
-    try {
-      const token = Cookies.get('token');
-      const response = await instance.post('/images/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return response.data;
-      // console.log('Upload success:', response.data);
-    } catch (error) {
-      console.error('Upload failed:', error);
-    }
+  const handleProfile = () => {
+    UserProfileMutation.mutate();
+    setEditSuccessModal(false);
   };
 
   if (!isOpen) return null;
@@ -98,11 +114,43 @@ export const MyProfileModal: React.FC<ProfileModalProps> = ({
           </div>
           <input onChange={onChangeNickName} value={nickname} />
           <button
-            onClick={handleSubmit}
+            onClick={() => setEditModal(true)}
             className="rounded-full bg-black-500 px-4 py-3 text-white"
           >
             수정완료
           </button>
+          <Modal
+            isOpen={editModal}
+            onClose={() => setEditModal(false)}
+            icon={<Image src={exclamation} alt="수정이미지" />}
+            message="프로필을 수정하시겠어요?"
+            buttons={[
+              {
+                text: '취소',
+                onClick: () => setEditModal(false),
+                type: 'secondary',
+              },
+              {
+                text: '수정하기',
+                onClick: () => {
+                  setEditModal(false);
+                  setEditSuccessModal(true);
+                }, // 여기를 클릭하면 삭제 API요청함수실행
+                type: 'primary',
+              },
+            ]}
+          />
+          <Modal
+            isOpen={editSuccessModal}
+            onClose={() => setEditSuccessModal(false)}
+            message="프로필이 수정되었습니다"
+            buttons={[
+              {
+                text: '확인',
+                onClick: handleProfile,
+              },
+            ]}
+          />
         </div>
       </div>
     </div>
