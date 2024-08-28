@@ -20,7 +20,6 @@ const emotionColors = {
   SAD: 'border-[#5195EE]',
   ANGRY: 'border-[#E46E80]',
 };
-
 //감정보드에 한글로 표기
 const emotionKorean = {
   MOVED: '감동',
@@ -51,17 +50,11 @@ const EmotionIcon: React.FC<EmotionIconProps> = ({ emotion, isSelected }) => {
   }
 
   return (
-    <div className="flex flex-col items-center">
-      <div //Button 없앰
-        className={`flex h-[56px] w-[56px] items-center justify-center rounded-2xl border-[3px] md:h-[64px] md:w-[64px] md:border-[3px] xl:h-[96px] xl:w-[96px] xl:border-[4px] ${
-          isSelected ? `${emotionColors[emotion]}` : 'border-transparent'
-        } ${isSelected ? 'text-current' : 'text-gray-400'} ${
-          isSelected ? '' : 'bg-[#AFBACD26] opacity-75 hover:bg-gray-200'
-        } overflow-hidden`}
+    <div className="mx-auto h-[84px] md:h-[96px] xl:h-[136px]">
+      <div
+        className={`flex h-[56px] w-[56px] items-center justify-center rounded-2xl border-[3px] md:h-[64px] md:w-[64px] xl:h-[96px] xl:w-[96px] xl:border-[4px] ${isSelected ? `${emotionColors[emotion]} text-current` : 'border-transparent bg-[#AFBACD26] text-gray-400 hover:bg-gray-200'} overflow-hidden`}
       >
-        <div
-          className={`text-3xl md:text-4xl xl:text-5xl ${isSelected ? '' : 'grayscale filter'}`}
-        >
+        <div className={`text-3xl md:text-4xl xl:text-5xl`}>
           <Image
             className="h-[32px] w-[32px] md:h-[32px] md:w-[32px] xl:h-[48px] xl:w-[48px]"
             alt="EmojiIcon"
@@ -70,7 +63,7 @@ const EmotionIcon: React.FC<EmotionIconProps> = ({ emotion, isSelected }) => {
         </div>
       </div>
       <div
-        className={`mt-1 text-center text-sm md:text-base xl:text-lg ${isSelected ? '' : 'text-gray-400'}`}
+        className={`text-center text-sm font-semibold md:text-lg xl:text-2xl ${isSelected ? '' : 'text-gray-400'}`}
       >
         {emotionKorean[emotion]}
       </div>

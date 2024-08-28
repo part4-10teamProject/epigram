@@ -1,5 +1,5 @@
-import { instance } from './AxiosInstance';
 import Cookies from 'js-cookie';
+import { instance } from './AxiosInstance';
 
 export interface Addepigram {
   tags: string[];

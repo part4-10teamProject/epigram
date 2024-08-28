@@ -41,7 +41,7 @@ const DetailCommentList: React.FC<IdProps> = ({ id }) => {
   const [commentInput, setCommentInput] = useState('');
   const queryClient = useQueryClient();
   const { userInfo } = useAuth();
-  const userImg = userInfo.image === null ? defaultProfile : userInfo.image;
+  const userImg = userInfo?.image || defaultProfile;
 
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentInput(e.target.value);
