@@ -1,15 +1,12 @@
 'use client';
 
 import { useAuth } from '@/contexts/AuthContext';
-import React, { useState } from 'react';
+import React from 'react';
 import defaultImg from '../../../public/assets/images/profile_sample.png';
 import Image from 'next/image';
-import { MyProfileModal } from './MyProfileModal';
 
-const MyProfile = () => {
+const MyProfile = ({ setProfileModal }) => {
   const { logout, userInfo } = useAuth();
-  const [profileModal, setProfileModal] = useState(false);
-
   const userImg = userInfo?.image ?? defaultImg;
 
   if (!userInfo) return;
@@ -27,11 +24,7 @@ const MyProfile = () => {
             className="cursor-pointer"
           />
         </div>
-        <MyProfileModal
-          isOpen={profileModal}
-          onClose={() => setProfileModal(false)}
-          userInfo={userInfo}
-        />
+
         <h2 className="h-[26px] w-[80px] overflow-hidden text-ellipsis whitespace-nowrap text-center text-xl font-semibold text-black-950 xl:h-[32px] xl:w-[120px] xl:text-2xl xl:text-[24px]">
           {userInfo.nickname}
         </h2>
