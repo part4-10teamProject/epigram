@@ -22,6 +22,7 @@ const Search = () => {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
   const [query, setQuery] = useState<string>('');
+  const [isRecentSearches, setIsRecentSearches] = useState<boolean>(true);
   const queryClient = useQueryClient();
   const router = useRouter();
 
@@ -63,12 +64,25 @@ const Search = () => {
       initialPageParam: undefined,
     });
 
+  // 초기 렌더링 시 로컬 스토리지에서 데이터를 가져오는 useEffect
   useEffect(() => {
     const storedSearches = localStorage.getItem('recentSearches');
     if (storedSearches) {
-      setRecentSearches(JSON.parse(storedSearches));
+      const parsedSearches = JSON.parse(storedSearches);
+      if (Array.isArray(parsedSearches) && parsedSearches.length > 0) {
+        setRecentSearches(parsedSearches);
+        setIsRecentSearches(true);
+      } else {
+        // 빈 배열이거나 배열이 아닌 경우
+        setRecentSearches([]);
+        setIsRecentSearches(false);
+      }
+    } else {
+      // 로컬 스토리지에서 키가 없을 때
+      setRecentSearches([]);
+      setIsRecentSearches(false);
     }
-  }, []);
+  }, []); // 빈 배열로 설정하여 컴포넌트 마운트 시 한 번만 실행
 
   useEffect(() => {
     if (query.trim().length > 0) {
@@ -79,13 +93,39 @@ const Search = () => {
 
   const updateRecentSearches = useCallback((searchTerm: string) => {
     setRecentSearches((prevSearches) => {
+      // 기존 검색어에서 현재 검색어를 제거
       const updatedSearches = prevSearches.filter(
         (term) => term !== searchTerm,
       );
+      // 새로운 검색어를 맨 앞에 추가
       updatedSearches.unshift(searchTerm);
+      // 최대 5개 검색어만 유지
       const limitedSearches = updatedSearches.slice(0, 5);
+      // 로컬 스토리지에 저장
       localStorage.setItem('recentSearches', JSON.stringify(limitedSearches));
+
+      // 검색어가 하나라도 있는 경우 true, 없는 경우 false
+      setIsRecentSearches(limitedSearches.length > 0);
+
       return limitedSearches;
+    });
+  }, []);
+
+  const clearRecentSearches = useCallback(() => {
+    // 로컬 스토리지에서 'recentSearches' 키를 제거
+    localStorage.removeItem('recentSearches');
+    // 상태를 업데이트
+    setRecentSearches([]);
+    setIsRecentSearches(false);
+  }, []);
+
+  const removeRecentSearch = useCallback((term: string) => {
+    setRecentSearches((prevSearches) => {
+      const updatedSearches = prevSearches.filter((item) => item !== term);
+      localStorage.setItem('recentSearches', JSON.stringify(updatedSearches));
+      // 빈 배열일 경우 false, 그렇지 않으면 true
+      setIsRecentSearches(updatedSearches.length > 0);
+      return updatedSearches;
     });
   }, []);
 
@@ -111,23 +151,10 @@ const Search = () => {
     performSearch();
   };
 
-  const handleClearAllRecentSearches = () => {
-    setRecentSearches([]);
-    localStorage.removeItem('recentSearches');
-  };
-
   const handleRecentSearchClick = (term: string) => {
     setSearchValue(term);
     setQuery(term);
     updateRecentSearches(term);
-  };
-
-  const removeRecentSearch = (term: string) => {
-    setRecentSearches((prevSearches) => {
-      const updatedSearches = prevSearches.filter((item) => item !== term);
-      localStorage.setItem('recentSearches', JSON.stringify(updatedSearches));
-      return updatedSearches;
-    });
   };
 
   const moveEpigramDetail = (id: number) => {
@@ -159,9 +186,10 @@ const Search = () => {
         />
         <RecentSearches
           recentSearches={recentSearches}
-          onClearAll={handleClearAllRecentSearches}
+          onClearAll={clearRecentSearches}
           onClickItem={handleRecentSearchClick}
           onRemoveItem={removeRecentSearch}
+          isRecentSearches={isRecentSearches}
         />
         <div>
           {filteredData.length === 0 ? (

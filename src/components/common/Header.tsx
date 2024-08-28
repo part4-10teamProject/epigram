@@ -57,7 +57,11 @@ const Header: React.FC = () => {
   };
 
   const handleLogoClick = (): void => {
-    router.push('/');
+    if (isLoggedIn) {
+      router.push('/epigrams');
+    } else {
+      router.push('/');
+    }
   };
 
   const handleProfileClick = (): void => {
