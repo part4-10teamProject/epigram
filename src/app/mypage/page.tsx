@@ -3,15 +3,12 @@
 import React, { useState } from 'react';
 import EmotionBoard from '../../components/myPage/EmotionBoard';
 import EmotionCalender from '../../components/myPage/EmotionCalender';
-import MyCommentList from '../../components/myPage/MyCommentList';
-import MyEpigramList from '../../components/myPage/MyEpigramList';
 import MyProfile from '../../components/myPage/MyProfile';
 import { useAuth } from '@/contexts/AuthContext';
 import { MyProfileModal } from '@/components/myPage/MyProfileModal';
+import BottomList from '@/components/myPage/BottomList';
 
 const MyPage: React.FC = () => {
-  // activeTab 상태 설정
-  const [activeTab, setActiveTab] = useState<'epigram' | 'comment'>('epigram');
   const [profileModal, setProfileModal] = useState(false);
   const { userInfo } = useAuth();
 
@@ -33,30 +30,7 @@ const MyPage: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="mt-8 flex flex-col items-center justify-center">
-          <div className="flex space-x-8">
-            <button
-              className={`text-xl font-semibold ${activeTab === 'epigram' ? 'text-blue-500' : 'text-gray-500'}`}
-              onClick={() => setActiveTab('epigram')}
-            >
-              내 에피그램
-            </button>
-            <button
-              className={`text-xl font-semibold ${activeTab === 'comment' ? 'text-blue-500' : 'text-gray-500'}`}
-              onClick={() => setActiveTab('comment')}
-            >
-              내 댓글
-            </button>
-          </div>
-        </div>
-        <div className="mx-auto max-w-[312px] py-8 md:max-w-[384px] xl:max-w-[640px] xl:pt-28">
-          <div className="flex flex-col gap-40"></div>
-          <div className="mt-8">
-            {activeTab === 'epigram' && <MyEpigramList />}
-            {activeTab === 'comment' && <MyCommentList />}
-          </div>
-        </div>
-        <div className="mt-8 space-y-8"></div>
+        <BottomList />
       </main>
       <MyProfileModal
         isOpen={profileModal}
