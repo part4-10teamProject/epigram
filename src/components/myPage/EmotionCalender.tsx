@@ -119,6 +119,7 @@ const EmotionCalendar = () => {
             view === 'month' &&
             selectedEmotion[moment(date).format('YYYY-MM-DD')] ? (
               <Image
+                className="xl:h-[36px] xl:w-[36px]"
                 src={
                   emotions[selectedEmotion[moment(date).format('YYYY-MM-DD')]]
                 }

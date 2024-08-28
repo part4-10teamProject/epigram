@@ -3,17 +3,15 @@
 import Card from '../common/Card';
 import { LoadingSpinner } from '../common/LoadingSpinner';
 
-const MyEpigramList = ({ epigramListProps }) => {
-  const {
-    isListVisible,
-    fetchNextPage,
-    hasNextPage,
-    isLoading,
-    epigrams,
-  } = epigramListProps;
+const MyEpigramList = ({
+  isListVisible,
+  fetchNextPage,
+  hasNextPage,
+  isLoading,
+  epigrams,
+}) => {
   return (
     <div className="flex flex-col gap-10">
-     
       {isListVisible && ( // 에피그램 리스트의 가시성 상태에 따라 보여주기
         <div>
           {isLoading ? (

@@ -101,7 +101,7 @@
 .react-calendar__tile:enabled:hover,
 .react-calendar__tile:enabled:focus,
 .react-calendar__tile--active {
-  border: 3px solid #e46e80 !important;
+  box-shadow: 0 0 0 3px #e46e80 inset !important;
   border-radius: 3px;
   background-color: transparent;
   color: #e46e80 !important;
@@ -109,7 +109,7 @@
 
 /* 오늘 날짜 */
 .react-calendar__tile--now {
-  border: 3px solid #e46e80 !important;
+  box-shadow: 0 0 0 3px #e46e80 inset !important;
   border-radius: 3px;
   background-color: transparent;
 }
@@ -121,8 +121,7 @@
 /* hover, focus 시 */
 .react-calendar__tile--now:enabled:hover,
 .react-calendar__tile--now:enabled:focus {
-  border: 3px solid #e46e80;
-  border-radius: 3px;
+  box-shadow: 0 0 0 3px #e46e80 inset;
 }
 
 /* 감정 날짜 표시 */
@@ -137,6 +136,10 @@
   display: flex;
   justify-content: center; /* 자식 요소를 수평 중앙에 배치 */
   align-items: center; /* 자식 요소를 수직 중앙에 배치 */
+}
+div.react-calendar__navigation
+  > button.react-calendar__navigation__arrow.react-calendar__navigation__prev-button {
+  margin-right: 16px;
 }
 
 /* 반응형 디자인 */
@@ -209,5 +212,13 @@
   }
   .custom-calendar .react-calendar__navigation {
     margin-bottom: 48px;
+  }
+  .custom-calendar .react-calendar__navigation button {
+    width: 36px;
+    height: 36px;
+  }
+  div.react-calendar__navigation
+    > button.react-calendar__navigation__arrow.react-calendar__navigation__prev-button {
+    margin-right: 24px;
   }
 }
