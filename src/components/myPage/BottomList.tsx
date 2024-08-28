@@ -1,19 +1,19 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import MyCommentList from './MyCommentList';
-import MyEpigramList from './MyEpigramList';
+import { deleteComment } from '@/api/client/deleteComment';
+import { editComment } from '@/api/client/editComment';
+import { getUserCommentDatas } from '@/api/client/getUserCommentsDatas';
+import { getUserEpigramDatas } from '@/api/client/getUserEpigramDatas';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   useInfiniteQuery,
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
-import { getUserEpigramDatas } from '@/api/client/getUserEpigramDatas';
+import { useEffect, useState } from 'react';
 import { LoadingSpinner } from '../common/LoadingSpinner';
-import { deleteComment } from '@/api/client/deleteComment';
-import { editComment } from '@/api/client/editComment';
-import { getUserCommentDatas } from '@/api/client/getUserCommentsDatas';
+import MyCommentList from './MyCommentList';
+import MyEpigramList from './MyEpigramList';
 
 // 인터페이스 정의
 interface EditContentItem {
@@ -156,8 +156,8 @@ const BottomList = () => {
   };
 
   return (
-    <>
-      <div className="mt-8 flex flex-col items-center justify-center">
+    <div className="mx-auto mt-2 max-w-[312px] md:max-w-[384px] xl:max-w-[640px] xl:pt-28">
+      <div className="mb-0.2 mt-10 flex flex-col items-start">
         <div className="flex space-x-8">
           <button
             className="cursor-pointer text-left text-xl font-semibold xl:text-[24px] xl:leading-8"
@@ -167,21 +167,22 @@ const BottomList = () => {
             {epigramIsFetching || totalCount === null ? '' : `(${totalCount})`}
           </button>
           <button
-            className="cursor-pointer text-xl font-semibold xl:text-[24px] xl:leading-8"
+            className="cursor-pointer text-left text-xl font-semibold xl:text-[24px] xl:leading-8"
             onClick={handleCommentClick}
           >
             내 댓글 {commentIsFetching || `(${commentTotalCount})`}
           </button>
         </div>
       </div>
-      <div className="mx-auto max-w-[312px] py-8 md:max-w-[384px] xl:max-w-[640px] xl:pt-28">
-        <div className="flex flex-col gap-40"></div>
-        <div className="mt-8">
-          {activeTab === 'epigram' && <MyEpigramList {...epigramListProps} />}
-          {activeTab === 'comment' && <MyCommentList {...commentListProps} />}
+      <div className="py-8">
+        <div className="flex flex-col gap-40">
+          <div className="mt-0.2">
+            {activeTab === 'epigram' && <MyEpigramList {...epigramListProps} />}
+            {activeTab === 'comment' && <MyCommentList {...commentListProps} />}
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

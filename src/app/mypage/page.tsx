@@ -30,6 +30,7 @@ const MyPage: React.FC = () => {
             </div>
           </div>
         </div>
+
         <BottomList />
       </main>
       <MyProfileModal
