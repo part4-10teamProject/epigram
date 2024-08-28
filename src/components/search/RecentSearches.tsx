@@ -5,6 +5,7 @@ interface RecentSearchesProps {
   onClearAll: () => void;
   onClickItem: (term: string) => void;
   onRemoveItem: (term: string) => void;
+  isRecentSearches: boolean | undefined;
 }
 
 const RecentSearches: React.FC<RecentSearchesProps> = ({
@@ -12,6 +13,7 @@ const RecentSearches: React.FC<RecentSearchesProps> = ({
   onClearAll,
   onClickItem,
   onRemoveItem,
+  isRecentSearches,
 }) => {
   return (
     <div>
@@ -19,12 +21,14 @@ const RecentSearches: React.FC<RecentSearchesProps> = ({
         <p className="text-xl font-medium text-black-700 md:text-2xl xl:text-[24px]">
           최근 검색어
         </p>
-        <button
-          onClick={onClearAll}
-          className="text-sm font-semibold text-red-500 md:text-lg xl:text-xl"
-        >
-          모두 지우기
-        </button>
+        {isRecentSearches && (
+          <button
+            onClick={onClearAll}
+            className="text-sm font-semibold text-red-500 md:text-lg xl:text-xl"
+          >
+            모두 지우기
+          </button>
+        )}
       </div>
       <div className="mb-[24px] mt-4 flex flex-wrap gap-2 md:mb-[32px] md:mt-[24px] md:gap-4 xl:my-[40px]">
         {recentSearches.map((term, index) => (

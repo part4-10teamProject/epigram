@@ -148,6 +148,7 @@ const AddEpigramPageInput: React.FC = () => {
                     <input
                       type="radio"
                       name="라디오버튼"
+                      checked={!(author === '알 수 없음' || author === '본인')}
                       onClick={() => setAuthor('')}
                       className="h-[20px] w-[20px] rounded-[10px] border-2 border-blue-300 align-middle xl:h-[24px] xl:w-[24px] xl:rounded-[40px]"
                       color="black"
