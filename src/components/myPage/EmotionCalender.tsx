@@ -1,19 +1,19 @@
 'use client';
 
+import { getCalendarData } from '@/api/client/getCalendarData';
+import { useAuth } from '@/contexts/AuthContext';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import moment from 'moment'; //날짜&시간 다루는 Moment.js 라이브러리 임포트
 import Image from 'next/image'; //next.js의 최적화 이미지 컴포넌트
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Calendar from 'react-calendar'; //react-calender 컴포넌트 임포트
 import angryIcon from '../../../public/assets/icons/emotion/logo_angry.svg';
 import heartIcon from '../../../public/assets/icons/emotion/logo_heart.svg';
 import sadIcon from '../../../public/assets/icons/emotion/logo_sad.svg';
 import smileIcon from '../../../public/assets/icons/emotion/logo_smiling.svg';
 import thinkIcon from '../../../public/assets/icons/emotion/logo_thinking.svg';
-import '../myPage/calendarCustom.css'; //캘린더는 따로 커스텀 스타일링 css
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getCalendarData } from '@/api/client/getCalendarData';
-import { useAuth } from '@/contexts/AuthContext';
 import { LoadingSpinner } from '../common/LoadingSpinner';
+import '../myPage/calendarCustom.css'; //캘린더는 따로 커스텀 스타일링 css
 import EmotionChart from './EmotionChart';
 
 //감정유형 정의하는 타입(Swagger는 영어이므로)

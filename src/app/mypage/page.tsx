@@ -1,12 +1,12 @@
 'use client';
 
+import BottomList from '@/components/myPage/BottomList';
+import { MyProfileModal } from '@/components/myPage/MyProfileModal';
+import { useAuth } from '@/contexts/AuthContext';
 import React, { useState } from 'react';
 import EmotionBoard from '../../components/myPage/EmotionBoard';
 import EmotionCalender from '../../components/myPage/EmotionCalender';
 import MyProfile from '../../components/myPage/MyProfile';
-import { useAuth } from '@/contexts/AuthContext';
-import { MyProfileModal } from '@/components/myPage/MyProfileModal';
-import BottomList from '@/components/myPage/BottomList';
 
 const MyPage: React.FC = () => {
   const [profileModal, setProfileModal] = useState(false);

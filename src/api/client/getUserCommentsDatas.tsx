@@ -1,6 +1,6 @@
+import { CommentList } from '@/types/commentList';
 import Cookies from 'js-cookie';
 import { instance } from './AxiosInstance';
-import { CommentList } from '@/types/commentList';
 
 export const getUserCommentDatas = async (
   cursor: number,
