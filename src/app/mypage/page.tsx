@@ -27,8 +27,8 @@ const MyPage: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="relative mt-8 flex flex-col justify-center">
-          <div className="flex space-x-8">
+        <div className="mx-auto max-w-[312px] py-8 md:max-w-[384px] xl:max-w-[640px] xl:pt-28">
+          <div className="flex flex-col gap-40">
             <button
               className={`text-xl font-semibold ${activeTab === 'epigram' ? 'text-blue-500' : 'text-gray-500'}`}
               onClick={() => setActiveTab('epigram')}
