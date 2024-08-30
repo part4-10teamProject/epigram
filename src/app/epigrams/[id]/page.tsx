@@ -26,7 +26,7 @@ const DetailPage = () => {
 
   return (
     <div>
-      <div className="h-[300px] bg-striped md:h-[366px] xl:h-[400px]">
+      <div className="h-auto bg-striped">
         <div className="mx-auto w-[312px] pt-10 md:w-[384px] xl:w-[640px]">
           <EpigramDetails epigram={data} />
         </div>
