@@ -147,14 +147,14 @@ const EpigramDetails: React.FC<EpigramProps> = ({ epigram }) => {
             </div>
           )}
         </div>
-        <div className="font-custom text-[24px] leading-[40px] xl:text-[32px] xl:leading-[48px]">
+        <div className="whitespace-pre-wrap font-custom text-[24px] leading-[40px] xl:text-[32px] xl:leading-[48px]">
           {epigram.content}
         </div>
         <div className="text-right font-custom text-[16px] leading-[26px] text-[#ABB8CE] md:text-[20px] md:leading-[28px] xl:text-[24px] xl:leading-[20px]">
           - {epigram.author} -
         </div>
       </div>
-      <div className="absolute left-1/2 top-[300px] flex -translate-x-1/2 transform items-center gap-4 md:top-[365px] xl:top-[400px]">
+      <div className="mb-[16px] mt-[32px] flex items-center justify-center gap-4 md:top-[365px] md:my-[32px] xl:top-[40px] xl:mb-[40px] xl:mt-[36px]">
         <button
           onClick={handleLikeToggle}
           className="flex items-center gap-1 rounded-full bg-black-600 px-[14px] py-[6px] text-white"
